@@ -8,11 +8,11 @@ import java.io.Serializable;
  * Responsibilities:
  *      keep track of the description of the room.
  *      keep track of adjacent rooms.
- *      
+ *      keep track of roomID.
  * 
  * @author Zachary Chandler
  */
-public class RoomNode implements Serializable {
+public class RoomNode implements Serializable, Comparable<RoomNode> {
     
     /** Generated SVUID */
     private static final long serialVersionUID = 4749342966413694748L;
@@ -23,22 +23,34 @@ public class RoomNode implements Serializable {
     /** A description of the room. */
     private String description;
     
+    /** A unique ID associated with the room. */
+    private int roomID; 
+    
     /**
      * Instantiates a RoomNode with the given description.
      * 
      * Preconditions:
      *      description may not be null.
      * 
-     * @param description
+     * @param description.
+     * @param roomID a unique ID associated with the room.
      */
-    public RoomNode(String description) {
+    public RoomNode(int roomID, String description) {
         if (description == null) {
             throw new NullPointerException("Cannot use null description in RoomNode constructor!");
         }
         
         this.description = description;
+        this.roomID = roomID;
     }
     
+    /**
+     * @return the roomID
+     */
+    public int getRoomID() {
+        return roomID;
+    }
+
     /**
      * Postconditions:
      *      the description will never be null.
@@ -156,5 +168,10 @@ public class RoomNode implements Serializable {
      */
     public void setWest(RoomNode west) {
         this.west = west;
+    }
+
+    @Override
+    public int compareTo(RoomNode other) {
+        return this.roomID - other.roomID;
     }
 }

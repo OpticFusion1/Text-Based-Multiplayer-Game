@@ -7,7 +7,7 @@ import java.io.Serializable;
  * 
  * Responsibilities:
  *      keep track of the starting room.
- * 
+ *      generate unique room IDs.
  * 
  * @author Zachary Chandler
  */
@@ -17,6 +17,8 @@ public class RoomManager implements Serializable {
     private static final long serialVersionUID = -8083744640096022029L;
     
     private RoomNode startingRoom;
+    
+    private int nextRoomID;
     
     /**
      * Instantiates a RoomManager with the given starting room.
@@ -32,6 +34,14 @@ public class RoomManager implements Serializable {
         }
         
         this.startingRoom = startingRoom;
+        this.nextRoomID = startingRoom.getRoomID() + 1;
+    }
+    
+    /**
+     * @return a unique room ID.
+     */
+    public int getUniqueRoomID() {
+        return nextRoomID++;
     }
     
     /**
