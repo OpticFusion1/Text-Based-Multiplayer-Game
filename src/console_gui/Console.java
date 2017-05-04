@@ -17,7 +17,11 @@ public class Console {
             return;
         }
         
-        System.out.println(info.getCurrentRoom().getDescription());
+        info.out = System.out;
+        
+        
+        
+        info.out.println(info.getCurrentRoom().getDescription());
         
         
         Command com = input.getNextCommand();
@@ -30,7 +34,7 @@ public class Console {
             com = input.getNextCommand();
         }
 
-        System.out.println("Thank you for experiencing Node Traversing Simulator 2017");
+        info.out.println("Thank you for experiencing Node Traversing Simulator 2017");
         
         SerializationHelper.saveObject(info, SerializationHelper.QUICK_SAVE_LOCATION.toString());
         

@@ -1,5 +1,6 @@
 package console_gui;
 
+import java.io.PrintStream;
 import java.io.Serializable;
 
 import model.RoomManager;
@@ -24,6 +25,8 @@ public class CurrentInformation implements Serializable {
     
     /** The rooms the user will traverse. */
     public final RoomManager rooms;
+
+    transient public PrintStream out;
     
     /**
      * Instantiate the current information on a given graph of rooms.
@@ -33,11 +36,12 @@ public class CurrentInformation implements Serializable {
      *      
      * @param rooms the room graph we will have information on.
      */
-    public CurrentInformation(RoomManager rooms) {
+    public CurrentInformation(RoomManager rooms, PrintStream out) {
         if (rooms == null) {
             throw new NullPointerException("Cannot use null RoomManager in CurrentInformation instantiation!");
         }
         
+        this.out = out;
         this.rooms = rooms;
         currentRoom = rooms.getStartingRoom();
     }

@@ -15,10 +15,10 @@ public class EastCommand extends RunnableCommand {
         RoomNode potentialRoom = info.getCurrentRoom().getEast();
         
         if (potentialRoom == null) {
-            System.out.println("You can't go that way.");
+            info.out.println("You can't go that way.");
         } else {
             info.setCurrentRoom(potentialRoom);
-            System.out.println(info.getCurrentRoom().getDescription());
+            info.out.println(info.getCurrentRoom().getDescription());
         }
     }
 

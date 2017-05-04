@@ -13,14 +13,14 @@ public class CommandNotFoundCommand extends RunnableCommand {
 
     @Override
     public void runCommand(CurrentInformation info, String[] args) {
-        System.out.print("Command not found (" + args.length + "): ");
+        info.out.print("Command not found (" + args.length + "): ");
         
         for (int i = 0; i < args.length; i++) {
-            System.out.print(args[i]);
-            System.out.print(" ");
+            info.out.print(args[i]);
+            info.out.print(" ");
         }
         
-        System.out.println();
+        info.out.println();
     }
 
 }
