@@ -1,4 +1,6 @@
-package console_gui;
+package commands;
+
+import console_gui.CurrentInformation;
 
 public abstract class RunnableCommand {
     

@@ -1,7 +1,6 @@
 package commands;
 
 import console_gui.CurrentInformation;
-import console_gui.RunnableCommand;
 
 public class QuitCommand extends RunnableCommand {
 

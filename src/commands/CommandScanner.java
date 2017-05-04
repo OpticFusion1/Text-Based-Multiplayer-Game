@@ -8,8 +8,6 @@ import java.util.Queue;
 import java.util.Scanner;
 import java.util.TreeMap;
 
-import console_gui.RunnableCommand;
-
 public class CommandScanner {
     
     private static final RunnableCommand[] COMMANDS = {
