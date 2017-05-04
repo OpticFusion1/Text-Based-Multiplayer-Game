@@ -52,6 +52,9 @@ public class CurrentInformation implements Serializable {
      * @param currentRoom the currentRoom to set
      */
     public void setCurrentRoom(RoomNode currentRoom) {
-        this.currentRoom = currentRoom;
+        if (currentRoom != null) {
+            this.currentRoom = currentRoom;            
+        }
+        
     }
 }
