@@ -8,7 +8,8 @@ import model.SerializationHelper;
 public class Console {
     
     public static void main(String[] args) {
-        CurrentInformation info = (CurrentInformation) SerializationHelper.loadObject(SerializationHelper.QUICK_SAVE_LOCATION.toString());
+        CurrentInformation info = (CurrentInformation) SerializationHelper.loadObject(
+                                                            SerializationHelper.QUICK_SAVE_LOCATION.toString());
         CommandScanner input = new CommandScanner(System.in, System.out);
         
         if (info == null) {

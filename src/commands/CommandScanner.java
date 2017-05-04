@@ -21,7 +21,9 @@ public class CommandScanner {
             new EastCommand(),
             new SouthCommand(),
             new WestCommand(),
-            new LookCommand()
+            new LookCommand(),
+            new DigCommand(),
+            new CaveinCommand()
     };
     
     private Queue<Command> commands;

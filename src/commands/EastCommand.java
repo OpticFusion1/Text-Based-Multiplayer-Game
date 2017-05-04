@@ -2,6 +2,7 @@ package commands;
 
 import console_gui.CurrentInformation;
 import console_gui.RunnableCommand;
+import model.RoomNode;
 
 public class EastCommand extends RunnableCommand {
 
@@ -12,7 +13,14 @@ public class EastCommand extends RunnableCommand {
 
     @Override
     public void runCommand(CurrentInformation info, String[] args) {
-        info.setCurrentRoom(info.getCurrentRoom().getEast());
+        RoomNode potentialRoom = info.getCurrentRoom().getEast();
+        
+        if (potentialRoom == null) {
+            System.out.println("You can't go that way.");
+        } else {
+            info.setCurrentRoom(potentialRoom);
+            System.out.println(info.getCurrentRoom().getDescription());
+        }
     }
 
 }
