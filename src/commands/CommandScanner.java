@@ -21,7 +21,10 @@ public class CommandScanner {
             new WestCommand(),
             new LookCommand(),
             new DigCommand(),
-            new CaveinCommand()
+            new WallOffCommand(),
+            new EscapeCurrentLocationCommand(),
+            new UnLinkCommand(),
+            new ExamineCommand()
     };
     
     private Queue<Command> commands;
@@ -51,23 +54,36 @@ public class CommandScanner {
         
         if (commands.isEmpty()) {
             out.print('>');
-            String[] args = input.nextLine().split("\\s+");
+            String[] semiSplit = input.nextLine().split("(\\s*;+\\s*)+");
             
-            if (args.length > 0) {
-                RunnableCommand runner = commandMap.get(args[0].toUpperCase());
+            for (int i = 0; i < semiSplit.length; i++) {
+                Command c = translateCommmand(semiSplit[i]);
                 
-                if (runner == null) {
-                    runner = commandMap.get(CommandNotFoundCommand.LOOK_UP_STRING);
+                if (c != null) {
+                    commands.add(c);
                 }
-                
-                result = new Command(args, runner);
-            } else {
-                result = null;                
             }
-        } else {
-            result = commands.poll();
         }
         
+        result = commands.poll();
+        
+        return result;
+    }
+    
+    public Command translateCommmand(String s) {
+        Command result = null;
+
+        String[] args = s.split("\\s+");
+        
+        if (args.length > 0) {
+            RunnableCommand runner = commandMap.get(args[0].toUpperCase());
+            
+            if (runner == null) {
+                runner = commandMap.get(CommandNotFoundCommand.LOOK_UP_STRING);
+            }
+            
+            result = new Command(args, runner);
+        }
         
         return result;
     }

@@ -2,19 +2,19 @@ package commands;
 
 import console_gui.CurrentInformation;
 
-public class CaveinCommand extends RunnableCommand {
+public class WallOffCommand extends RunnableCommand {
 
     @Override
     public String[] getAliases() {
-        return new String[] {"CAVEIN"} ;
+        return new String[] {"WALLOFF"} ;
     }
 
     @Override
     public void runCommand(CurrentInformation info, String[] args) {
         boolean error = false;
         
-        if (args.length < 2) {
-            info.out.print("Not enough arguments, ");
+        if (args.length != 2) {
+            info.out.print("Invalid number of arguments, ");
             
             error = true;
         } else {
@@ -24,8 +24,9 @@ public class CaveinCommand extends RunnableCommand {
                 if (info.getCurrentRoom().getDown() == null) {
                     info.out.println("There isn't a room there!");
                 } else {
+                    info.getCurrentRoom().getDown().setUp(null);
                     info.getCurrentRoom().setDown(null);
-                    info.out.println("Destroyed Room!");
+                    info.out.println("Blocked Pathway down!");
                 }
                 break;
 
@@ -34,8 +35,9 @@ public class CaveinCommand extends RunnableCommand {
                 if (info.getCurrentRoom().getUp() == null) {
                     info.out.println("There isn't a room there!");
                 } else {
+                    info.getCurrentRoom().getUp().setDown(null);
                     info.getCurrentRoom().setUp(null);
-                    info.out.println("Destroyed Room!");              
+                    info.out.println("Blocked Pathway up!");           
                 }
                 break;
 
@@ -44,8 +46,9 @@ public class CaveinCommand extends RunnableCommand {
                 if (info.getCurrentRoom().getNorth() == null) {
                     info.out.println("There isn't a room there!");
                 } else {
+                    info.getCurrentRoom().getNorth().setSouth(null);
                     info.getCurrentRoom().setNorth(null);
-                    info.out.println("Destroyed Room!");           
+                    info.out.println("Blocked Pathway north!");        
                 }
                 break;
 
@@ -54,8 +57,9 @@ public class CaveinCommand extends RunnableCommand {
                 if (info.getCurrentRoom().getEast() == null) {
                     info.out.println("There isn't a room there!");
                 } else {
+                    info.getCurrentRoom().getEast().setWest(null);
                     info.getCurrentRoom().setEast(null);
-                    info.out.println("Destroyed Room!");     
+                    info.out.println("Blocked Pathway east!"); 
                 }
                 break;
 
@@ -64,8 +68,9 @@ public class CaveinCommand extends RunnableCommand {
                 if (info.getCurrentRoom().getSouth() == null) {
                     info.out.println("There isn't a room there!");
                 } else {
+                    info.getCurrentRoom().getSouth().setNorth(null);
                     info.getCurrentRoom().setSouth(null);
-                    info.out.println("Destroyed Room!");         
+                    info.out.println("Blocked Pathway south!");   
                 }
                 break;
 
@@ -74,8 +79,9 @@ public class CaveinCommand extends RunnableCommand {
                 if (info.getCurrentRoom().getWest() == null) {
                     info.out.println("There isn't a room there!");
                 } else {
+                    info.getCurrentRoom().getWest().setEast(null);
                     info.getCurrentRoom().setWest(null);
-                    info.out.println("Destroyed Room!");   
+                    info.out.println("Blocked Pathway west!");  
                 }
                 break;
                 

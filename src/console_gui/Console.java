@@ -18,9 +18,7 @@ public class Console {
         }
         
         info.out = System.out;
-        
-        
-        
+
         info.out.println(info.getCurrentRoom().getDescription());
         
         
