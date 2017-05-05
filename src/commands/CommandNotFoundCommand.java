@@ -13,14 +13,18 @@ public class CommandNotFoundCommand extends RunnableCommand {
 
     @Override
     public void runCommand(UserInformation info, String[] args) {
-        info.out.print("Command not found (" + args.length + "): ");
-        
-        for (int i = 0; i < args.length; i++) {
-            info.out.print(args[i]);
-            info.out.print(" ");
+        // do we have multiple commands OR is there only one command, but it isn't the empty string
+        if (args.length > 1 || (args.length == 1 && !args[0].equals(""))) {
+            
+            info.out.print("Command not found (" + args.length + "): ");
+            
+            for (int i = 0; i < args.length; i++) {
+                info.out.print(args[i]);
+                info.out.print(" ");
+            }
+            
+            info.out.println();    
         }
-        
-        info.out.println();
     }
 
 }
