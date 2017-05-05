@@ -31,7 +31,7 @@ public final class RoomManager implements Serializable {
     private int nextRoomID;
     
     /**
-     * Instantiates a RoomManager with the given starting room.
+     * Instantiates a RoomManager with the given starting room. And adds all connected rooms to be tracked.
      * 
      * Preconditions:
      *      startingRoom may not be null.
@@ -47,7 +47,7 @@ public final class RoomManager implements Serializable {
         this.nextRoomID = startingRoom.getRoomID() + 1;
         this.rooms = new TreeMap<>();
         
-        this.purgeDisconnectedRooms();
+        this.addAllConnectedRooms();
     }
     
     /**
@@ -91,11 +91,15 @@ public final class RoomManager implements Serializable {
     }
     
     /**
-     * Adds the given room to the tracked nodes.
-     * @param room the room to add.
+     * Adds the given room to the tracked nodes. Undefined behavior for nodes not in the current graph. If a node is
+     * already being tracked with that ID then subsequent call to getRoom will return the original room.
+     * 
+     * @param room the room to track.
      */
     public void trackRoom(RoomNode room) {
-        this.rooms.put(room.getRoomID(), room);
+        if (!this.rooms.containsKey(room.getRoomID())) {
+            this.rooms.put(room.getRoomID(), room);            
+        }
     }
     
     /**
@@ -113,7 +117,11 @@ public final class RoomManager implements Serializable {
         addAllConnectedRooms();
     }
     
-    
+    /**
+     * Adds all of the connected rooms to be tracked.
+     * @param seenRooms the rooms already seen and added.
+     * @param room the current room.
+     */
     private void addAllConnectedRooms(Set<RoomNode> seenRooms, RoomNode room) {
         if (room != null && !seenRooms.contains(room)) {
             seenRooms.add(room);
