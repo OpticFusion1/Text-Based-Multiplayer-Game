@@ -1,6 +1,6 @@
-package console_gui;
+package commands;
 
-import commands.RunnableCommand;
+import console_gui.UserInformation;
 import model.RoomNode;
 
 public class TeleportCommand extends RunnableCommand {
@@ -37,7 +37,7 @@ public class TeleportCommand extends RunnableCommand {
                     info.out.println("Room not found.");
                 } else {
                     info.setCurrentRoom(result);
-                    info.out.println(info.getCurrentRoom().getDescription());
+                    info.out.println(info.getCurrentRoom().getName());
                 }
             }
         }

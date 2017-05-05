@@ -13,7 +13,7 @@ public class Initialize {
 
     public static void main(String[] args) {
         
-        RoomNode startingRoom = new RoomNode(0, "The Void: emptiness without space.");
+        RoomNode startingRoom = new RoomNode(0, "The Void", "Emptiness without space.");
         RoomManager roomManager = new RoomManager(startingRoom);
         
         boolean saved = SerializationHelper.saveRoomManager(roomManager);

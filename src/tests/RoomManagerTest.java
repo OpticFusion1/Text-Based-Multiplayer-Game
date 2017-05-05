@@ -15,8 +15,8 @@ public class RoomManagerTest {
     
     @Before
     public void setup() {
-        simpleRoom = new RoomNode(0, "The Void");
-        simpleRoom.setDown(new RoomNode(1, "The Sky"));
+        simpleRoom = new RoomNode(0, "The Void", null);
+        simpleRoom.setDown(new RoomNode(1, "The Sky", null));
         simpleRooms = new RoomManager(simpleRoom);
     }
 
@@ -28,7 +28,7 @@ public class RoomManagerTest {
 
     @Test
     public void trackRoom_NodeInGraph_IsTracked() {
-        simpleRoom.setUp(new RoomNode(2, "More Void"));
+        simpleRoom.setUp(new RoomNode(2, "More Void", null));
         simpleRooms.trackRoom(simpleRoom.getUp());
         
         assertEquals("Room manager should be able to track rooms that are connected to the graph!",
@@ -38,7 +38,7 @@ public class RoomManagerTest {
 
     @Test
     public void trackRoom_NodeInGraphButOverwrittingID_IsNotTracked() {
-        simpleRoom.setUp(new RoomNode(1, "More Void"));
+        simpleRoom.setUp(new RoomNode(1, "More Void", null));
         simpleRooms.trackRoom(simpleRoom.getUp());
         
         assertEquals("Room manager should not lose track of nodes with invalid IDs!",
@@ -47,11 +47,11 @@ public class RoomManagerTest {
 
     @Test
     public void addAllConnectedRooms_NewRoomsInEachDirection_AllNewRoomsAdded() {
-        simpleRoom.setUp(new RoomNode(2, "More Void"));
-        simpleRoom.setNorth(new RoomNode(3, "More Void"));
-        simpleRoom.setEast(new RoomNode(4, "More Void"));
-        simpleRoom.setSouth(new RoomNode(5, "More Void"));
-        simpleRoom.setWest(new RoomNode(6, "More Void"));
+        simpleRoom.setUp(new RoomNode(2, "More Void", null));
+        simpleRoom.setNorth(new RoomNode(3, "More Void", null));
+        simpleRoom.setEast(new RoomNode(4, "More Void", null));
+        simpleRoom.setSouth(new RoomNode(5, "More Void", null));
+        simpleRoom.setWest(new RoomNode(6, "More Void", null));
 
         simpleRooms.addAllConnectedRooms();
         assertEquals("Room manager didn't add all connected nodes!", simpleRooms.getRoom(2), simpleRoom.getUp());

@@ -15,9 +15,11 @@ public class LookCommand extends RunnableCommand {
 
     @Override
     public void runCommand(UserInformation info, String[] args) {
-        info.out.println(info.getCurrentRoom().getDescription());
+    	RoomNode r = info.getCurrentRoom();
+
+    	info.out.println(r.getName());
+        info.out.println(r.getDescription());
         
-        RoomNode r = info.getCurrentRoom();
         
         List<Item> itemsInTheRoom = r.getItems();
         

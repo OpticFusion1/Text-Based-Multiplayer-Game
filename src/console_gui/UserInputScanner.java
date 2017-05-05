@@ -21,6 +21,7 @@ import commands.NorthCommand;
 import commands.QuitCommand;
 import commands.RunnableCommand;
 import commands.SouthCommand;
+import commands.TeleportCommand;
 import commands.UnLinkCommand;
 import commands.UpCommand;
 import commands.WallOffCommand;

@@ -15,12 +15,26 @@ public class Item implements Serializable {
     /** The name of the item. */
     private String name;
 
+    /** The description of the item. */
+	private String description;
+
     /** 
      * Construct an item with the given name.
      * @param name the name of the new item.
      */
     public Item(String name) {
         this.setName(name);
+        this.description = "a very plain object";
+    }
+    
+    /** 
+     * Construct an item with the given name.
+     * @param name the name of the new item.
+     * @param description the description of the new item.
+     */
+    public Item(String name, String description) {
+        this.setName(name);
+        this.description = description;
     }
 
     /**
@@ -36,5 +50,19 @@ public class Item implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
     
 }

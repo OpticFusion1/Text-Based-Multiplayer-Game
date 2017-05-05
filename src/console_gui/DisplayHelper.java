@@ -17,7 +17,7 @@ public class DisplayHelper {
     
     private static void printAllRoomNodes(RoomNode node, TreeSet<RoomNode> seenNodes) {
         if (node != null && !seenNodes.contains(node)) {
-            System.out.println(node.getRoomID() + ": " + node.getDescription());
+            System.out.println(node.getRoomID() + ": " + node.getName());
             seenNodes.add(node);
             
             printAllRoomNodes(node.getUp());

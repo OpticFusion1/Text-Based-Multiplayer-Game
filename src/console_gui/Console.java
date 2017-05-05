@@ -37,7 +37,7 @@ public class Console {
             return;
         }
 
-        info.out.println(info.getCurrentRoom().getDescription());
+        info.out.println(info.getCurrentRoom().getName());
         
         while(mainLoop(info));
         

@@ -18,7 +18,7 @@ public class DownCommand extends RunnableCommand {
             info.out.println("You can't go that way.");
         } else {
             info.setCurrentRoom(potentialRoom);
-            info.out.println(info.getCurrentRoom().getDescription());
+            info.out.println(info.getCurrentRoom().getName());
         }
     }
 
