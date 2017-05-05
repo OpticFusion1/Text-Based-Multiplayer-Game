@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import commands.Command;
 import commands.QuitCommand;
 import model.RoomManager;
+import model.RoomNode;
 import model.SerializationHelper;
 import model.UserSave;
 
@@ -20,6 +21,9 @@ public class Console {
             System.err.println("Failed to Load System!");
             return;
         }
+        
+        rm.addAllConnectedRooms();
+        
         
         UserInputScanner input = new UserInputScanner(System.in);
         UserInformation info = new UserInformation(rm, System.out, input);
@@ -71,6 +75,12 @@ public class Console {
         } else {
             UserSave save = SerializationHelper.loadUser(username);
             info.setUsername(save.username);
+            
+            RoomNode room = info.rooms.getRoom(save.currentRoomID);
+            if (room != null) {
+                info.setCurrentRoom(room);
+            }
+            
             result = true;
         }
         

@@ -50,7 +50,7 @@ public class DestroyCommand extends RunnableCommand {
         }
         
         if (error) {
-            info.out.print("Usage, \"destroy apple\"");
+            info.out.print("Usage, \"destroy <name>\"");
         }
     }
 

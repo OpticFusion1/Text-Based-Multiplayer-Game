@@ -25,17 +25,18 @@ public class DigCommand extends RunnableCommand {
                 description.append(args[i]);
                 description.append(' ');
             }
-
+            
+            RoomNode room = null;
+            
             switch (args[1].toUpperCase()) {
             case "D":
             case "DOWN":
                 if (info.getCurrentRoom().getDown() != null) {
                     info.out.println("There is already a room there!");
                 } else {
-                    RoomNode r = new RoomNode(info.rooms.getUniqueRoomID(), description.toString());
-                    info.getCurrentRoom().setDown(r);
-                    r.setUp(info.getCurrentRoom());
-                    info.out.println("Created Room!");
+                    room = new RoomNode(info.rooms.getUniqueRoomID(), description.toString());
+                    info.getCurrentRoom().setDown(room);
+                    room.setUp(info.getCurrentRoom());
                 }
                 break;
 
@@ -44,10 +45,9 @@ public class DigCommand extends RunnableCommand {
                 if (info.getCurrentRoom().getUp() != null) {
                     info.out.println("There is already a room there!");
                 } else {
-                    RoomNode r = new RoomNode(info.rooms.getUniqueRoomID(), description.toString());
-                    info.getCurrentRoom().setUp(r);
-                    r.setDown(info.getCurrentRoom());  
-                    info.out.println("Created Room!");                
+                    room = new RoomNode(info.rooms.getUniqueRoomID(), description.toString());
+                    info.getCurrentRoom().setUp(room);
+                    room.setDown(info.getCurrentRoom());           
                 }
                 break;
 
@@ -56,10 +56,9 @@ public class DigCommand extends RunnableCommand {
                 if (info.getCurrentRoom().getNorth() != null) {
                     info.out.println("There is already a room there!");
                 } else {
-                    RoomNode r = new RoomNode(info.rooms.getUniqueRoomID(), description.toString());
-                    info.getCurrentRoom().setNorth(r);
-                    r.setSouth(info.getCurrentRoom());      
-                    info.out.println("Created Room!");              
+                    room = new RoomNode(info.rooms.getUniqueRoomID(), description.toString());
+                    info.getCurrentRoom().setNorth(room);
+                    room.setSouth(info.getCurrentRoom());             
                 }
                 break;
 
@@ -68,10 +67,9 @@ public class DigCommand extends RunnableCommand {
                 if (info.getCurrentRoom().getEast() != null) {
                     info.out.println("There is already a room there!");
                 } else {
-                    RoomNode r = new RoomNode(info.rooms.getUniqueRoomID(), description.toString());
-                    info.getCurrentRoom().setEast(r);
-                    r.setWest(info.getCurrentRoom());              
-                    info.out.println("Created Room!");      
+                    room = new RoomNode(info.rooms.getUniqueRoomID(), description.toString());
+                    info.getCurrentRoom().setEast(room);
+                    room.setWest(info.getCurrentRoom());      
                 }
                 break;
 
@@ -80,10 +78,9 @@ public class DigCommand extends RunnableCommand {
                 if (info.getCurrentRoom().getSouth() != null) {
                     info.out.println("There is already a room there!");
                 } else {
-                    RoomNode r = new RoomNode(info.rooms.getUniqueRoomID(), description.toString());
-                    info.getCurrentRoom().setSouth(r);
-                    r.setNorth(info.getCurrentRoom());        
-                    info.out.println("Created Room!");            
+                    room = new RoomNode(info.rooms.getUniqueRoomID(), description.toString());
+                    info.getCurrentRoom().setSouth(room);
+                    room.setNorth(info.getCurrentRoom());             
                 }
                 break;
 
@@ -92,10 +89,9 @@ public class DigCommand extends RunnableCommand {
                 if (info.getCurrentRoom().getWest() != null) {
                     info.out.println("There is already a room there!");
                 } else {
-                    RoomNode r = new RoomNode(info.rooms.getUniqueRoomID(), description.toString());
-                    info.getCurrentRoom().setWest(r);
-                    r.setEast(info.getCurrentRoom());         
-                    info.out.println("Created Room!");      
+                    room = new RoomNode(info.rooms.getUniqueRoomID(), description.toString());
+                    info.getCurrentRoom().setWest(room);
+                    room.setEast(info.getCurrentRoom());        
                 }
                 break;
                 
@@ -104,10 +100,15 @@ public class DigCommand extends RunnableCommand {
                 error = true;
             }
             
+            if (room != null) {
+                info.rooms.trackRoom(room);
+                info.out.println("Created Room!");
+            }
+            
         }
         
         if (error) {
-            info.out.print("Usage: \"dig up A Vast Sky: a wonderful view of the forest below.\"\n");
+            info.out.print("Usage: \"dig <direction> <name>\"\n");
         }
     }
 

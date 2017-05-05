@@ -35,7 +35,7 @@ public class CreateCommand extends RunnableCommand {
         }
         
         if (error) {
-            info.out.print("Usage, \"create apple\"");
+            info.out.print("Usage, \"create <name>\"");
         }
     }
 

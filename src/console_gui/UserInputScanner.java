@@ -51,7 +51,8 @@ public class UserInputScanner {
             new UnLinkCommand(),
             new ExamineCommand(),
             new CreateCommand(),
-            new DestroyCommand()
+            new DestroyCommand(),
+            new TeleportCommand()
     };
     
     /** Commands that have been queued up by the user. */
