@@ -16,8 +16,10 @@ public class RoomManager implements Serializable {
     /** Generated SVUID */
     private static final long serialVersionUID = -8083744640096022029L;
     
+    /** The initial room in the graph, any room not connected to this one isn't part of the graph. */
     private RoomNode startingRoom;
     
+    /** The next Unique ID to use. */
     private int nextRoomID;
     
     /**

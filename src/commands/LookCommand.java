@@ -1,6 +1,9 @@
 package commands;
 
-import console_gui.CurrentInformation;
+import java.util.List;
+
+import console_gui.UserInformation;
+import model.Item;
 import model.RoomNode;
 
 public class LookCommand extends RunnableCommand {
@@ -11,10 +14,22 @@ public class LookCommand extends RunnableCommand {
     }
 
     @Override
-    public void runCommand(CurrentInformation info, String[] args) {
+    public void runCommand(UserInformation info, String[] args) {
         info.out.println(info.getCurrentRoom().getDescription());
         
         RoomNode r = info.getCurrentRoom();
+        
+        List<Item> itemsInTheRoom = r.getItems();
+        
+        if (!itemsInTheRoom.isEmpty()) {
+            info.out.println("You can see:");
+            
+            for (Item i : itemsInTheRoom) {
+                info.out.print('\t');
+                info.out.print(i.getName());
+                info.out.print('\n');
+            }            
+        }
         
         info.out.print("Possible Directions: ");
 

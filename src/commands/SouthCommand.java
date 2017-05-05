@@ -1,6 +1,6 @@
 package commands;
 
-import console_gui.CurrentInformation;
+import console_gui.UserInformation;
 import model.RoomNode;
 
 public class SouthCommand extends RunnableCommand {
@@ -11,7 +11,7 @@ public class SouthCommand extends RunnableCommand {
     }
 
     @Override
-    public void runCommand(CurrentInformation info, String[] args) {
+    public void runCommand(UserInformation info, String[] args) {
         RoomNode potentialRoom = info.getCurrentRoom().getSouth();
         
         if (potentialRoom == null) {

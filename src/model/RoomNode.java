@@ -1,6 +1,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A room object that represents a room in a graph of interconnected nodes.
@@ -16,6 +19,9 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
     
     /** Generated SVUID */
     private static final long serialVersionUID = 4749342966413694748L;
+    
+    /** Items in this RoomNode. */
+    private List<Item> items;
     
     /** Adjacent RoomNodes. */
     private RoomNode up, down, north, south, east, west;
@@ -42,6 +48,8 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
         
         this.description = description;
         this.roomID = roomID;
+        
+        this.items = new LinkedList<Item>();
     }
     
     /**
@@ -173,5 +181,31 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
     @Override
     public int compareTo(RoomNode other) {
         return this.roomID - other.roomID;
+    }
+
+    /**
+     * @return the items in this room.
+     */
+    public List<Item> getItems() {
+        if (items == null) {
+            items = new LinkedList<Item>();
+        }
+        
+        return new ArrayList<Item>(items);
+    }
+
+    /**
+     * @param item the items to add to the room.
+     */
+    public void addItem(Item item) {
+        this.items.add(item);
+    }
+
+    /**
+     * @param item the items to remove.
+     * @return if the item was removed.
+     */
+    public boolean removeItem(Item item) {
+        return this.items.remove(item);
     }
 }

@@ -1,6 +1,6 @@
 package commands;
 
-import console_gui.CurrentInformation;
+import console_gui.UserInformation;
 
 public class CommandNotFoundCommand extends RunnableCommand {
 
@@ -12,7 +12,7 @@ public class CommandNotFoundCommand extends RunnableCommand {
     }
 
     @Override
-    public void runCommand(CurrentInformation info, String[] args) {
+    public void runCommand(UserInformation info, String[] args) {
         info.out.print("Command not found (" + args.length + "): ");
         
         for (int i = 0; i < args.length; i++) {

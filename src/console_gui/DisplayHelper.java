@@ -4,6 +4,11 @@ import java.util.TreeSet;
 
 import model.RoomNode;
 
+/**
+ * Some test code that could end up being useful later on.
+ * 
+ * @author Zachary Chandler
+ */
 public class DisplayHelper {
     
     public static void printAllRoomNodes(RoomNode node) {

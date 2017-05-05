@@ -1,7 +1,6 @@
 package console_gui;
 
 import java.io.PrintStream;
-import java.io.Serializable;
 
 import model.RoomManager;
 import model.RoomNode;
@@ -15,18 +14,23 @@ import model.RoomNode;
  *      
  * @author Zachary Chandler
  */
-public class CurrentInformation implements Serializable {
+public class UserInformation {
     
-    /** Generated SVUID. */
-    private static final long serialVersionUID = -3765710897647543132L;
-
     /** The current room of the user. */
     private RoomNode currentRoom;
     
+    /** The user name of the user. */
+    private String username;
+
     /** The rooms the user will traverse. */
     public final RoomManager rooms;
 
-    transient public PrintStream out;
+    /** A PrintStream to the user. */
+    public final PrintStream out;
+    
+    /** A way to get input from the user. */
+    public final UserInputScanner input;
+    
     
     /**
      * Instantiate the current information on a given graph of rooms.
@@ -35,13 +39,16 @@ public class CurrentInformation implements Serializable {
      *      rooms must not be null.
      *      
      * @param rooms the room graph we will have information on.
+     * @param out an output stream to the user.
+     * @param input a way to get input from the user.
      */
-    public CurrentInformation(RoomManager rooms, PrintStream out) {
+    public UserInformation(RoomManager rooms, PrintStream out, UserInputScanner input) {
         if (rooms == null) {
             throw new NullPointerException("Cannot use null RoomManager in CurrentInformation instantiation!");
         }
         
         this.out = out;
+        this.input = input;
         this.rooms = rooms;
         currentRoom = rooms.getStartingRoom();
     }
@@ -52,6 +59,7 @@ public class CurrentInformation implements Serializable {
     public RoomNode getCurrentRoom() {
         return currentRoom;
     }
+    
     /**
      * @param currentRoom the currentRoom to set
      */
@@ -60,5 +68,19 @@ public class CurrentInformation implements Serializable {
             this.currentRoom = currentRoom;            
         }
         
+    }
+
+    /**
+     * @return the user name
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @param username the user name to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

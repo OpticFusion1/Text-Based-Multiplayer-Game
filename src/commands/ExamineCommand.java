@@ -1,6 +1,6 @@
 package commands;
 
-import console_gui.CurrentInformation;
+import console_gui.UserInformation;
 
 public class ExamineCommand extends RunnableCommand {
 
@@ -10,7 +10,7 @@ public class ExamineCommand extends RunnableCommand {
     }
 
     @Override
-    public void runCommand(CurrentInformation info, String[] args) {
+    public void runCommand(UserInformation info, String[] args) {
         if (args.length < 1) {
             throw new ArrayIndexOutOfBoundsException("Args should have atleast 1 argument.");
         } else if (args.length == 1) {

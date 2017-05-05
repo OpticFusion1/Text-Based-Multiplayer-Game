@@ -1,6 +1,6 @@
 package commands;
 
-import console_gui.CurrentInformation;
+import console_gui.UserInformation;
 
 public class EscapeCurrentLocationCommand extends RunnableCommand {
 
@@ -10,7 +10,7 @@ public class EscapeCurrentLocationCommand extends RunnableCommand {
     }
 
     @Override
-    public void runCommand(CurrentInformation info, String[] args) {
+    public void runCommand(UserInformation info, String[] args) {
         info.setCurrentRoom(info.rooms.getStartingRoom());
         info.out.println(info.getCurrentRoom().getDescription());
     }

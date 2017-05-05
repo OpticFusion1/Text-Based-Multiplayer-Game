@@ -4,18 +4,24 @@ import model.RoomManager;
 import model.RoomNode;
 import model.SerializationHelper;
 
+/**
+ * Initializes a simple save file of the room manager.
+ * 
+ * @author Zachary Chandler
+ */
 public class Initialize {
 
     public static void main(String[] args) {
         
         RoomNode startingRoom = new RoomNode(0, "The Void: emptiness without space.");
         RoomManager roomManager = new RoomManager(startingRoom);
-        CurrentInformation info = new CurrentInformation(roomManager, System.out);
         
-        boolean saved = SerializationHelper.saveObject(info, SerializationHelper.QUICK_SAVE_LOCATION.toString());
+        boolean saved = SerializationHelper.saveRoomManager(roomManager);
         
-        if (saved) {            
+        if (saved) {
             System.out.println("Sucessfully Initialized a Save File!");
+        } else {
+            System.err.println("Failed to Initialize a Save File!");
         }
     }
 
