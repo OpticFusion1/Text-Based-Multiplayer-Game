@@ -1,12 +1,18 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * A class to contain all the information required to save the state of the user.
  * 
  * 
  * @author Zachary Chandler
  */
-public class UserSave {
+public class UserSave implements Serializable {
+    
+    /** Generated SVUID. */
+    private static final long serialVersionUID = -2130515270184748942L;
+
     /** The user name of the user. */
     public final String username;
 
