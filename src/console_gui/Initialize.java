@@ -11,6 +11,9 @@ import model.SerializationHelper;
  */
 public class Initialize {
 
+    /* TODO
+     * add quote parsing to command parser
+     */
     public static void main(String[] args) {
         
         RoomNode startingRoom = new RoomNode(0, "The Void", "Emptiness without space.");

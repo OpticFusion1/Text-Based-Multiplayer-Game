@@ -55,6 +55,10 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
         this.items = new LinkedList<Item>();
     }
     
+    public RoomNode(int uniqueRoomID, String name) {
+        this(uniqueRoomID, name, "A very bland room.");
+    }
+
     /**
      * @return the roomID
      */
@@ -225,4 +229,78 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	/**
+	 * Set the given direction with with the given room.
+	 * 
+	 * If the theDirection is null, no direction is set.
+	 * 
+	 * @param theDirection the direction to set.
+	 * @param room the room to put in the given direction.
+	 */
+	public void setDirection(Direction theDirection, RoomNode room) {
+	    switch (theDirection) {
+        case DOWN:
+            this.setDown(room);
+            break;
+
+        case UP:
+           this.setUp(room);
+           break;
+
+        case NORTH:
+           this.setNorth(room);
+           break;
+
+        case SOUTH:
+           this.setSouth(room);
+           break;
+
+        case EAST:
+           this.setEast(room);
+           break;
+
+        case WEST:
+           this.setWest(room);
+           break;
+	    }
+	}
+	
+	/**
+	 * Get the RoomNode in the given direction.
+	 * @param theDirection the direction to get.
+	 * @return the room in theDirection given.
+	 */
+	public RoomNode getDirection(Direction theDirection) {
+	    RoomNode result = null;
+	    
+	    switch (theDirection) {
+        case DOWN:
+            result = this.getDown();
+            break;
+
+        case UP:
+            result = this.getUp();
+           break;
+
+        case NORTH:
+            result = this.getNorth();
+           break;
+
+        case SOUTH:
+            result = this.getSouth();
+           break;
+
+        case EAST:
+            result = this.getEast();
+           break;
+
+        case WEST:
+            result = this.getWest();
+           break;
+        }
+	    
+	    return result;
+	}
+	
 }

@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import commands.Command;
 import commands.CommandNotFoundCommand;
@@ -16,10 +18,12 @@ import commands.DownCommand;
 import commands.EastCommand;
 import commands.EscapeCurrentLocationCommand;
 import commands.ExamineCommand;
+import commands.LinkCommand;
 import commands.LookCommand;
 import commands.NorthCommand;
 import commands.QuitCommand;
 import commands.RunnableCommand;
+import commands.SetRoomDescriptionCommand;
 import commands.SouthCommand;
 import commands.TeleportCommand;
 import commands.UnLinkCommand;
@@ -53,8 +57,13 @@ public class UserInputScanner {
             new ExamineCommand(),
             new CreateCommand(),
             new DestroyCommand(),
-            new TeleportCommand()
+            new TeleportCommand(),
+            new SetRoomDescriptionCommand(),
+            new LinkCommand()
     };
+    
+    /** Text that will not be broken up by. */
+    private static final Pattern TOKEN_TEXT = Pattern.compile("\"[^\".]*\"|<[^>^<.]*>|[^\\s^\"^<^>.]+");
     
     /** Commands that have been queued up by the user. */
     private Queue<Command> commands;
@@ -131,8 +140,8 @@ public class UserInputScanner {
      */
     public Command translateCommmand(String s) {
         Command result = null;
-
-        String[] args = s.split("\\s+");
+        
+        String[] args = getCommandArguments(s);
         
         if (args.length > 0) {
             RunnableCommand runner = commandMap.get(args[0].toUpperCase());
@@ -145,5 +154,40 @@ public class UserInputScanner {
         }
         
         return result;
+    }
+    
+    /**
+     * Get the arguments of the command.
+     * @param s the raw command.
+     * @return the arguments.
+     */
+    public static String[] getCommandArguments(String s) {
+        Matcher m = TOKEN_TEXT.matcher(s);
+        LinkedList<String> tokens = new LinkedList<>();
+        
+        while(m.find()) {
+            String match = m.group();
+            
+            match = cleanPreserveCharacters(match);
+            
+            tokens.add(match);
+        }
+        
+        return tokens.toArray(new String[0]);
+    }
+    
+    /**
+     * Cleans of extra characters that were used to preserve the characters inside them.
+     * 
+     * @param match that match to clean off
+     * @return a new string without the extra characters at either end.
+     */
+    public static String cleanPreserveCharacters(String match) {
+        if ((match.startsWith("\"") && match.endsWith("\"") && match.length() > 1) ||
+            (match.startsWith("<") && match.endsWith(">"))) {
+            match = match.substring(1, match.length() - 1);
+        }
+        
+        return match;
     }
 }

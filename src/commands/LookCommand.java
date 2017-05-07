@@ -3,6 +3,7 @@ package commands;
 import java.util.List;
 
 import console_gui.UserInformation;
+import model.Direction;
 import model.Item;
 import model.RoomNode;
 
@@ -35,28 +36,10 @@ public class LookCommand extends RunnableCommand {
         
         info.out.print("Possible Directions: ");
 
-        if (r.getUp() != null) {
-            info.out.print("up ");
-        }
-
-        if (r.getDown() != null) {
-            info.out.print("down ");
-        }
-
-        if (r.getNorth() != null) {
-            info.out.print("north ");
-        }
-
-        if (r.getEast() != null) {
-            info.out.print("east ");
-        }
-
-        if (r.getSouth() != null) {
-            info.out.print("south ");
-        }
-        
-        if (r.getWest() != null) {
-            info.out.print("west ");
+        for (Direction d : Direction.values()) {
+            if (r.getDirection(d) != null) {
+                info.out.printf("%s ", d.toString());
+            }
         }
         
         info.out.print('\n');

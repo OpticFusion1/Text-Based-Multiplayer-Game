@@ -28,5 +28,17 @@ public class DisplayHelper {
             printAllRoomNodes(node.getSouth());
         }
     }
+    
+    public static Integer safeParseInt(String stringInt) {
+        Integer choice;
+        
+        try {
+            choice = Integer.parseInt(stringInt);
+        } catch (NumberFormatException e) {
+            choice = null;
+        }
+        
+        return choice;
+    }
 
 }

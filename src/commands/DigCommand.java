@@ -1,6 +1,7 @@
 package commands;
 
 import console_gui.UserInformation;
+import model.Direction;
 import model.RoomNode;
 
 public class DigCommand extends RunnableCommand {
@@ -26,85 +27,27 @@ public class DigCommand extends RunnableCommand {
                 name.append(' ');
             }
             
-            RoomNode room = null;
+            Direction directionToDig = Direction.translateDirection(args[1]);
+            Direction oppositeDirection = Direction.getOppositeDirection(directionToDig);
             
-            switch (args[1].toUpperCase()) {
-            case "D":
-            case "DOWN":
-                if (info.getCurrentRoom().getDown() != null) {
-                    info.out.println("There is already a room there!");
-                } else {
-                    room = new RoomNode(info.rooms.getUniqueRoomID(), name.toString(), "<no description yet");
-                    info.getCurrentRoom().setDown(room);
-                    room.setUp(info.getCurrentRoom());
-                }
-                break;
-
-            case "U":
-            case "UP":
-                if (info.getCurrentRoom().getUp() != null) {
-                    info.out.println("There is already a room there!");
-                } else {
-                    room = new RoomNode(info.rooms.getUniqueRoomID(), name.toString(), "<no description yet");
-                    info.getCurrentRoom().setUp(room);
-                    room.setDown(info.getCurrentRoom());           
-                }
-                break;
-
-            case "N":
-            case "NORTH":
-                if (info.getCurrentRoom().getNorth() != null) {
-                    info.out.println("There is already a room there!");
-                } else {
-                    room = new RoomNode(info.rooms.getUniqueRoomID(), name.toString(), "<no description yet");
-                    info.getCurrentRoom().setNorth(room);
-                    room.setSouth(info.getCurrentRoom());             
-                }
-                break;
-
-            case "E":
-            case "EAST":
-                if (info.getCurrentRoom().getEast() != null) {
-                    info.out.println("There is already a room there!");
-                } else {
-                    room = new RoomNode(info.rooms.getUniqueRoomID(), name.toString(), "<no description yet");
-                    info.getCurrentRoom().setEast(room);
-                    room.setWest(info.getCurrentRoom());      
-                }
-                break;
-
-            case "S":
-            case "SOUTH":
-                if (info.getCurrentRoom().getSouth() != null) {
-                    info.out.println("There is already a room there!");
-                } else {
-                    room = new RoomNode(info.rooms.getUniqueRoomID(), name.toString(), "<no description yet");
-                    info.getCurrentRoom().setSouth(room);
-                    room.setNorth(info.getCurrentRoom());             
-                }
-                break;
-
-            case "W":
-            case "WEST":
-                if (info.getCurrentRoom().getWest() != null) {
-                    info.out.println("There is already a room there!");
-                } else {
-                    room = new RoomNode(info.rooms.getUniqueRoomID(), name.toString(), "<no description yet");
-                    info.getCurrentRoom().setWest(room);
-                    room.setEast(info.getCurrentRoom());        
-                }
-                break;
-                
-            default:
+            if (directionToDig == null) {
                 info.out.print("Direction not found, ");
                 error = true;
+            } else {
+                RoomNode room = info.getCurrentRoom().getDirection(directionToDig);
+                
+                if (room != null) {
+                    info.out.println("There is already a room there!");
+                } else {
+                    RoomNode newRoom = new RoomNode(info.rooms.getUniqueRoomID(), name.toString());
+                    
+                    info.getCurrentRoom().setDirection(directionToDig, newRoom);
+                    newRoom.setDirection(oppositeDirection, info.getCurrentRoom());
+
+                    info.rooms.trackRoom(newRoom);
+                    info.out.println("Created Room!");
+                }
             }
-            
-            if (room != null) {
-                info.rooms.trackRoom(room);
-                info.out.println("Created Room!");
-            }
-            
         }
         
         if (error) {
