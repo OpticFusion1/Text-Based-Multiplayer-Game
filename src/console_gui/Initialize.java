@@ -12,7 +12,10 @@ import model.SerializationHelper;
 public class Initialize {
 
     /* TODO
-     * add quote parsing to command parser
+     * Refactoring
+     *  - room travel should display description
+     * add descriptions to objects
+     * 
      */
     public static void main(String[] args) {
         

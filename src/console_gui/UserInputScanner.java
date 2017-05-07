@@ -16,6 +16,7 @@ import commands.DestroyCommand;
 import commands.DigCommand;
 import commands.DownCommand;
 import commands.EastCommand;
+import commands.EmptyCommand;
 import commands.EscapeCurrentLocationCommand;
 import commands.ExamineCommand;
 import commands.LinkCommand;
@@ -139,7 +140,7 @@ public class UserInputScanner {
      * @return the resulting command.
      */
     public Command translateCommmand(String s) {
-        Command result = null;
+        Command result;
         
         String[] args = getCommandArguments(s);
         
@@ -151,6 +152,8 @@ public class UserInputScanner {
             }
             
             result = new Command(args, runner);
+        } else {
+            result = new Command(args, new EmptyCommand());
         }
         
         return result;
