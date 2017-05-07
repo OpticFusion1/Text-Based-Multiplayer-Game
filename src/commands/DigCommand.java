@@ -6,6 +6,8 @@ import model.RoomNode;
 
 public class DigCommand extends RunnableCommand {
 
+    public static final String DEFUALT_DESCRIPTION = "a very bland room";
+    
     @Override
     public String[] getAliases() {
         return new String[] {"DIG"} ;
@@ -17,15 +19,13 @@ public class DigCommand extends RunnableCommand {
         
         if (args.length < 3) {
             info.out.print("Not enough arguments, ");
-            
+            error = true;
+        } else if (args.length > 4) {
+            info.out.print("Too many arguments, ");
             error = true;
         } else {
-            StringBuilder name = new StringBuilder();
-            
-            for (int i = 2; i < args.length; i++) {
-                name.append(args[i]);
-                name.append(' ');
-            }
+            String name = args[2];
+            String description = (args.length == 4) ? args[3] : DEFUALT_DESCRIPTION;
             
             Direction directionToDig = Direction.translateDirection(args[1]);
             Direction oppositeDirection = Direction.getOppositeDirection(directionToDig);
@@ -39,7 +39,7 @@ public class DigCommand extends RunnableCommand {
                 if (room != null) {
                     info.out.println("There is already a room there!");
                 } else {
-                    RoomNode newRoom = new RoomNode(info.rooms.getUniqueRoomID(), name.toString());
+                    RoomNode newRoom = new RoomNode(info.rooms.getUniqueRoomID(), name, description);
                     
                     info.getCurrentRoom().setDirection(directionToDig, newRoom);
                     newRoom.setDirection(oppositeDirection, info.getCurrentRoom());

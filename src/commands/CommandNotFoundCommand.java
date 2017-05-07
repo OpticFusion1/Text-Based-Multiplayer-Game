@@ -20,7 +20,7 @@ public class CommandNotFoundCommand extends RunnableCommand {
             
             for (int i = 0; i < args.length; i++) {
                 info.out.print(args[i]);
-                info.out.print(" ");
+                info.out.print("|");
             }
             
             info.out.println();    

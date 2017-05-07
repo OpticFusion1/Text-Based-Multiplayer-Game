@@ -20,7 +20,6 @@ public class DestroyCommand extends RunnableCommand {
             error = true;
         } else {
             String potentialName = Helper.mergeStrings(args, 1, args.length - 1);
-            
             Item toDestroy = info.getCurrentRoom().findItem(potentialName);
             
             if (toDestroy == null) {

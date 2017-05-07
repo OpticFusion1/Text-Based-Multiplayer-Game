@@ -15,20 +15,20 @@ import commands.DestroyCommand;
 import commands.DigCommand;
 import commands.DownCommand;
 import commands.EastCommand;
-import commands.EmptyCommand;
 import commands.EscapeCurrentLocationCommand;
 import commands.ExamineCommand;
+import commands.InspectCommand;
 import commands.ConnectCommand;
 import commands.LookCommand;
 import commands.NorthCommand;
 import commands.QuitCommand;
 import commands.RunnableCommand;
-import commands.SetRoomDescriptionCommand;
 import commands.SouthCommand;
 import commands.TeleportCommand;
 import commands.UnLinkCommand;
 import commands.UpCommand;
 import commands.SeparateCommand;
+import commands.SetCommand;
 import commands.WestCommand;
 
 /**
@@ -41,10 +41,8 @@ public class UserInputScanner {
     
     /**
      * The commands this scanner recognizes. 
-     * EmptyCommand must be at spot 0
      */
     private static final RunnableCommand[] COMMANDS = {
-            new EmptyCommand(),
             new CommandNotFoundCommand(),
             new QuitCommand(),
             new DownCommand(),
@@ -62,12 +60,13 @@ public class UserInputScanner {
             new CreateCommand(),
             new DestroyCommand(),
             new TeleportCommand(),
-            new SetRoomDescriptionCommand(),
-            new ConnectCommand()
+            new ConnectCommand(),
+            new InspectCommand(),
+            new SetCommand()
     };
     
     /** Text that will not be broken up by. */
-    private static final Pattern TOKEN_TEXT = Pattern.compile("\"[^\".]*\"|<[^>^<.]*>|[^\\s^\"^<^>.]+");
+    private static final Pattern TOKEN_TEXT = Pattern.compile("\"[^\"]*\"|<[^>^<]*>|[^\\s^\"^<^>]+");
     
     /** Commands that have been queued up by the user. */
     private LinkedList<Command> commands;
@@ -171,7 +170,7 @@ public class UserInputScanner {
             
             result = new Command(args, runner);
         } else {
-            result = new Command(args, COMMANDS[0]);
+            result = new Command(args, commandMap.get(CommandNotFoundCommand.LOOK_UP_STRING));
         }
         
         return result;
@@ -188,9 +187,7 @@ public class UserInputScanner {
         
         while(m.find()) {
             String match = m.group();
-            
             match = cleanPreserveCharacters(match);
-            
             tokens.add(match);
         }
         
