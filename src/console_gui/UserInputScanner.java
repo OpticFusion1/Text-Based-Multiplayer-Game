@@ -3,7 +3,6 @@ package console_gui;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -40,8 +39,12 @@ import commands.WestCommand;
  */
 public class UserInputScanner {
     
-    /** The commands this scanner recognizes. */
+    /**
+     * The commands this scanner recognizes. 
+     * EmptyCommand must be at spot 0
+     */
     private static final RunnableCommand[] COMMANDS = {
+            new EmptyCommand(),
             new CommandNotFoundCommand(),
             new QuitCommand(),
             new DownCommand(),
@@ -67,7 +70,7 @@ public class UserInputScanner {
     private static final Pattern TOKEN_TEXT = Pattern.compile("\"[^\".]*\"|<[^>^<.]*>|[^\\s^\"^<^>.]+");
     
     /** Commands that have been queued up by the user. */
-    private Queue<Command> commands;
+    private LinkedList<Command> commands;
     
     /** A map of aliases to commands for fast lookup time. */
     private Map<String, RunnableCommand> commandMap;
@@ -112,6 +115,21 @@ public class UserInputScanner {
     }
     
     /**
+     * Inserts the given command to be run next.
+     * Subsequent calls will always run next.
+     * NextCommand cannot be null.
+     * 
+     * @param nextCommand the command to run.
+     * @throws NullPointerException if nextCommand is null.
+     */
+    public void insertNextCommand(Command nextCommand) {
+        if (nextCommand == null) {
+            throw new NullPointerException("Cannot add null as next command in UserInputScanner!");
+        }
+        commands.addFirst(nextCommand);
+    }
+    
+    /**
      * @return the next command from the user.
      */
     public Command getNextCommand() {
@@ -153,7 +171,7 @@ public class UserInputScanner {
             
             result = new Command(args, runner);
         } else {
-            result = new Command(args, new EmptyCommand());
+            result = new Command(args, COMMANDS[0]);
         }
         
         return result;
