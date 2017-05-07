@@ -22,7 +22,7 @@ public class ExamineCommand extends RunnableCommand {
             if (toDescribe == null) {
                 info.out.printf("Could not find the item: %s\n", potentialName);
             } else {
-                info.out.printf("%s:\n%s\n", toDescribe.getName(), toDescribe.getDescription());                
+                info.out.printf("%s\n     %s\n", toDescribe.getName(), toDescribe.getDescription());                
             }
         }
     }

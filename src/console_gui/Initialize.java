@@ -12,7 +12,8 @@ import model.SerializationHelper;
 public class Initialize {
 
     /* TODO
-     * set name alias identifier
+     * item aliases
+     * help command
      */
     public static void main(String[] args) {
         RoomNode startingRoom = new RoomNode(0, "The Void", "Emptiness without space.");

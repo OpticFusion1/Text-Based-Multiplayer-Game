@@ -2,7 +2,6 @@ package commands;
 
 import console_gui.Helper;
 import console_gui.UserInformation;
-import model.Item;
 
 public class SetCommand extends RunnableCommand {
 
@@ -38,46 +37,16 @@ public class SetCommand extends RunnableCommand {
                     break;
                     
                 default:
-                    Item i = info.getCurrentRoom().findItem(args[1]);
-                    
-                    if (i == null) {
-                        info.out.printf("Could not find item %s, ", args[1]);
-                        error = true;
-                    } else {
-                        setItem(info, i, fieldToSet, value);
-                    }
+                    info.out.printf("Cannot set %s\n", args[1]);
                 }
             }
         }
         
         if (error) {
-            info.out.print("Usage \"set <room|item-name> <name|description> <value>\"\n");
+            info.out.print("Usage \"set <room> <name|description> <value>\"\n");
         }
     }
     
-    private void setItem(UserInformation info, Item item, Field fieldToSet, String value) {
-        boolean result = true;
-        
-        switch (fieldToSet) {
-        case NAME:
-            item.setName(value);
-            break;
-        
-        case DESCRIPTION:
-            item.setDescription(value);
-            break;
-            
-        default:
-            result = false;
-        }
-        
-        if (result) {
-            info.out.printf("Set %s of %s\n", fieldToSet.toString(), item.getName());
-        } else {
-            info.out.printf("Could not set %s of %s\n", fieldToSet.toString(), item.getName());
-        }
-    }
-
     public void setRoom(UserInformation info, Field fieldToSet, String value) {
         boolean result = true;
         
@@ -106,5 +75,3 @@ public class SetCommand extends RunnableCommand {
     }
 
 }
-
-

@@ -10,14 +10,13 @@ import java.util.regex.Pattern;
 
 import commands.Command;
 import commands.CommandNotFoundCommand;
-import commands.CreateCommand;
-import commands.DestroyCommand;
 import commands.DigCommand;
 import commands.DownCommand;
 import commands.EastCommand;
 import commands.EscapeCurrentLocationCommand;
 import commands.ExamineCommand;
 import commands.InspectCommand;
+import commands.ItemCommand;
 import commands.ConnectCommand;
 import commands.LookCommand;
 import commands.NorthCommand;
@@ -57,12 +56,11 @@ public class UserInputScanner {
             new EscapeCurrentLocationCommand(),
             new UnLinkCommand(),
             new ExamineCommand(),
-            new CreateCommand(),
-            new DestroyCommand(),
             new TeleportCommand(),
             new ConnectCommand(),
             new InspectCommand(),
-            new SetCommand()
+            new SetCommand(),
+            new ItemCommand()
     };
     
     /** Text that will not be broken up by. */
