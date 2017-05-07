@@ -12,10 +12,13 @@ import model.SerializationHelper;
 public class Initialize {
 
     /* TODO
-     * 
-     * Refactoring
-     * add descriptions to objects
-     * 
+     * dig <DIRECTION> <NAME> <DESCRIPTION>
+     * set room name
+     * set object name
+     * set object description
+     * examine objects
+     * save
+     * saveas
      */
     public static void main(String[] args) {
         RoomNode startingRoom = new RoomNode(0, "The Void", "Emptiness without space.");

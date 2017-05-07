@@ -5,16 +5,16 @@ import console_gui.UserInformation;
 import model.Direction;
 import model.RoomNode;
 
-public class LinkCommand extends RunnableCommand {
+public class ConnectCommand extends RunnableCommand {
 
     @Override
     public String[] getAliases() {
-        return new String[] {"LINK"};
+        return new String[] {"CONNECT"};
     }
 
     @Override
     public void runCommand(UserInformation info, String[] args) {
-boolean error = false;
+        boolean error = false;
         
         if (args.length < 3) {
             info.out.print("Not enough arguments, ");
@@ -24,6 +24,8 @@ boolean error = false;
             error = true;
         } else {
             Direction direction = Direction.translateDirection(args[1]);
+            Direction oppositeDirection = Direction.getOppositeDirection(direction);
+            
             Integer choice = Helper.safeParseInt(args[2]);
             
             if (direction == null) {
@@ -44,12 +46,17 @@ boolean error = false;
                     error = true;
                 } else {
                     info.getCurrentRoom().setDirection(direction, room);
+                    
+                    if (room.getDirection(oppositeDirection) == null) {
+                        room.setDirection(oppositeDirection, info.getCurrentRoom());
+                    }
+                    info.out.printf("Connected %s to %s\n", info.getCurrentRoom().getName(), room.getName());
                 }
             }
         }
         
         if (error) {
-            info.out.print("Usage: \"link <DIRECTION> <RoomID>\"\n");
+            info.out.print("Usage: \"connect <DIRECTION> <RoomID>\"\n");
         }
     }
 

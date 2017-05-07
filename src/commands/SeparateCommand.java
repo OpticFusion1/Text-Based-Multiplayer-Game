@@ -4,11 +4,11 @@ import console_gui.UserInformation;
 import model.Direction;
 import model.RoomNode;
 
-public class WallOffCommand extends RunnableCommand {
+public class SeparateCommand extends RunnableCommand {
 
     @Override
     public String[] getAliases() {
-        return new String[] {"WALLOFF"} ;
+        return new String[] {"SEPARATE"} ;
     }
 
     @Override
@@ -38,14 +38,14 @@ public class WallOffCommand extends RunnableCommand {
                         room.setDirection(oppositeDirection, null);                        
                     }
                     
-                    info.out.printf("Blocked Pathway: %s\n", directionToWallOff.toString());
+                    info.out.printf("Sperated %s from %s\n", info.getCurrentRoom().getName(), room.getName());
                 }
             }
             
         }
         
         if (error) {
-            info.out.print("Usage: \"walloff <DIRECTION>\"\n");
+            info.out.print("Usage: \"separate <DIRECTION>\"\n");
         }
         
     }

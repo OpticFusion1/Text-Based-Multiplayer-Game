@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import commands.Command;
+import commands.MoveCommand;
 import commands.QuitCommand;
 import model.RoomManager;
 import model.RoomNode;
@@ -37,7 +38,7 @@ public class Console {
             return;
         }
 
-        info.out.println(info.getCurrentRoom().getName());
+        MoveCommand.LOOK.run(info);
         
         while(mainLoop(info));
         

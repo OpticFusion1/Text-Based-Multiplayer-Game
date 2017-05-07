@@ -18,7 +18,7 @@ import commands.EastCommand;
 import commands.EmptyCommand;
 import commands.EscapeCurrentLocationCommand;
 import commands.ExamineCommand;
-import commands.LinkCommand;
+import commands.ConnectCommand;
 import commands.LookCommand;
 import commands.NorthCommand;
 import commands.QuitCommand;
@@ -28,7 +28,7 @@ import commands.SouthCommand;
 import commands.TeleportCommand;
 import commands.UnLinkCommand;
 import commands.UpCommand;
-import commands.WallOffCommand;
+import commands.SeparateCommand;
 import commands.WestCommand;
 
 /**
@@ -55,7 +55,7 @@ public class UserInputScanner {
             new WestCommand(),
             new LookCommand(),
             new DigCommand(),
-            new WallOffCommand(),
+            new SeparateCommand(),
             new EscapeCurrentLocationCommand(),
             new UnLinkCommand(),
             new ExamineCommand(),
@@ -63,7 +63,7 @@ public class UserInputScanner {
             new DestroyCommand(),
             new TeleportCommand(),
             new SetRoomDescriptionCommand(),
-            new LinkCommand()
+            new ConnectCommand()
     };
     
     /** Text that will not be broken up by. */

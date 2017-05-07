@@ -33,7 +33,7 @@ public class UnLinkCommand extends RunnableCommand {
                     info.out.println("There isn't a room there!");
                 } else {
                     info.getCurrentRoom().setDirection(directionToUnlink, null);
-                    info.out.printf("UnLinked Pathway: %s\n", directionToUnlink.toString());
+                    info.out.printf("Removed pathway %s to %s\n", directionToUnlink.toString(), room.getName());
                 }
             }
         }

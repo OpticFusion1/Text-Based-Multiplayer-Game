@@ -45,7 +45,7 @@ public class DigCommand extends RunnableCommand {
                     newRoom.setDirection(oppositeDirection, info.getCurrentRoom());
 
                     info.rooms.trackRoom(newRoom);
-                    info.out.println("Created Room!");
+                    MoveCommand.move(info, directionToDig);
                 }
             }
         }

@@ -11,7 +11,7 @@ public class LookCommand extends RunnableCommand {
 
     @Override
     public String[] getAliases() {
-        return new String[] {"LOOK"} ;
+        return new String[] {"LOOK", "L"} ;
     }
 
     @Override

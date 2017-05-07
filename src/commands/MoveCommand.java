@@ -10,7 +10,7 @@ public abstract class MoveCommand extends RunnableCommand {
     public static final Command LOOK = new Command(new String[] {"LOOK"}, new LookCommand());
     
     /** A method to allow subclasses to automatically move given a direction. */
-    public void move(UserInformation info, Direction d) {
+    public static void move(UserInformation info, Direction d) {
         RoomNode potentialRoom = info.getCurrentRoom().getDirection(d);
         
         if (potentialRoom == null) {
