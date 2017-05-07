@@ -1,7 +1,6 @@
 package commands;
 
-import java.util.List;
-
+import console_gui.Helper;
 import console_gui.UserInformation;
 import model.Item;
 
@@ -20,30 +19,15 @@ public class DestroyCommand extends RunnableCommand {
             info.out.print("Not enough arguments, ");
             error = true;
         } else {
-            StringBuilder potentialName = new StringBuilder();
+            String potentialName = Helper.mergeStrings(args, 1, args.length - 1);
             
-            potentialName.append(args[1]);
-            for (int i = 2; i < args.length; i++) {
-                potentialName.append(" ");
-                potentialName.append(args[i]);
-            }
+            Item toDestroy = info.getCurrentRoom().findItem(potentialName);
             
-            //info.getCurrentRoom().addItem(new Item(potentialName.toString()));
-            
-            List<Item> items = info.getCurrentRoom().getItems();
-            String toDestroy = potentialName.toString();
-            boolean result = false;
-            for (Item i : items) {
-                if (i.getName().equals(toDestroy)) {
-                    result = info.getCurrentRoom().removeItem(i);
-                    break;
-                }
-            }
-            
-            if (result) {
-                info.out.print("Destroyed: ");                
-            } else {
+            if (toDestroy == null) {
                 info.out.println("Could not find item: ");
+            } else {
+                info.getCurrentRoom().removeItem(toDestroy);
+                info.out.print("Destroyed: ");                
             }
             
             info.out.println(potentialName.toString());

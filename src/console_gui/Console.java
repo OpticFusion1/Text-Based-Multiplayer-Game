@@ -41,8 +41,6 @@ public class Console {
         
         while(mainLoop(info));
         
-        info.out.println("Thank you for experiencing Node Traversing Simulator 2017");
-        
         SerializationHelper.saveRoomManager(rm);
     }
     
@@ -101,12 +99,11 @@ public class Console {
         }
         
         Command com = info.input.getNextCommand();
+        com.run(info);
         
         if (com.getRunnable() instanceof QuitCommand) {
             result = false;
         }
-        
-        com.run(info);
         
         return result;
     }

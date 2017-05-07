@@ -12,13 +12,12 @@ import model.SerializationHelper;
 public class Initialize {
 
     /* TODO
+     * 
      * Refactoring
-     *  - room travel should display description
      * add descriptions to objects
      * 
      */
     public static void main(String[] args) {
-        
         RoomNode startingRoom = new RoomNode(0, "The Void", "Emptiness without space.");
         RoomManager roomManager = new RoomManager(startingRoom);
         

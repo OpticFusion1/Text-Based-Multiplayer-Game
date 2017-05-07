@@ -215,6 +215,23 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
     public boolean removeItem(Item item) {
         return this.items.remove(item);
     }
+    
+    /**
+     * @param itemName the name of the item to look for.
+     * @return the item or null, if it wasn't found.
+     */
+    public Item findItem(String itemName) {
+        Item result = null;
+        
+        for (Item i : items) {
+            if (i.getName().equals(itemName)) {
+                result = i;
+                break;
+            }
+        }
+        
+        return result;
+    }
 
 	/**
 	 * @return the description
@@ -240,29 +257,12 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
 	 */
 	public void setDirection(Direction theDirection, RoomNode room) {
 	    switch (theDirection) {
-        case DOWN:
-            this.setDown(room);
-            break;
-
-        case UP:
-           this.setUp(room);
-           break;
-
-        case NORTH:
-           this.setNorth(room);
-           break;
-
-        case SOUTH:
-           this.setSouth(room);
-           break;
-
-        case EAST:
-           this.setEast(room);
-           break;
-
-        case WEST:
-           this.setWest(room);
-           break;
+        case DOWN:  this.setDown(room);     break;
+        case UP:    this.setUp(room);       break;
+        case NORTH: this.setNorth(room);    break;
+        case SOUTH: this.setSouth(room);    break;
+        case EAST:  this.setEast(room);     break;
+        case WEST:  this.setWest(room);     break;
 	    }
 	}
 	
@@ -275,29 +275,12 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
 	    RoomNode result = null;
 	    
 	    switch (theDirection) {
-        case DOWN:
-            result = this.getDown();
-            break;
-
-        case UP:
-            result = this.getUp();
-           break;
-
-        case NORTH:
-            result = this.getNorth();
-           break;
-
-        case SOUTH:
-            result = this.getSouth();
-           break;
-
-        case EAST:
-            result = this.getEast();
-           break;
-
-        case WEST:
-            result = this.getWest();
-           break;
+        case DOWN:  result = this.getDown();    break;
+        case UP:    result = this.getUp();      break;
+        case NORTH: result = this.getNorth();   break;
+        case SOUTH: result = this.getSouth();   break;
+        case EAST:  result = this.getEast();    break;
+        case WEST:  result = this.getWest();    break;
         }
 	    
 	    return result;

@@ -1,5 +1,6 @@
 package commands;
 
+import console_gui.Helper;
 import console_gui.UserInformation;
 import model.RoomNode;
 
@@ -18,26 +19,19 @@ public class TeleportCommand extends RunnableCommand {
             System.out.println("Invalid number of arguments, ");
             error = true;
         } else {
-            String inputLine = args[1];
+            Integer choice = Helper.safeParseInt(args[1]);
             
-            Integer choice;
-            
-            try {
-                choice = Integer.parseInt(inputLine);           
-            } catch (NumberFormatException e) {
+            if (choice == null) {
                 info.out.println("Invalid number format, ");
-                choice = null;
                 error = true;
-            }
-            
-            if (choice != null) {
+            } else {
                 RoomNode result = info.rooms.getRoom(choice);
                 
                 if (result == null) {
-                    info.out.println("Room not found.");
+                    info.out.println("Room not found!");
                 } else {
                     info.setCurrentRoom(result);
-                    info.out.println(info.getCurrentRoom().getName());
+                    MoveCommand.LOOK.run(info);
                 }
             }
         }

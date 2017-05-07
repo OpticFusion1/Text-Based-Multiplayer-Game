@@ -1,6 +1,6 @@
 package commands;
 
-import console_gui.DisplayHelper;
+import console_gui.Helper;
 import console_gui.UserInformation;
 import model.Direction;
 import model.RoomNode;
@@ -24,7 +24,7 @@ boolean error = false;
             error = true;
         } else {
             Direction direction = Direction.translateDirection(args[1]);
-            Integer choice = DisplayHelper.safeParseInt(args[2]);
+            Integer choice = Helper.safeParseInt(args[2]);
             
             if (direction == null) {
                 info.out.print("Direction not found, ");

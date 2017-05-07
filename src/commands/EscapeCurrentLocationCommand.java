@@ -12,7 +12,7 @@ public class EscapeCurrentLocationCommand extends RunnableCommand {
     @Override
     public void runCommand(UserInformation info, String[] args) {
         info.setCurrentRoom(info.rooms.getStartingRoom());
-        info.out.println(info.getCurrentRoom().getName());
+        MoveCommand.LOOK.run(info);
     }
 
 }

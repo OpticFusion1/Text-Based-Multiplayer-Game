@@ -9,7 +9,7 @@ import model.RoomNode;
  * 
  * @author Zachary Chandler
  */
-public class DisplayHelper {
+public class Helper {
     
     public static void printAllRoomNodes(RoomNode node) {
         printAllRoomNodes(node, new TreeSet<>());
@@ -39,6 +39,24 @@ public class DisplayHelper {
         }
         
         return choice;
+    }
+    
+    public static String mergeStrings(String[] strings, int start, int end) {
+        if (end >= strings.length || start < 0 || start >= strings.length) {
+            throw new IllegalArgumentException();
+        }
+        
+        StringBuilder name = new StringBuilder();
+        
+        if (strings.length > 0) {
+            name.append(strings[start]);
+            for (int i = start + 1; i <= end; i++) {
+                name.append(" ");
+                name.append(strings[i]);
+            }            
+        }
+        
+        return name.toString();
     }
 
 }

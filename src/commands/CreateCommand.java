@@ -1,5 +1,6 @@
 package commands;
 
+import console_gui.Helper;
 import console_gui.UserInformation;
 import model.Item;
 
@@ -19,19 +20,10 @@ public class CreateCommand extends RunnableCommand {
             
             error = true;
         } else {
-            StringBuilder name = new StringBuilder();
-            
-            
-            name.append(args[1]);
-            for (int i = 2; i < args.length; i++) {
-                name.append(" ");
-                name.append(args[i]);
-            }
+            String name = Helper.mergeStrings(args, 1, args.length - 1);
             
             info.getCurrentRoom().addItem(new Item(name.toString()));
-            
-            info.out.print("Created: ");
-            info.out.println(name.toString());
+            info.out.printf("Created: %s\n", name);
         }
         
         if (error) {

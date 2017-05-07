@@ -39,7 +39,7 @@ public class UnLinkCommand extends RunnableCommand {
         }
         
         if (error) {
-            info.out.print("Usage: \"unlink <DIRECTION\"\n");
+            info.out.print("Usage: \"unlink <DIRECTION>\"\n");
         }
     }
 

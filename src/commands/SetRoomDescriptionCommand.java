@@ -1,5 +1,6 @@
 package commands;
 
+import console_gui.Helper;
 import console_gui.UserInformation;
 
 public class SetRoomDescriptionCommand extends RunnableCommand {
@@ -17,13 +18,7 @@ public class SetRoomDescriptionCommand extends RunnableCommand {
             info.out.print("Not enough arguments, ");
             error = true;
         } else {
-            StringBuilder description = new StringBuilder();
-            
-            for (int i = 1; i < args.length; i++) {
-                description.append(args[i]);
-                description.append(' ');
-            }
-            
+            String description = Helper.mergeStrings(args, 1, args.length);
             info.getCurrentRoom().setDescription(description.toString());
             info.out.println("Set description: " + description.toString());
         }
