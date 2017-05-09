@@ -8,7 +8,7 @@ public class CommandNotFoundCommand extends Command {
     
     @Override
     public String[] getAliases() {
-        return new String[] {LOOK_UP_STRING} ;
+        return new String[] {LOOK_UP_STRING, "COMMANDNOTFOUND"} ;
     }
 
     @Override
