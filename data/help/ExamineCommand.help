@@ -1,0 +1,15 @@
+NAME
+    examine - examines an object.
+
+USAGE
+    examine itemname
+
+DESCRIPTION
+    examines an object by listing it's description.
+
+ARGUMENTS
+    itemname
+        the name of the item, or any of its aliases.
+
+EXAMPLE
+    examine manhole

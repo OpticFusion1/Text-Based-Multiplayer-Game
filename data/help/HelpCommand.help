@@ -1,0 +1,16 @@
+NAME
+    help - describes the functionality of a command
+
+USAGE
+    help [command]
+
+DESCRIPTION
+    gives the help page for a given command, or a brief description of each 
+    command if no command is given.
+
+ARGUMENTS
+    command
+        optional - the command to get help with.
+
+EXAMPLE
+    help help

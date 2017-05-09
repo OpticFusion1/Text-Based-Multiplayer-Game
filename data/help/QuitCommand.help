@@ -1,0 +1,14 @@
+NAME
+    quit - saves and exits
+
+USAGE
+    quit
+
+DESCRIPTION
+    quits the game and saves the user's information.
+
+ARGUMENTS
+    none
+
+EXAMPLE
+    quit

@@ -1,0 +1,22 @@
+NAME
+    set - sets a value for the current room
+
+USAGE
+    set room field value
+
+DESCRIPTION
+    sets a value of  the current room which can be the name of description of
+    the room.
+
+ARGUMENTS
+    room
+        the word 'room'
+    
+    field
+        the field that will be set, either 'name' or 'description'
+        
+    value
+        the value for the field
+
+EXAMPLE
+    set room name "The Sewer"

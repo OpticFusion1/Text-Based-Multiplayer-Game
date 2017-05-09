@@ -1,0 +1,16 @@
+NAME
+    west - moves the player west by one room
+
+USAGE
+    west
+
+DESCRIPTION
+    attempts to move the user in the given direction. If there is not a room to
+    move into, the user is not moved. If the user is moved, the information of
+    the room is displayed.
+
+ARGUMENTS
+    none
+
+EXAMPLE
+    west

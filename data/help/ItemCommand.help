@@ -1,0 +1,48 @@
+NAME
+    item - executes actions surrounding items
+
+USAGE
+    item <rename|describe|alias|unalias> <item-name> [value]
+    item rename   itemname newname
+    item describe itemname description
+    item alias    itemname alias
+    item unalias  itemname alias
+    item create   itemname
+    item destroy  itemname
+
+DESCRIPTION
+    a multipurpose command to deal  with actions surrounding items.
+
+ARGUMENTS
+    rename 
+        sets the name of a given item to the newname.
+    
+    describe 
+        sets the description of a given item to the newname.
+    
+    alias 
+        adds the given alias to the item.
+        
+    unalias
+        removes the given alias from the item.
+    
+    create
+        creates a new item with the given name
+        
+    destroy
+        destroys the given item
+        
+    itemname
+        the name of the item
+        
+    newname 
+        a new name for the item
+        
+    description
+        a new description for the item
+        
+    alias
+        an alias for the item
+
+EXAMPLE
+    item create "Apple"

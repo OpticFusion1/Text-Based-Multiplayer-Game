@@ -1,0 +1,16 @@
+NAME
+    east - moves the player east by one room
+
+USAGE
+    east
+
+DESCRIPTION
+    attempts to move the user in the given direction. If there is not a room to
+    move into, the user is not moved. If the user is moved, the information of
+    the room is displayed.
+
+ARGUMENTS
+    none
+
+EXAMPLE
+    east

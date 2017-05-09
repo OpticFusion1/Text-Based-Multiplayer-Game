@@ -8,5 +8,8 @@ DESCRIPTION
     displays the number of arguments given as well as the contents of each
     argument.
 
-OPTIONS
+ARGUMENTS
     none
+
+EXAMPLE
+    commandnotfound
