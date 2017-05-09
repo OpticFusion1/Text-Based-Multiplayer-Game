@@ -68,7 +68,7 @@ public class UserInputScanner {
     })));
     
     /** Text that will not be broken up by. */
-    private static final Pattern TOKEN_TEXT = Pattern.compile("\"[^\"]*\"|<[^>^<]*>|[^\\s^\"^<^>]+");
+    private static final Pattern TOKEN_TEXT = Pattern.compile("\"[^\"]*\"|<[^>^<]*>|\\[[^\\[^\\]]*\\]|[^\\s^\"^<^>^\\[^\\]]+");
     
     /** Commands that have been queued up by the user. */
     private LinkedList<RunnableCommand> commands;
@@ -204,7 +204,8 @@ public class UserInputScanner {
      */
     public static String cleanPreserveCharacters(String match) {
         if ((match.startsWith("\"") && match.endsWith("\"") && match.length() > 1) ||
-            (match.startsWith("<") && match.endsWith(">"))) {
+            (match.startsWith("<") && match.endsWith(">")) ||
+            (match.startsWith("[") && match.endsWith("]")) ) {
             match = match.substring(1, match.length() - 1);
         }
         
