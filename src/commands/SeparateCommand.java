@@ -4,13 +4,18 @@ import console_gui.UserInformation;
 import model.Direction;
 import model.RoomNode;
 
-public class SeparateCommand extends RunnableCommand {
+public class SeparateCommand extends Command {
 
     @Override
     public String[] getAliases() {
         return new String[] {"SEPARATE"} ;
     }
 
+    @Override
+    public String getPreferredName() {
+        return "separate";
+    }
+    
     @Override
     public void runCommand(UserInformation info, String[] args) {
         boolean error = false;
@@ -45,9 +50,13 @@ public class SeparateCommand extends RunnableCommand {
         }
         
         if (error) {
-            info.out.print("Usage: \"separate <DIRECTION>\"\n");
+            info.out.print("see help seperate for more details.\n");
         }
         
     }
 
+    @Override
+    public String getShortHelpDescription() {
+        return "Seperates two rooms, bi-directionally if possible. Usage: \"separate <DIRECTION>\"";
+    }
 }

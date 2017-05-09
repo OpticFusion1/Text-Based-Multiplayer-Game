@@ -4,10 +4,10 @@ import console_gui.UserInformation;
 import model.Direction;
 import model.RoomNode;
 
-public abstract class MoveCommand extends RunnableCommand {
+public abstract class MoveCommand extends Command {
 
     /** A simple static command we can use to run look right after moving. */
-    public static final Command LOOK = new Command(new String[] {"LOOK"}, new LookCommand());
+    public static final RunnableCommand LOOK = new RunnableCommand(new String[] {"LOOK"}, new LookCommand());
     
     /** A method to allow subclasses to automatically move given a direction. */
     public static void move(UserInformation info, Direction d) {

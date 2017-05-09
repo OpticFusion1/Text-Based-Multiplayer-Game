@@ -4,13 +4,18 @@ import console_gui.Helper;
 import console_gui.UserInformation;
 import model.Item;
 
-public class ExamineCommand extends RunnableCommand {
+public class ExamineCommand extends Command {
 
     @Override
     public String[] getAliases() {
         return new String[] {"EXA", "EXAMINE"};
     }
 
+    @Override
+    public String getPreferredName() {
+        return "examine";
+    }
+    
     @Override
     public void runCommand(UserInformation info, String[] args) {
         if (args.length == 1) {
@@ -27,4 +32,8 @@ public class ExamineCommand extends RunnableCommand {
         }
     }
 
+    @Override
+    public String getShortHelpDescription() {
+        return "Examines a given item. Usage 'examine <item-name>'";
+    }
 }

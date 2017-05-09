@@ -1,27 +1,31 @@
 package console_gui;
 
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import commands.Command;
+import commands.RunnableCommand;
 import commands.CommandNotFoundCommand;
 import commands.DigCommand;
 import commands.DownCommand;
 import commands.EastCommand;
-import commands.EscapeCurrentLocationCommand;
 import commands.ExamineCommand;
+import commands.HelpCommand;
 import commands.InspectCommand;
 import commands.ItemCommand;
 import commands.ConnectCommand;
 import commands.LookCommand;
 import commands.NorthCommand;
 import commands.QuitCommand;
-import commands.RunnableCommand;
+import commands.Command;
 import commands.SouthCommand;
 import commands.TeleportCommand;
 import commands.UnLinkCommand;
@@ -41,7 +45,7 @@ public class UserInputScanner {
     /**
      * The commands this scanner recognizes. 
      */
-    private static final RunnableCommand[] COMMANDS = {
+    public static final Set<Command> COMMANDS = Collections.unmodifiableSet(new TreeSet<Command>(Arrays.asList(new Command[] {
             new CommandNotFoundCommand(),
             new QuitCommand(),
             new DownCommand(),
@@ -53,24 +57,24 @@ public class UserInputScanner {
             new LookCommand(),
             new DigCommand(),
             new SeparateCommand(),
-            new EscapeCurrentLocationCommand(),
             new UnLinkCommand(),
             new ExamineCommand(),
             new TeleportCommand(),
             new ConnectCommand(),
             new InspectCommand(),
             new SetCommand(),
-            new ItemCommand()
-    };
+            new ItemCommand(),
+            new HelpCommand()
+    })));
     
     /** Text that will not be broken up by. */
     private static final Pattern TOKEN_TEXT = Pattern.compile("\"[^\"]*\"|<[^>^<]*>|[^\\s^\"^<^>]+");
     
     /** Commands that have been queued up by the user. */
-    private LinkedList<Command> commands;
+    private LinkedList<RunnableCommand> commands;
     
     /** A map of aliases to commands for fast lookup time. */
-    private Map<String, RunnableCommand> commandMap;
+    private Map<String, Command> commandMap;
     
     /** The scanner we will use to get input. */
     private Scanner input;
@@ -81,12 +85,12 @@ public class UserInputScanner {
      * @param in the input stream from the user.
      */
     public UserInputScanner(InputStream in) {
-        this.commands = new LinkedList<Command>();
+        this.commands = new LinkedList<RunnableCommand>();
         this.input = new Scanner(in);
         
         this.commandMap = new TreeMap<>();
         
-        for (RunnableCommand c : COMMANDS) {
+        for (Command c : COMMANDS) {
             String[] aliases = c.getAliases();
             for (int i = 0; i < aliases.length; i++) {
                 commandMap.put(aliases[i].toUpperCase(), c);
@@ -119,7 +123,7 @@ public class UserInputScanner {
      * @param nextCommand the command to run.
      * @throws NullPointerException if nextCommand is null.
      */
-    public void insertNextCommand(Command nextCommand) {
+    public void insertNextCommand(RunnableCommand nextCommand) {
         if (nextCommand == null) {
             throw new NullPointerException("Cannot add null as next command in UserInputScanner!");
         }
@@ -129,14 +133,14 @@ public class UserInputScanner {
     /**
      * @return the next command from the user.
      */
-    public Command getNextCommand() {
-        Command result;
+    public RunnableCommand getNextCommand() {
+        RunnableCommand result;
         
         if (commands.isEmpty()) {
             String[] semiSplit = input.nextLine().split("(\\s*;+\\s*)+");
             
             for (int i = 0; i < semiSplit.length; i++) {
-                Command c = translateCommmand(semiSplit[i]);
+                RunnableCommand c = translateCommmand(semiSplit[i]);
                 
                 if (c != null) {
                     commands.add(c);
@@ -154,21 +158,21 @@ public class UserInputScanner {
      * @param s the string to parse.
      * @return the resulting command.
      */
-    public Command translateCommmand(String s) {
-        Command result;
+    public RunnableCommand translateCommmand(String s) {
+        RunnableCommand result;
         
         String[] args = getCommandArguments(s);
         
         if (args.length > 0) {
-            RunnableCommand runner = commandMap.get(args[0].toUpperCase());
+            Command runner = commandMap.get(args[0].toUpperCase());
             
             if (runner == null) {
                 runner = commandMap.get(CommandNotFoundCommand.LOOK_UP_STRING);
             }
             
-            result = new Command(args, runner);
+            result = new RunnableCommand(args, runner);
         } else {
-            result = new Command(args, commandMap.get(CommandNotFoundCommand.LOOK_UP_STRING));
+            result = new RunnableCommand(args, commandMap.get(CommandNotFoundCommand.LOOK_UP_STRING));
         }
         
         return result;

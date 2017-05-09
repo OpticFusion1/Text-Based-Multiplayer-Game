@@ -7,13 +7,18 @@ import model.Direction;
 import model.Item;
 import model.RoomNode;
 
-public class LookCommand extends RunnableCommand {
+public class LookCommand extends Command {
 
     @Override
     public String[] getAliases() {
         return new String[] {"LOOK", "L"} ;
     }
 
+    @Override
+    public String getPreferredName() {
+        return "look";
+    }
+    
     @Override
     public void runCommand(UserInformation info, String[] args) {
     	RoomNode r = info.getCurrentRoom();
@@ -45,4 +50,8 @@ public class LookCommand extends RunnableCommand {
         info.out.print('\n');
     }
 
+    @Override
+    public String getShortHelpDescription() {
+        return "Look gives a description of the surroundings";
+    }
 }

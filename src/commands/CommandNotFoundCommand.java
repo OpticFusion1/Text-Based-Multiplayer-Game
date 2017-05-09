@@ -2,13 +2,18 @@ package commands;
 
 import console_gui.UserInformation;
 
-public class CommandNotFoundCommand extends RunnableCommand {
+public class CommandNotFoundCommand extends Command {
 
     public static final String LOOK_UP_STRING = "";
     
     @Override
     public String[] getAliases() {
         return new String[] {LOOK_UP_STRING} ;
+    }
+
+    @Override
+    public String getPreferredName() {
+        return "commandnotfound";
     }
 
     @Override
@@ -20,11 +25,15 @@ public class CommandNotFoundCommand extends RunnableCommand {
             
             for (int i = 0; i < args.length; i++) {
                 info.out.print(args[i]);
-                info.out.print("|");
+                info.out.print(',');
             }
             
             info.out.println();    
         }
     }
 
+    @Override
+    public String getShortHelpDescription() {
+        return "displays the given command that wasn't found.";
+    }
 }

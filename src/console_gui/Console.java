@@ -3,7 +3,7 @@ package console_gui;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import commands.Command;
+import commands.RunnableCommand;
 import commands.MoveCommand;
 import commands.QuitCommand;
 import model.RoomManager;
@@ -99,7 +99,7 @@ public class Console {
             info.out.print('>');
         }
         
-        Command com = info.input.getNextCommand();
+        RunnableCommand com = info.input.getNextCommand();
         com.run(info);
         
         if (com.getRunnable() instanceof QuitCommand) {

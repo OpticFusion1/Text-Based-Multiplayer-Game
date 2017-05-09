@@ -4,7 +4,7 @@ import console_gui.UserInformation;
 import model.Direction;
 import model.RoomNode;
 
-public class DigCommand extends RunnableCommand {
+public class DigCommand extends Command {
 
     public static final String DEFUALT_DESCRIPTION = "a very bland room";
     
@@ -13,6 +13,11 @@ public class DigCommand extends RunnableCommand {
         return new String[] {"DIG"} ;
     }
 
+    @Override
+    public String getPreferredName() {
+        return "dig";
+    }
+    
     @Override
     public void runCommand(UserInformation info, String[] args) {
         boolean error = false;
@@ -51,8 +56,14 @@ public class DigCommand extends RunnableCommand {
         }
         
         if (error) {
-            info.out.print("Usage: \"dig <direction> <name>\"\n");
+            info.out.print("see 'help dig' for more details.");
         }
+    }
+
+    @Override
+    public String getShortHelpDescription() {
+        return "Creates a new room in the given direction and connects it back to the current room. " 
+                + "Usage: \"dig <direction> <name>\"";
     }
 
 }

@@ -3,7 +3,7 @@ package commands;
 import console_gui.Helper;
 import console_gui.UserInformation;
 
-public class SetCommand extends RunnableCommand {
+public class SetCommand extends Command {
 
     
     @Override
@@ -11,6 +11,11 @@ public class SetCommand extends RunnableCommand {
         return new String[] {"SET"};
     }
 
+    @Override
+    public String getPreferredName() {
+        return "set";
+    }
+    
     @Override
     public void runCommand(UserInformation info, String[] args) {
         boolean error = false;
@@ -74,4 +79,8 @@ public class SetCommand extends RunnableCommand {
         NAME, DESCRIPTION;
     }
 
+    @Override
+    public String getShortHelpDescription() {
+        return "Sets a given value. Usage \"set <room> <name|description> <value>\"";
+    }
 }

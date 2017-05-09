@@ -4,13 +4,18 @@ import console_gui.Helper;
 import console_gui.UserInformation;
 import model.RoomNode;
 
-public class TeleportCommand extends RunnableCommand {
+public class TeleportCommand extends Command {
 
     @Override
     public String[] getAliases() {
         return new String[] {"TELEPORT", "TEL"};
     }
 
+    @Override
+    public String getPreferredName() {
+        return "teleport";
+    }
+    
     @Override
     public void runCommand(UserInformation info, String[] args) {
         boolean error = false;
@@ -37,9 +42,12 @@ public class TeleportCommand extends RunnableCommand {
         }
         
         if (error) {
-            info.out.println("Usage, \"teleport <room number>\"");
+            info.out.println("see 'help teleport' for more information");
         }
-        
     }
 
+    @Override
+    public String getShortHelpDescription() {
+        return "Teleports to the given room. Usage, \"teleport <room number>\"";
+    }
 }

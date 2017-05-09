@@ -11,8 +11,17 @@ public class WestCommand extends MoveCommand {
     }
 
     @Override
+    public String getPreferredName() {
+        return "west";
+    }
+    
+    @Override
     public void runCommand(UserInformation info, String[] args) {
         move(info, Direction.WEST);
     }
 
+    @Override
+    public String getShortHelpDescription() {
+        return "Moves west by one room";
+    }
 }

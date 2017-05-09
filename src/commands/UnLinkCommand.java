@@ -4,13 +4,18 @@ import console_gui.UserInformation;
 import model.Direction;
 import model.RoomNode;
 
-public class UnLinkCommand extends RunnableCommand {
+public class UnLinkCommand extends Command {
 
     @Override
     public String[] getAliases() {
         return new String[] {"UNLINK"} ;
     }
 
+    @Override
+    public String getPreferredName() {
+        return "unlink";
+    }
+    
     @Override
     public void runCommand(UserInformation info, String[] args) {
 
@@ -39,8 +44,12 @@ public class UnLinkCommand extends RunnableCommand {
         }
         
         if (error) {
-            info.out.print("Usage: \"unlink <DIRECTION>\"\n");
+            info.out.print("see 'help unlink' for more information\n");
         }
     }
 
+    @Override
+    public String getShortHelpDescription() {
+        return "Closes the link in this room in the given direction. Usage: \"unlink <DIRECTION>\"";
+    }
 }

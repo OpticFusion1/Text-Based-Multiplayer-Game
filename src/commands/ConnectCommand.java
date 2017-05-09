@@ -5,13 +5,18 @@ import console_gui.UserInformation;
 import model.Direction;
 import model.RoomNode;
 
-public class ConnectCommand extends RunnableCommand {
+public class ConnectCommand extends Command {
 
     @Override
     public String[] getAliases() {
         return new String[] {"CONNECT"};
     }
 
+    @Override
+    public String getPreferredName() {
+        return "connect";
+    }
+    
     @Override
     public void runCommand(UserInformation info, String[] args) {
         boolean error = false;
@@ -56,8 +61,13 @@ public class ConnectCommand extends RunnableCommand {
         }
         
         if (error) {
-            info.out.print("Usage: \"connect <DIRECTION> <RoomID>\"\n");
+            info.out.print("see 'help connect' for more details.");
         }
+    }
+
+    @Override
+    public String getShortHelpDescription() {
+        return "Connects to rooms togeather, bi-directionally if possible, Usage: \"connect <DIRECTION> <RoomID>\"";
     }
 
 }

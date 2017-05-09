@@ -4,13 +4,18 @@ import console_gui.Helper;
 import console_gui.UserInformation;
 import model.Item;
 
-public class ItemCommand extends RunnableCommand {
+public class ItemCommand extends Command {
 
     @Override
     public String[] getAliases() {
         return new String[] {"ITEM"};
     }
 
+    @Override
+    public String getPreferredName() {
+        return "item";
+    }
+    
     @Override
     public void runCommand(UserInformation info, String[] args) {
         boolean error = false;
@@ -72,7 +77,7 @@ public class ItemCommand extends RunnableCommand {
         }
         
         if (error) {
-            info.out.print("Usage \"item <rename|describe|alias|unalias> <item-name> <value>\"\n");
+            info.out.print("see 'help item' for more information.\n");
         }
     }
 
@@ -126,4 +131,8 @@ public class ItemCommand extends RunnableCommand {
         }
     }
 
+    @Override
+    public String getShortHelpDescription() {
+        return "Executes an item subcommand. Usage \"item <rename|describe|alias|unalias> <item-name> [value]\"";
+    }
 }

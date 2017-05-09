@@ -4,11 +4,16 @@ import console_gui.Helper;
 import console_gui.UserInformation;
 import model.Item;
 
-public class InspectCommand extends RunnableCommand {
+public class InspectCommand extends Command {
 
     @Override
     public String[] getAliases() {
         return new String[] {"INSPECT"};
+    }
+
+    @Override
+    public String getPreferredName() {
+        return "inspect";
     }
 
     @Override
@@ -35,5 +40,9 @@ public class InspectCommand extends RunnableCommand {
             }
         }
     }
-
+    
+    @Override
+    public String getShortHelpDescription() {
+        return "Inspects a given item, or the room if no item is given. Usage 'inspect [item-name]'";
+    }
 }
