@@ -93,7 +93,8 @@ public class ItemCommand extends RunnableCommand {
     }
 
     private void alias(UserInformation info, Item item, String value) {
-        info.out.println("Not implemented yet");
+        item.addAlias(value);
+        info.out.printf("Aliased %s as %s\n", item.getName(), value);
     }
     
     private void describe(UserInformation info, Item item, String value) {
@@ -107,7 +108,8 @@ public class ItemCommand extends RunnableCommand {
     }
     
     private void unalias(UserInformation info, Item item, String value) {
-        info.out.println("Not implemented yet");
+        item.removeAlias(value);
+        info.out.printf("Unaliased %s as %s\n", item.getName(), value); 
     }
 
     private boolean needsItem(CommandType field) {

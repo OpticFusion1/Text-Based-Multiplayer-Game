@@ -224,7 +224,7 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
         Item result = null;
         
         for (Item i : items) {
-            if (i.getName().equals(itemName)) {
+            if (i.match(itemName)) {
                 result = i;
                 break;
             }

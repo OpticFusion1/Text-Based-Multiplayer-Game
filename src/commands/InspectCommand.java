@@ -26,6 +26,12 @@ public class InspectCommand extends RunnableCommand {
             } else {
                 info.out.printf("Item Name: %s\n", toDescribe.getName());
                 info.out.printf("Item Description: %s\n", toDescribe.getDescription());
+                info.out.println("Aliases: ");
+                
+                for (String s : toDescribe.getAliases()) {
+                    info.out.printf("    %s\n", s.toLowerCase());
+                }
+                
             }
         }
     }

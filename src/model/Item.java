@@ -1,6 +1,10 @@
 package model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * An item.
@@ -17,6 +21,8 @@ public class Item implements Serializable {
 
     /** The description of the item. */
 	private String description;
+	
+	private Set<String> aliases;
 
     /** 
      * Construct an item with the given name.
@@ -25,6 +31,8 @@ public class Item implements Serializable {
     public Item(String name) {
         this.setName(name);
         this.description = "a very plain object";
+        this.aliases = new TreeSet<>();
+        this.aliases.add(name.toUpperCase());
     }
     
     /** 
@@ -64,5 +72,39 @@ public class Item implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+    /**
+     * @param aliasToAdd the 
+     * @return the alias to add.
+     */
+    public void addAlias(String aliasToAdd) {
+        String aliasInUpperCase = aliasToAdd.toUpperCase();
+        
+        if (!aliases.contains(aliasInUpperCase)) {
+            aliases.add(aliasInUpperCase);
+        }
+    }
+
+    /**
+     * @param aliases the alias to remove
+     */
+    public void removeAlias(String aliasToRemove) {
+        aliases.remove(aliasToRemove.toUpperCase());
+    }
     
+    /**
+     * Checks if the given string matches the objects name or aliases.
+     * @param nameToMatch the name to check.
+     * @return if the name matched.
+     */
+    public boolean match(String nameToMatch) {
+        return this.aliases.contains(nameToMatch.toUpperCase());
+    }
+    
+    /**
+     * @return the aliases of the item.
+     */
+    public List<String> getAliases() {
+        return new LinkedList<String>(aliases);
+    }
 }
