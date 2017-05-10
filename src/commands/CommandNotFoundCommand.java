@@ -8,7 +8,7 @@ public class CommandNotFoundCommand extends Command {
     
     @Override
     public String[] getAliases() {
-        return new String[] {LOOK_UP_STRING} ;
+        return new String[] {LOOK_UP_STRING, "COMMANDNOTFOUND"} ;
     }
 
     @Override
@@ -34,6 +34,6 @@ public class CommandNotFoundCommand extends Command {
 
     @Override
     public String getShortHelpDescription() {
-        return "displays the given command that wasn't found.";
+        return "displays the arguments after a malformed command.";
     }
 }

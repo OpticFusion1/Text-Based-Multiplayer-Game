@@ -1,0 +1,15 @@
+NAME
+    look - gets information about the current room
+
+USAGE
+    look
+
+DESCRIPTION
+    gets infomation about the current room including name, description, items,
+    and exits.
+
+ARGUMENTS
+    none
+
+EXAMPLE
+    look

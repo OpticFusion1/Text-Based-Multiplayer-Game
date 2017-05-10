@@ -1,0 +1,22 @@
+NAME
+    connect - connects two rooms togeather
+
+USAGE
+    connect direction roomid
+
+DESCRIPTION
+    connects the current room to another room. If their is no room in the given
+    direction, a new path in that direction is created that leads to the room 
+    with the given roomid. If the other room has no room in the inverse 
+    direction, another path will be created in that room in the inverse 
+    direction leading to the current room.
+
+ARGUMENTS
+    direction,
+        the direction that the new path will be in.
+    
+    roomid,
+        the room id of the room that will be connected to.
+
+EXAMPLE
+    connect up 11

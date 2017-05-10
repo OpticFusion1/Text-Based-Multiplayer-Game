@@ -62,8 +62,8 @@ public class DigCommand extends Command {
 
     @Override
     public String getShortHelpDescription() {
-        return "Creates a new room in the given direction and connects it back to the current room. " 
-                + "Usage: \"dig <direction> <name>\"";
+        return "Creates a new room in the given direction and connects it back\n"
+                + "                  to the current room.";
     }
 
 }

@@ -1,0 +1,17 @@
+NAME
+    unlink - unlinks a single path in this room
+
+USAGE
+    unlink direction
+
+DESCRIPTION
+    removes a path in this room in the given direction. if there is another room
+    none of the paths in that room will change even if they lead back to the
+    current room.
+
+ARGUMENTS
+    direction
+        the direction of the path to remove.
+
+EXAMPLE
+    unlink up

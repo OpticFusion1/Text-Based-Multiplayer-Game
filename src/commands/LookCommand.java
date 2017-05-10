@@ -52,6 +52,6 @@ public class LookCommand extends Command {
 
     @Override
     public String getShortHelpDescription() {
-        return "Look gives a description of the surroundings";
+        return "Gives a description of the surroundings.";
     }
 }

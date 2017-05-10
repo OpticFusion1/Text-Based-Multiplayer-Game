@@ -67,18 +67,32 @@ public class UserInputScanner {
             new HelpCommand()
     })));
     
+    /** A map of aliases to commands for fast lookup time. */
+    public static final Map<String, Command> COMMAND_MAP = Collections.unmodifiableMap(new TreeMap<String, Command>() {
+        
+        /** Generated SVUID */
+        private static final long serialVersionUID = 1106589250798615744L;
+        
+        public TreeMap<String, Command> getMap() {
+            for (Command c : COMMANDS) {
+                String[] aliases = c.getAliases();
+                for (int i = 0; i < aliases.length; i++) {
+                    this.put(aliases[i].toUpperCase(), c);
+                }
+            }
+            return this;
+        }
+    }.getMap());
+    
     /** Text that will not be broken up by. */
-    private static final Pattern TOKEN_TEXT = Pattern.compile("\"[^\"]*\"|<[^>^<]*>|[^\\s^\"^<^>]+");
+    private static final Pattern TOKEN_TEXT = Pattern.compile("\"[^\"]*\"|<[^>^<]*>|\\[[^\\[^\\]]*\\]|[^\\s^\"^<^>^\\[^\\]]+");
     
     /** Commands that have been queued up by the user. */
     private LinkedList<RunnableCommand> commands;
     
-    /** A map of aliases to commands for fast lookup time. */
-    private Map<String, Command> commandMap;
-    
     /** The scanner we will use to get input. */
     private Scanner input;
-
+    
     /**
      * Instantiate the class on the given InputStream.
      * 
@@ -87,15 +101,6 @@ public class UserInputScanner {
     public UserInputScanner(InputStream in) {
         this.commands = new LinkedList<RunnableCommand>();
         this.input = new Scanner(in);
-        
-        this.commandMap = new TreeMap<>();
-        
-        for (Command c : COMMANDS) {
-            String[] aliases = c.getAliases();
-            for (int i = 0; i < aliases.length; i++) {
-                commandMap.put(aliases[i].toUpperCase(), c);
-            }
-        }
     }
     
     /**
@@ -164,15 +169,15 @@ public class UserInputScanner {
         String[] args = getCommandArguments(s);
         
         if (args.length > 0) {
-            Command runner = commandMap.get(args[0].toUpperCase());
+            Command runner = COMMAND_MAP.get(args[0].toUpperCase());
             
             if (runner == null) {
-                runner = commandMap.get(CommandNotFoundCommand.LOOK_UP_STRING);
+                runner = COMMAND_MAP.get(CommandNotFoundCommand.LOOK_UP_STRING);
             }
             
             result = new RunnableCommand(args, runner);
         } else {
-            result = new RunnableCommand(args, commandMap.get(CommandNotFoundCommand.LOOK_UP_STRING));
+            result = new RunnableCommand(args, COMMAND_MAP.get(CommandNotFoundCommand.LOOK_UP_STRING));
         }
         
         return result;
@@ -204,7 +209,8 @@ public class UserInputScanner {
      */
     public static String cleanPreserveCharacters(String match) {
         if ((match.startsWith("\"") && match.endsWith("\"") && match.length() > 1) ||
-            (match.startsWith("<") && match.endsWith(">"))) {
+            (match.startsWith("<") && match.endsWith(">")) ||
+            (match.startsWith("[") && match.endsWith("]")) ) {
             match = match.substring(1, match.length() - 1);
         }
         

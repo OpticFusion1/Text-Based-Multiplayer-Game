@@ -57,6 +57,6 @@ public class SeparateCommand extends Command {
 
     @Override
     public String getShortHelpDescription() {
-        return "Seperates two rooms, bi-directionally if possible. Usage: \"separate <DIRECTION>\"";
+        return "Seperates two rooms, bi-directionally if possible.";
     }
 }

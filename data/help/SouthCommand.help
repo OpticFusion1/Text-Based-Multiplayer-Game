@@ -1,0 +1,16 @@
+NAME
+    south - moves the player south by one room
+
+USAGE
+    south
+
+DESCRIPTION
+    attempts to move the user in the given direction. If there is not a room to
+    move into, the user is not moved. If the user is moved, the information of
+    the room is displayed.
+
+ARGUMENTS
+    none
+
+EXAMPLE
+    south

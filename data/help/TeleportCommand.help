@@ -1,0 +1,16 @@
+NAME
+    teleport - teleports a user to another room
+
+USAGE
+    teleport roomid
+
+DESCRIPTION
+    teleports the user to the room with the given roomid. afterwards, the 
+    information about the room will be displayed.
+
+ARGUMENTS
+    roomid
+        the id of the room to teleport to.
+
+EXAMPLE
+    teleport 15

@@ -1,5 +1,9 @@
 package commands;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import console_gui.UserInformation;
 
 /**
@@ -10,6 +14,42 @@ import console_gui.UserInformation;
  */
 public abstract class Command implements Comparable<Command>{
    
+    private String helpPage;
+    
+    public Command() {
+        File helpPage = new File("data/help/" + this.getClass().getSimpleName() + ".help");
+        
+        if (helpPage.exists() && !helpPage.isDirectory()) {
+            this.helpPage = loadHelpPage(helpPage);            
+        } else {
+            System.out.printf("Help page not found: %s\n", helpPage.toString());
+            this.helpPage = "This command doesn't have a help page yet!";
+        }
+    }
+    
+    
+    private final String loadHelpPage(File f) {
+        StringBuilder result = new StringBuilder();
+        Scanner input = null;
+        
+        try {
+            input = new Scanner(f);
+        } catch (FileNotFoundException e) {
+            System.err.println("Please only use valid files.");
+            e.printStackTrace();
+            System.exit(1);
+        }
+        
+        
+        while (input.hasNextLine()) {
+            result.append('\n');
+            result.append(input.nextLine());
+        }
+        
+        input.close();
+        return result.toString();
+    }
+    
     /**
      * @return return a list of aliases for this Command.
      */
@@ -31,6 +71,14 @@ public abstract class Command implements Comparable<Command>{
     * @return preferred command name
     */
    public abstract String getPreferredName();
+   
+   /**
+    * Get the help page on this command. Located at data/help/thisClass.help;
+    * @return the help page of this command.
+    */
+   public String getHelpPage() {
+       return this.helpPage;
+   }
    
    @Override
    public final int hashCode() {

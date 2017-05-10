@@ -48,6 +48,6 @@ public class TeleportCommand extends Command {
 
     @Override
     public String getShortHelpDescription() {
-        return "Teleports to the given room. Usage, \"teleport <room number>\"";
+        return "Teleports to the given room.";
     }
 }

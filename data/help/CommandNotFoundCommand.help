@@ -1,0 +1,15 @@
+NAME
+    commandnotfound - displays information about malformed commands
+
+USAGE
+    by entering an unknown command
+
+DESCRIPTION
+    displays the number of arguments given as well as the contents of each
+    argument.
+
+ARGUMENTS
+    none
+
+EXAMPLE
+    commandnotfound

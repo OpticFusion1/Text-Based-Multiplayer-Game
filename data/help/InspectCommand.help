@@ -1,0 +1,17 @@
+NAME
+    inspect - inspects an item or the room
+
+USAGE
+    inspect [itemname]
+
+DESCRIPTION
+    if no itemname is given, this command will inspect the room, otherwise it
+    will inspect the first item found with the given itemname. inspection will
+    list the roomid if applicable, name and description.
+
+ARGUMENTS
+    itemname
+        optional - item to inspect.
+
+EXAMPLE
+    inspect apple

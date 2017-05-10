@@ -26,6 +26,6 @@ public class QuitCommand extends Command {
 
     @Override
     public String getShortHelpDescription() {
-        return "Quits the game";
+        return "Quits the game.";
     }
 }
