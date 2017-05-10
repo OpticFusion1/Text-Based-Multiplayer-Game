@@ -3,9 +3,11 @@ package console_gui;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import commands.Command;
+import commands.RunnableCommand;
+import commands.MoveCommand;
 import commands.QuitCommand;
 import model.RoomManager;
+import model.RoomNode;
 import model.SerializationHelper;
 import model.UserSave;
 
@@ -21,6 +23,9 @@ public class Console {
             return;
         }
         
+        rm.addAllConnectedRooms();
+        
+        
         UserInputScanner input = new UserInputScanner(System.in);
         UserInformation info = new UserInformation(rm, System.out, input);
         
@@ -33,11 +38,9 @@ public class Console {
             return;
         }
 
-        info.out.println(info.getCurrentRoom().getDescription());
+        MoveCommand.LOOK.run(info);
         
         while(mainLoop(info));
-        
-        info.out.println("Thank you for experiencing Node Traversing Simulator 2017");
         
         SerializationHelper.saveRoomManager(rm);
     }
@@ -71,6 +74,12 @@ public class Console {
         } else {
             UserSave save = SerializationHelper.loadUser(username);
             info.setUsername(save.username);
+            
+            RoomNode room = info.rooms.getRoom(save.currentRoomID);
+            if (room != null) {
+                info.setCurrentRoom(room);
+            }
+            
             result = true;
         }
         
@@ -90,13 +99,12 @@ public class Console {
             info.out.print('>');
         }
         
-        Command com = info.input.getNextCommand();
+        RunnableCommand com = info.input.getNextCommand();
+        com.run(info);
         
         if (com.getRunnable() instanceof QuitCommand) {
             result = false;
         }
-        
-        com.run(info);
         
         return result;
     }

@@ -3,21 +3,29 @@ package commands;
 import java.util.List;
 
 import console_gui.UserInformation;
+import model.Direction;
 import model.Item;
 import model.RoomNode;
 
-public class LookCommand extends RunnableCommand {
+public class LookCommand extends Command {
 
     @Override
     public String[] getAliases() {
-        return new String[] {"LOOK"} ;
+        return new String[] {"LOOK", "L"} ;
     }
 
     @Override
+    public String getPreferredName() {
+        return "look";
+    }
+    
+    @Override
     public void runCommand(UserInformation info, String[] args) {
-        info.out.println(info.getCurrentRoom().getDescription());
+    	RoomNode r = info.getCurrentRoom();
+
+    	info.out.println(r.getName());
+        info.out.println(r.getDescription());
         
-        RoomNode r = info.getCurrentRoom();
         
         List<Item> itemsInTheRoom = r.getItems();
         
@@ -33,31 +41,17 @@ public class LookCommand extends RunnableCommand {
         
         info.out.print("Possible Directions: ");
 
-        if (r.getUp() != null) {
-            info.out.print("up ");
-        }
-
-        if (r.getDown() != null) {
-            info.out.print("down ");
-        }
-
-        if (r.getNorth() != null) {
-            info.out.print("north ");
-        }
-
-        if (r.getEast() != null) {
-            info.out.print("east ");
-        }
-
-        if (r.getSouth() != null) {
-            info.out.print("south ");
-        }
-        
-        if (r.getWest() != null) {
-            info.out.print("west ");
+        for (Direction d : Direction.values()) {
+            if (r.getDirection(d) != null) {
+                info.out.printf("%s ", d.toString());
+            }
         }
         
         info.out.print('\n');
     }
 
+    @Override
+    public String getShortHelpDescription() {
+        return "Look gives a description of the surroundings";
+    }
 }

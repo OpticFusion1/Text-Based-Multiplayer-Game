@@ -1,9 +1,9 @@
 package commands;
 
 import console_gui.UserInformation;
-import model.RoomNode;
+import model.Direction;
 
-public class DownCommand extends RunnableCommand {
+public class DownCommand extends MoveCommand {
 
     @Override
     public String[] getAliases() {
@@ -11,15 +11,17 @@ public class DownCommand extends RunnableCommand {
     }
 
     @Override
-    public void runCommand(UserInformation info, String[] args) {
-        RoomNode potentialRoom = info.getCurrentRoom().getDown();
+    public String getPreferredName() {
+        return "down";
+    }
     
-        if (potentialRoom == null) {
-            info.out.println("You can't go that way.");
-        } else {
-            info.setCurrentRoom(potentialRoom);
-            info.out.println(info.getCurrentRoom().getDescription());
-        }
+    @Override
+    public void runCommand(UserInformation info, String[] args) {
+        move(info, Direction.DOWN);
     }
 
+    @Override
+    public String getShortHelpDescription() {
+        return "Moves down by one room";
+    }
 }

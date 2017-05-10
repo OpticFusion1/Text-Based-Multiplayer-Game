@@ -3,40 +3,52 @@ package commands;
 import console_gui.UserInformation;
 
 /**
- * A command that can be run.
- * 
- * @author Zachary Chandler.
+ * A class to run a given command. As a rule each inheriting class needs to be interchangeable with other instances of 
+ * itself. Such that a call to any methods is equivalent between all instances of any inheriting class.
+ *  
+ * @author Zachary Chandler
  */
-public class Command {
-    /** The arguments to be run. */
-    private final String[] args;
-    
-    /** The runnable statements associated with the command. */
-    private RunnableCommand com;
-    
+public abstract class Command implements Comparable<Command>{
+   
     /**
-     * Create a new command for the given arguments and command.
-     * 
-     * @param args the arguments from the user.
-     * @param com the command that will be run.
+     * @return return a list of aliases for this Command.
      */
-    public Command(String[] args, RunnableCommand com) {
-        this.args = args;
-        this.com = com;
-    }
-    
-    /**
-     * Runs the command.
-     * @param info the user that the command will be run on.
-     */
-    public void run(UserInformation info) {
-        com.runCommand(info, args);
-    }
-    
-    /**
-     * @return the RunnableCommand of this Command.
-     */
-    public RunnableCommand getRunnable() {
-        return com;
-    }
+   public abstract String[] getAliases();
+   
+   /**
+    * Run the command for the given arguments on the given user.
+    * @param info the user that will have the command run.
+    * @param args the arguments of the command.
+    */
+   public abstract void runCommand(UserInformation info, String[] args);
+   
+   /**
+    * @return the help file for the object. 
+    */
+   public abstract String getShortHelpDescription();
+
+   /**
+    * @return preferred command name
+    */
+   public abstract String getPreferredName();
+   
+   @Override
+   public final int hashCode() {
+       return this.getClass().hashCode();
+   }
+   
+   @Override
+   public final boolean equals(Object other) {
+       return this.getClass().equals(other.getClass());
+   }
+   
+   @Override
+   public final int compareTo(Command other) {
+       return this.toString().compareTo(other.toString());
+   }
+   
+   @Override
+   public final String toString() {
+       return getPreferredName();
+   }
 }

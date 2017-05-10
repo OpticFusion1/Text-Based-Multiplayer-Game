@@ -1,9 +1,9 @@
 package commands;
 
 import console_gui.UserInformation;
-import model.RoomNode;
+import model.Direction;
 
-public class NorthCommand extends RunnableCommand {
+public class NorthCommand extends MoveCommand {
 
     @Override
     public String[] getAliases() {
@@ -11,15 +11,17 @@ public class NorthCommand extends RunnableCommand {
     }
 
     @Override
-    public void runCommand(UserInformation info, String[] args) {
-        RoomNode potentialRoom = info.getCurrentRoom().getNorth();
-        
-        if (potentialRoom == null) {
-            info.out.println("You can't go that way.");
-        } else {
-            info.setCurrentRoom(potentialRoom);
-            info.out.println(info.getCurrentRoom().getDescription());
-        }
+    public String getPreferredName() {
+        return "north";
     }
 
+    @Override
+    public void runCommand(UserInformation info, String[] args) {
+        move(info, Direction.NORTH);
+    }
+
+    @Override
+    public String getShortHelpDescription() {
+        return "Moves north by one room";
+    }
 }
