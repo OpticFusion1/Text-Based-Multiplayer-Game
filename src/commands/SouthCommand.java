@@ -22,6 +22,6 @@ public class SouthCommand extends MoveCommand {
 
     @Override
     public String getShortHelpDescription() {
-        return "Moves south by one room";
+        return "Moves south by one room.";
     }
 }

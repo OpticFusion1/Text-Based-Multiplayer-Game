@@ -133,6 +133,6 @@ public class ItemCommand extends Command {
 
     @Override
     public String getShortHelpDescription() {
-        return "Executes an item subcommand. Usage \"item <rename|describe|alias|unalias> <item-name> [value]\"";
+        return "Create/Destroy/Rename/Describe/Alias/Unalias items.";
     }
 }

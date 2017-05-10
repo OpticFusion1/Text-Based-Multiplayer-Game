@@ -34,6 +34,6 @@ public class CommandNotFoundCommand extends Command {
 
     @Override
     public String getShortHelpDescription() {
-        return "displays the given command that wasn't found.";
+        return "displays the arguments after a malformed command.";
     }
 }

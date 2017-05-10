@@ -12,7 +12,6 @@ import model.SerializationHelper;
 public class Initialize {
 
     /* TODO
-     * add help files
      * add item use-command <value>
      * add better documentation
      * 1.0!

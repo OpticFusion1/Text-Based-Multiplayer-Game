@@ -81,6 +81,6 @@ public class SetCommand extends Command {
 
     @Override
     public String getShortHelpDescription() {
-        return "Sets a given value. Usage \"set <room> <name|description> <value>\"";
+        return "Sets a given value in the room.";
     }
 }

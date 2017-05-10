@@ -22,6 +22,6 @@ public class UpCommand extends MoveCommand {
 
     @Override
     public String getShortHelpDescription() {
-        return "Moves up by one room";
+        return "Moves up by one room.";
     }
 }

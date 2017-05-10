@@ -43,6 +43,6 @@ public class InspectCommand extends Command {
     
     @Override
     public String getShortHelpDescription() {
-        return "Inspects a given item, or the room if no item is given. Usage 'inspect [item-name]'";
+        return "Inspects a given item, or the room if no item is given.";
     }
 }

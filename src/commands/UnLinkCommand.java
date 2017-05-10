@@ -50,6 +50,6 @@ public class UnLinkCommand extends Command {
 
     @Override
     public String getShortHelpDescription() {
-        return "Closes the link in this room in the given direction. Usage: \"unlink <DIRECTION>\"";
+        return "Closes a path in this room only.";
     }
 }

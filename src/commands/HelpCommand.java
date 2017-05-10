@@ -38,7 +38,7 @@ public class HelpCommand extends Command {
 
     @Override
     public String getShortHelpDescription() {
-        return "Lists all help descriptions for all available commands.";
+        return "Gets help for all all available commands.";
     }
 
 }

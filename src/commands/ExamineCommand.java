@@ -34,6 +34,6 @@ public class ExamineCommand extends Command {
 
     @Override
     public String getShortHelpDescription() {
-        return "Examines a given item. Usage 'examine <item-name>'";
+        return "Examines a given item.";
     }
 }

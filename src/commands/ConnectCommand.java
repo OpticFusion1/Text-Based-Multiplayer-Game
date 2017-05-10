@@ -67,7 +67,7 @@ public class ConnectCommand extends Command {
 
     @Override
     public String getShortHelpDescription() {
-        return "Connects to rooms togeather, bi-directionally if possible, Usage: \"connect <DIRECTION> <RoomID>\"";
+        return "Connects to rooms togeather, bi-directionally if possible.";
     }
 
 }
