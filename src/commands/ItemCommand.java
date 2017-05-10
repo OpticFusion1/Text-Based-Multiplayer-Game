@@ -63,6 +63,9 @@ public class ItemCommand extends Command {
                 case UNALIAS:
                     unalias(info, item, value);
                     break;
+                case SETUSE:
+                    setuse(info, item, value);
+                    break;
                 case CREATE:
                     create(info, value);
                     break;
@@ -79,6 +82,11 @@ public class ItemCommand extends Command {
         if (error) {
             info.out.print("see 'help item' for more information.\n");
         }
+    }
+
+    private void setuse(UserInformation info, Item item, String value) {
+        item.setOnUse(value);
+        info.out.printf("Set %s to run '%s' on use\n", item.getName(), value);
     }
 
     private void destroy(UserInformation info, String value) {
@@ -122,7 +130,7 @@ public class ItemCommand extends Command {
     }
 
     private enum CommandType {
-        CREATE(3), DESTROY(3), RENAME(4), DESCRIBE(4), ALIAS(4), UNALIAS(4);
+        CREATE(3), DESTROY(3), RENAME(4), DESCRIBE(4), ALIAS(4), UNALIAS(4), SETUSE(4);
         
         public int minimumArgs;
         
@@ -133,6 +141,6 @@ public class ItemCommand extends Command {
 
     @Override
     public String getShortHelpDescription() {
-        return "Create/Destroy/Rename/Describe/Alias/Unalias items.";
+        return "Create/Destroy/Rename/Describe/Alias/Unalias/SetUse for items.";
     }
 }

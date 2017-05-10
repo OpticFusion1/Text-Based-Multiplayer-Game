@@ -1,0 +1,15 @@
+NAME
+    echo - echo a line of text back to yourself
+
+USAGE
+    echo text
+
+DESCRIPTION
+    echos the given line of text back to the user.
+
+ARGUMENTS
+    text
+        the text the user will see
+
+EXAMPLE
+    echo "Hello World!"

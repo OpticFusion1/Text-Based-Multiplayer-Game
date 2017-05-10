@@ -31,6 +31,7 @@ public class InspectCommand extends Command {
             } else {
                 info.out.printf("Item Name: %s\n", toDescribe.getName());
                 info.out.printf("Item Description: %s\n", toDescribe.getDescription());
+                info.out.printf("Item OnUse: %s\n", toDescribe.getOnUse());
                 info.out.println("Aliases: ");
                 
                 for (String s : toDescribe.getAliases()) {

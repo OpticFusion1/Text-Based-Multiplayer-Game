@@ -2,11 +2,11 @@ NAME
     item - executes actions surrounding items
 
 USAGE
-    item <rename|describe|alias|unalias> <item-name> [value]
     item rename   itemname newname
     item describe itemname description
     item alias    itemname alias
     item unalias  itemname alias
+    item setuse   itemname use
     item create   itemname
     item destroy  itemname
 
@@ -27,22 +27,34 @@ ARGUMENTS
         removes the given alias from the item.
     
     create
-        creates a new item with the given name
+        creates a new item with the given name.
         
     destroy
-        destroys the given item
+        destroys the given item.
         
     itemname
-        the name of the item
+        the name of the item.
         
     newname 
-        a new name for the item
+        a new name for the item.
         
     description
-        a new description for the item
+        a new description for the item.
         
     alias
-        an alias for the item
+        an alias for the item.
+        
+    setuse
+        set the commands that run when this item is used.
+        
+    use
+        the commands that will be run.
 
 EXAMPLE
-    item create "Apple"
+    item rename   "apple"      "a banana"
+    item describe "a banana"   "a delicous fruit"
+    item alias    "a banna"    "banana"  
+    item unalias  "banana"     "apple"
+    item setuse   "banana"     "echo you eat the delicous banana"
+    item create   "an apple"
+    item destroy  "banana"
