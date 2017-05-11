@@ -37,7 +37,7 @@ public class Item implements Serializable {
         this.description = "a very plain object";
         this.aliases = new TreeSet<>();
         this.aliases.add(name.toUpperCase());
-        this.onUse = "";
+        this.onUse = "echo [nothing special happens]";
     }
     
     /** 

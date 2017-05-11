@@ -3,7 +3,7 @@ package commands;
 import console_gui.UserInformation;
 
 /**
- * A command that can be run.
+ * A class to run commands.
  * 
  * @author Zachary Chandler.
  */

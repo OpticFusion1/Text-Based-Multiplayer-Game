@@ -13,6 +13,10 @@ public class Initialize {
 
     /* TODO
      * add better documentation
+     * add check for connect so it doesn't overwrite a room
+     * add check for dig so it doesn't overwrite a room
+     * test initial use
+     * add more tests?
      * 1.0!
      */
     public static void main(String[] args) {

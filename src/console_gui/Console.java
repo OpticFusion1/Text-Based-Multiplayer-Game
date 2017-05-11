@@ -11,10 +11,19 @@ import model.RoomNode;
 import model.SerializationHelper;
 import model.UserSave;
 
+/**
+ * The console program to run this program.
+ *
+ * @author Zachary Chandler
+ */
 public class Console {
     
+    /** A constant for white space so we don't have to re-create it. */
     private static final Pattern WHITE_SPACE = Pattern.compile("\\s");
     
+    /**
+     * This program loads and runs a world for a single user.
+     */
     public static void main(String[] args) {
         RoomManager rm =  SerializationHelper.loadRoomManager();
         
@@ -38,7 +47,7 @@ public class Console {
             return;
         }
 
-        MoveCommand.LOOK.run(info);
+        MoveCommand.arrive(info);
         
         while(mainLoop(info));
         

@@ -9,6 +9,12 @@ import console_gui.UserInformation;
 import console_gui.UserInputScanner;
 import model.Item;
 
+/**
+ * A command to run the use string of an item as this players input string. Multiple recursions of the use command
+ * through this are limited to MAX_RECURSIONs.
+ *
+ * @author Zachary Chandler
+ */
 public class UseCommand extends Command {
 
     /** The max number of recursions we will allow the user to go through. */

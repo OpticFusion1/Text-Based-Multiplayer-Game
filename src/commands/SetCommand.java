@@ -2,9 +2,14 @@ package commands;
 
 import console_gui.Helper;
 import console_gui.UserInformation;
+import model.RoomNode;
 
+/**
+ * A command to set values for the current room. Such as the name and description.
+ *
+ * @author Zachary Chandler
+ */
 public class SetCommand extends Command {
-
     
     @Override
     public String[] getAliases() {
@@ -38,7 +43,13 @@ public class SetCommand extends Command {
             if (!error) {                
                 switch (args[1].toUpperCase()) {
                 case "ROOM":
-                    setRoom(info, fieldToSet, value);
+                    boolean result = setRoom(info.getCurrentRoom(), fieldToSet, value);
+
+                    if (result) {
+                        info.out.printf("Set %s of %s\n", fieldToSet, info.getCurrentRoom().getName());
+                    } else {
+                        info.out.printf("Could not set %s of %s\n", fieldToSet.toString(), info.getCurrentRoom().getName());            
+                    }
                     break;
                     
                 default:
@@ -52,29 +63,38 @@ public class SetCommand extends Command {
         }
     }
     
-    public void setRoom(UserInformation info, Field fieldToSet, String value) {
+    /**
+     * A method to set the given field of the given room for the given value.
+     * 
+     * @param room the room to set values of.
+     * @param fieldToSet the field to set.
+     * @param value the value to set the field.
+     * @return if the field was set.
+     */
+    public boolean setRoom(RoomNode room, Field fieldToSet, String value) {
         boolean result = true;
         
         switch (fieldToSet) {
         case NAME:
-            info.getCurrentRoom().setName(value);
+            room.setName(value);
             break;
         
         case DESCRIPTION:
-            info.getCurrentRoom().setDescription(value);
+            room.setDescription(value);
             break;
             
         default:
             result = false;
         }
         
-        if (result) {
-            info.out.printf("Set %s of %s\n", fieldToSet, info.getCurrentRoom().getName());
-        } else {
-            info.out.printf("Could not set %s of %s\n", fieldToSet.toString(), info.getCurrentRoom().getName());            
-        }
+        
+        return result;
     }
     
+    /**
+     * An enumerator for fields we could set.
+     * @author Zachary Chandler
+     */
     private enum Field {
         NAME, DESCRIPTION;
     }

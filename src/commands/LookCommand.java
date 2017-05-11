@@ -7,6 +7,12 @@ import model.Direction;
 import model.Item;
 import model.RoomNode;
 
+/**
+ * A command to gather basic information about the users surroundings. Including, room name, room description, objects,
+ * and possible paths.
+ * 
+ * @author Zachary Chandler
+ */
 public class LookCommand extends Command {
 
     @Override

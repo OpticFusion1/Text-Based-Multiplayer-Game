@@ -5,6 +5,13 @@ import console_gui.UserInformation;
 import model.Direction;
 import model.RoomNode;
 
+/**
+ * A command to connect two rooms together. The current room, and another room given in the form of a room number. If
+ * possible they will be connect bi-directionally. If that isn't possible only the path in the direction of the current
+ * room will be set. If there is already a room in the given direction the command will fail.
+ * 
+ * @author Zachary Chandler
+ */
 public class ConnectCommand extends Command {
 
     @Override

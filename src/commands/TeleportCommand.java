@@ -4,6 +4,11 @@ import console_gui.Helper;
 import console_gui.UserInformation;
 import model.RoomNode;
 
+/**
+ * A command to teleport the user to a given room.
+ *
+ * @author Zachary Chandler
+ */
 public class TeleportCommand extends Command {
 
     @Override
@@ -36,7 +41,7 @@ public class TeleportCommand extends Command {
                     info.out.println("Room not found!");
                 } else {
                     info.setCurrentRoom(result);
-                    MoveCommand.LOOK.run(info);
+                    MoveCommand.arrive(info);
                 }
             }
         }

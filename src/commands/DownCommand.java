@@ -3,6 +3,11 @@ package commands;
 import console_gui.UserInformation;
 import model.Direction;
 
+/**
+ * A command to move the user in a given direction.
+ * 
+ * @author Zachary Chandler
+ */
 public class DownCommand extends MoveCommand {
 
     @Override

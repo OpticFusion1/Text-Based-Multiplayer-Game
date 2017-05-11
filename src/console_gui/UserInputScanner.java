@@ -196,12 +196,12 @@ public class UserInputScanner {
             Command runner = COMMAND_MAP.get(args[0].toUpperCase());
             
             if (runner == null) {
-                runner = COMMAND_MAP.get(CommandNotFoundCommand.LOOK_UP_STRING);
+                runner = COMMAND_MAP.get("COMMANDNOTFOUND");
             }
             
             result = new RunnableCommand(args, runner);
         } else {
-            result = new RunnableCommand(args, COMMAND_MAP.get(CommandNotFoundCommand.LOOK_UP_STRING));
+            result = new RunnableCommand(args, COMMAND_MAP.get("COMMANDNOTFOUND"));
         }
         
         return result;
@@ -237,7 +237,7 @@ public class UserInputScanner {
     }
     
     /**
-     * Cleans of extra characters that were used to preserve the characters inside them.
+     * If applicable, this method cleans off extra characters that were used to preserve the characters inside them.
      * 
      * @param match that match to clean off
      * @return a new string without the extra characters at either end.

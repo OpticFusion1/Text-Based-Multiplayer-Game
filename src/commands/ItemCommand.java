@@ -4,6 +4,11 @@ import console_gui.Helper;
 import console_gui.UserInformation;
 import model.Item;
 
+/**
+ * A command to deal with multiple commands regarding items. See the help page for more details on it's use.
+ * 
+ * @author Zachary Chandler
+ */
 public class ItemCommand extends Command {
 
     @Override

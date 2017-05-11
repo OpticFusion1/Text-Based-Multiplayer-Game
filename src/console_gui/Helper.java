@@ -1,34 +1,53 @@
 package console_gui;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import java.util.TreeSet;
 
 import model.RoomNode;
 
 /**
- * Some test code that could end up being useful later on.
+ * A helper class for some more obscure methods that can be re-used.
  * 
  * @author Zachary Chandler
  */
 public class Helper {
     
-    public static void printAllRoomNodes(RoomNode node) {
-        printAllRoomNodes(node, new TreeSet<>());
+    /**
+     * Prints all rooms that are connected to node.
+     * 
+     * @param node the starting room.
+     */
+    public static void printAllConnectedRoomNodes(RoomNode node) {
+        printAllConnectedRoomNodes(node, new TreeSet<>());
     }
     
-    private static void printAllRoomNodes(RoomNode node, TreeSet<RoomNode> seenNodes) {
+    /**
+     * The recursive method for printing all rooms.
+     * @param node the current node.
+     * @param seenNodes the nodes we have already seen.
+     */
+    private static void printAllConnectedRoomNodes(RoomNode node, TreeSet<RoomNode> seenNodes) {
         if (node != null && !seenNodes.contains(node)) {
             System.out.println(node.getRoomID() + ": " + node.getName());
             seenNodes.add(node);
             
-            printAllRoomNodes(node.getUp());
-            printAllRoomNodes(node.getDown());
-            printAllRoomNodes(node.getNorth());
-            printAllRoomNodes(node.getWest());
-            printAllRoomNodes(node.getEast());
-            printAllRoomNodes(node.getSouth());
+            printAllConnectedRoomNodes(node.getUp(), seenNodes);
+            printAllConnectedRoomNodes(node.getDown(), seenNodes);
+            printAllConnectedRoomNodes(node.getNorth(), seenNodes);
+            printAllConnectedRoomNodes(node.getWest(), seenNodes);
+            printAllConnectedRoomNodes(node.getEast(), seenNodes);
+            printAllConnectedRoomNodes(node.getSouth(), seenNodes);
         }
     }
     
+    /**
+     * Parses an Integer without throwing exceptions. If one couldn't be parsed, a null is returned.
+     * 
+     * @param stringInt the string to attempt to parse.
+     * @return the integer representation of the string, or null if there isn't one.
+     */
     public static Integer safeParseInt(String stringInt) {
         Integer choice;
         
@@ -41,6 +60,15 @@ public class Helper {
         return choice;
     }
     
+    /**
+     * Merges an array of strings into a single string for the given starting and ending values in the array. The result
+     * will be all of the strings from strings[start] through strings[end] inclusively.
+     * 
+     * @param strings the array of strings to merge.
+     * @param start the first element in the array to merge.
+     * @param end the final element in the array to merge.
+     * @return the string of the given elements merged togeather.
+     */
     public static String mergeStrings(String[] strings, int start, int end) {
         if (end >= strings.length || start < 0 || start >= strings.length) {
             throw new IllegalArgumentException();
@@ -59,4 +87,30 @@ public class Helper {
         return name.toString();
     }
 
+    
+    /**
+     * Reads a file as a string and returns it. theFile needs to exist, not a directory and have read access.
+     * @param theFile the file to read from.
+     * @return the contents of the file in a string.
+     */
+    public static String readFileAsString(File theFile) {
+        StringBuilder result = new StringBuilder();
+        Scanner input = null;
+        
+        try {
+            input = new Scanner(theFile);
+        } catch (FileNotFoundException e) {
+            System.err.println("Error: attempted to read from invalid file.");
+            return "INVALID FILE LOADED";
+        }
+        
+        
+        while (input.hasNextLine()) {
+            result.append('\n');
+            result.append(input.nextLine());
+        }
+        
+        input.close();
+        return result.toString();
+    }
 }

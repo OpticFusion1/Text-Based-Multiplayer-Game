@@ -4,6 +4,19 @@ import console_gui.UserInformation;
 import model.Direction;
 import model.RoomNode;
 
+/**
+ * A command to separate a room from the other room, bi-directionally if applicable.
+ * 
+ * separates the current room from the room in the given direction such that a
+ * move in the current room in the given direction will not succeed and a move
+ * in the other room in the opposite direction will not lead to the current
+ * room.
+ * 
+ * after this command is called the path in the direction is unlinked and if 
+ * the other room had an opposite path to this room, it will also be unlinked.
+ *
+ * @author Zachary Chandler
+ */
 public class SeparateCommand extends Command {
 
     @Override

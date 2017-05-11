@@ -1,55 +1,37 @@
 package commands;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
 
+import console_gui.Helper;
 import console_gui.UserInformation;
 
 /**
- * A class to run a given command. As a rule each inheriting class needs to be interchangeable with other instances of 
- * itself. Such that a call to any methods is equivalent between all instances of any inheriting class.
- *  
+ * A class to be able to run a command. Keep track of the help file
+ * 
+ * Each inheriting class needs to be interchangeable with other instances of itself. Such that a call to any method is
+ * equivalent between all instances of any inheriting class.
+ * 
  * @author Zachary Chandler
  */
 public abstract class Command implements Comparable<Command>{
    
+    /** The help for the command. */
     private String helpPage;
     
+    /**
+     * Initialize the command. Automatically loads the help file for this command.
+     */
     public Command() {
         File helpPage = new File("data/help/" + this.getClass().getSimpleName() + ".help");
         
         if (helpPage.exists() && !helpPage.isDirectory()) {
-            this.helpPage = loadHelpPage(helpPage);            
+            this.helpPage = Helper.readFileAsString(helpPage);            
         } else {
             System.out.printf("Help page not found: %s\n", helpPage.toString());
             this.helpPage = "This command doesn't have a help page yet!";
         }
     }
-    
-    
-    private final String loadHelpPage(File f) {
-        StringBuilder result = new StringBuilder();
-        Scanner input = null;
-        
-        try {
-            input = new Scanner(f);
-        } catch (FileNotFoundException e) {
-            System.err.println("Please only use valid files.");
-            e.printStackTrace();
-            System.exit(1);
-        }
-        
-        
-        while (input.hasNextLine()) {
-            result.append('\n');
-            result.append(input.nextLine());
-        }
-        
-        input.close();
-        return result.toString();
-    }
-    
+  
     /**
      * @return return a list of aliases for this Command.
      */

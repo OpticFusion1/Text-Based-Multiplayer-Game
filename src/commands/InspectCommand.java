@@ -4,6 +4,11 @@ import console_gui.Helper;
 import console_gui.UserInformation;
 import model.Item;
 
+/**
+ * A command to get debug information on things. For instance, RoomID's, names, descriptions and use commands.
+ * 
+ * @author Zachary Chandler
+ */
 public class InspectCommand extends Command {
 
     @Override
