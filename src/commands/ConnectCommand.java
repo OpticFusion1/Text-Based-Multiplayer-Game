@@ -43,12 +43,15 @@ public class ConnectCommand extends Command {
             if (direction == null) {
                 info.out.print("Direction not found, ");
                 error = true;
+            } else if (info.getCurrentRoom().getDirection(direction) != null) {
+                info.out.print("There is already a room that way, ");
+                error = true;
             }
             
             if (choice == null) {
                 info.out.print("Invalid room number format, ");
                 error = true;
-            } 
+            }
 
             if (!error) {
                 RoomNode room = info.rooms.getRoom(choice);
@@ -68,7 +71,7 @@ public class ConnectCommand extends Command {
         }
         
         if (error) {
-            info.out.print("see 'help connect' for more details.");
+            info.out.print("see 'help connect' for more details.\n");
         }
     }
 
