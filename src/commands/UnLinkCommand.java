@@ -4,6 +4,11 @@ import console_gui.UserInformation;
 import model.Direction;
 import model.RoomNode;
 
+/**
+ * Unlinks the current room from another in the given direction. Applies only to the current room.
+ *
+ * @author Zachary Chandler
+ */
 public class UnLinkCommand extends Command {
 
     @Override

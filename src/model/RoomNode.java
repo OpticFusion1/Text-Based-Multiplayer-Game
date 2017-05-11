@@ -217,6 +217,7 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
     }
     
     /**
+     * Ignores case differences.
      * @param itemName the name of the item to look for.
      * @return the item or null, if it wasn't found.
      */

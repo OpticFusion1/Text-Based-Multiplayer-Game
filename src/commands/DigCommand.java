@@ -4,6 +4,16 @@ import console_gui.UserInformation;
 import model.Direction;
 import model.RoomNode;
 
+/**
+ * creates a room in the direction and joins it back in the inverse direction. 
+ * the room is given the room name and will have one path in it leading back to
+ * the initial room.
+ *
+ * after creating the room, the user is moved into the room and the rooms
+ * information is displayed.
+ * 
+ * @author Zachary Chandler
+ */
 public class DigCommand extends Command {
 
     public static final String DEFUALT_DESCRIPTION = "a very bland room";

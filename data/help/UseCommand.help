@@ -1,0 +1,16 @@
+NAME
+    use - use an object
+
+USAGE
+    use itemname
+
+DESCRIPTION
+    uses the object. or more specifically, it runs all of the commands stored
+    in the object as if the user had typed them.
+
+ARGUMENTS
+    itemname
+        the name of the item to use.
+
+EXAMPLE
+    use banana

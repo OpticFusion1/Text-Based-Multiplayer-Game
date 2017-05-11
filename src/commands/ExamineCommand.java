@@ -4,6 +4,11 @@ import console_gui.Helper;
 import console_gui.UserInformation;
 import model.Item;
 
+/**
+ * A command to examine an object. List various information for an object such as name and description.
+ * 
+ * @author Zachary Chandler
+ */
 public class ExamineCommand extends Command {
 
     @Override

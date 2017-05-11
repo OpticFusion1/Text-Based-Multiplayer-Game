@@ -4,6 +4,11 @@ import console_gui.Helper;
 import console_gui.UserInformation;
 import model.Item;
 
+/**
+ * A command to get debug information on things. For instance, RoomID's, names, descriptions and use commands.
+ * 
+ * @author Zachary Chandler
+ */
 public class InspectCommand extends Command {
 
     @Override
@@ -31,6 +36,7 @@ public class InspectCommand extends Command {
             } else {
                 info.out.printf("Item Name: %s\n", toDescribe.getName());
                 info.out.printf("Item Description: %s\n", toDescribe.getDescription());
+                info.out.printf("Item OnUse: %s\n", toDescribe.getOnUse());
                 info.out.println("Aliases: ");
                 
                 for (String s : toDescribe.getAliases()) {

@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -17,6 +18,7 @@ import commands.CommandNotFoundCommand;
 import commands.DigCommand;
 import commands.DownCommand;
 import commands.EastCommand;
+import commands.EchoCommand;
 import commands.ExamineCommand;
 import commands.HelpCommand;
 import commands.InspectCommand;
@@ -30,6 +32,7 @@ import commands.SouthCommand;
 import commands.TeleportCommand;
 import commands.UnLinkCommand;
 import commands.UpCommand;
+import commands.UseCommand;
 import commands.SeparateCommand;
 import commands.SetCommand;
 import commands.WestCommand;
@@ -64,7 +67,9 @@ public class UserInputScanner {
             new InspectCommand(),
             new SetCommand(),
             new ItemCommand(),
-            new HelpCommand()
+            new HelpCommand(),
+            new UseCommand(),
+            new EchoCommand()
     })));
     
     /** A map of aliases to commands for fast lookup time. */
@@ -85,7 +90,10 @@ public class UserInputScanner {
     }.getMap());
     
     /** Text that will not be broken up by. */
-    private static final Pattern TOKEN_TEXT = Pattern.compile("\"[^\"]*\"|<[^>^<]*>|\\[[^\\[^\\]]*\\]|[^\\s^\"^<^>^\\[^\\]]+");
+    private static final Pattern TOKEN_TEXT = Pattern.compile("\"[^\"]*\"|<[^>^<]*>|"
+            + "\\[[^\\[^\\]]*\\]|"
+            + "[^\\s^\"^<^>^\\[^\\]^;]+|"
+            + "[;]");
     
     /** Commands that have been queued up by the user. */
     private LinkedList<RunnableCommand> commands;
@@ -119,7 +127,7 @@ public class UserInputScanner {
     public boolean hasQueuedCommand() {
         return !commands.isEmpty();
     }
-    
+
     /**
      * Inserts the given command to be run next.
      * Subsequent calls will always run next.
@@ -142,15 +150,7 @@ public class UserInputScanner {
         RunnableCommand result;
         
         if (commands.isEmpty()) {
-            String[] semiSplit = input.nextLine().split("(\\s*;+\\s*)+");
-            
-            for (int i = 0; i < semiSplit.length; i++) {
-                RunnableCommand c = translateCommmand(semiSplit[i]);
-                
-                if (c != null) {
-                    commands.add(c);
-                }
-            }
+            commands.addAll(getCommands(input.nextLine()));
         }
         
         result = commands.poll();
@@ -159,50 +159,85 @@ public class UserInputScanner {
     }
     
     /**
-     * Translates a given string to a command.
+     * Get all the commands from a line of input.
+     * @param input the input to get commands from.
+     * @return the commands.
+     */
+    public static List<RunnableCommand> getCommands(String input) {
+        List<RunnableCommand> commands = new LinkedList<RunnableCommand>();
+        String[] args = getCommandTokens(input);
+        
+        int lastCommandStart = 0;
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals(";")) {
+                commands.add(translateCommmand(Arrays.copyOfRange(args, lastCommandStart, i)));
+                lastCommandStart = i + 1;
+            }
+        }
+        
+        commands.add(translateCommmand(Arrays.copyOfRange(args, lastCommandStart, args.length)));
+        
+        return commands;
+    }
+    
+    /**
+     * Translates the given arguments to a runnable command.
+     * 
+     * Postcondition, 
+     *      the resulting command will never be null.
+     * 
      * @param s the string to parse.
      * @return the resulting command.
      */
-    public RunnableCommand translateCommmand(String s) {
+    public static RunnableCommand translateCommmand(String[] args) {
         RunnableCommand result;
-        
-        String[] args = getCommandArguments(s);
         
         if (args.length > 0) {
             Command runner = COMMAND_MAP.get(args[0].toUpperCase());
             
             if (runner == null) {
-                runner = COMMAND_MAP.get(CommandNotFoundCommand.LOOK_UP_STRING);
+                runner = COMMAND_MAP.get("COMMANDNOTFOUND");
             }
             
             result = new RunnableCommand(args, runner);
         } else {
-            result = new RunnableCommand(args, COMMAND_MAP.get(CommandNotFoundCommand.LOOK_UP_STRING));
+            result = new RunnableCommand(args, COMMAND_MAP.get("COMMANDNOTFOUND"));
         }
         
         return result;
     }
     
     /**
-     * Get the arguments of the command.
-     * @param s the raw command.
-     * @return the arguments.
+     * Get the tokens of the command line.
+     * 
+     * subsequent semicolons are removed.
+     * 
+     * @param s the raw string.
+     * @return the tokens.
      */
-    public static String[] getCommandArguments(String s) {
+    public static String[] getCommandTokens(String s) {
         Matcher m = TOKEN_TEXT.matcher(s);
         LinkedList<String> tokens = new LinkedList<>();
         
         while(m.find()) {
             String match = m.group();
             match = cleanPreserveCharacters(match);
-            tokens.add(match);
+            
+         
+            if (!match.equals(";")) {
+                tokens.add(match);
+            } else {
+                if (!tokens.getLast().equals(";")) {
+                    tokens.add(match);                        
+                } // otherwise don't include superfluous command separators
+            }
         }
         
         return tokens.toArray(new String[0]);
     }
     
     /**
-     * Cleans of extra characters that were used to preserve the characters inside them.
+     * If applicable, this method cleans off extra characters that were used to preserve the characters inside them.
      * 
      * @param match that match to clean off
      * @return a new string without the extra characters at either end.

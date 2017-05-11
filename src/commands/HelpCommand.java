@@ -3,6 +3,11 @@ package commands;
 import console_gui.UserInformation;
 import console_gui.UserInputScanner;
 
+/**
+ * A command to help the user by displaying all commands and displaying the help page for a given command.
+ * 
+ * @author Zachary Chandler
+ */
 public class HelpCommand extends Command {
 
     @Override
@@ -40,5 +45,4 @@ public class HelpCommand extends Command {
     public String getShortHelpDescription() {
         return "Gets help for all all available commands.";
     }
-
 }

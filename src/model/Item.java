@@ -22,7 +22,11 @@ public class Item implements Serializable {
     /** The description of the item. */
 	private String description;
 	
+	/** Aliases of this item. */
 	private Set<String> aliases;
+
+	/** The string to run on use. */
+    private String onUse;
 
     /** 
      * Construct an item with the given name.
@@ -33,6 +37,7 @@ public class Item implements Serializable {
         this.description = "a very plain object";
         this.aliases = new TreeSet<>();
         this.aliases.add(name.toUpperCase());
+        this.onUse = "echo [nothing special happens]";
     }
     
     /** 
@@ -93,7 +98,7 @@ public class Item implements Serializable {
     }
     
     /**
-     * Checks if the given string matches the objects name or aliases.
+     * Checks if the given string matches the objects name or aliases. Ignores case differences.
      * @param nameToMatch the name to check.
      * @return if the name matched.
      */
@@ -106,5 +111,19 @@ public class Item implements Serializable {
      */
     public List<String> getAliases() {
         return new LinkedList<String>(aliases);
+    }
+
+    /**
+     * @return the onUse
+     */
+    public String getOnUse() {
+        return onUse;
+    }
+
+    /**
+     * @param onUse the onUse to set
+     */
+    public void setOnUse(String onUse) {
+        this.onUse = onUse;
     }
 }

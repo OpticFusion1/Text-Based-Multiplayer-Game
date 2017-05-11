@@ -2,13 +2,16 @@ package commands;
 
 import console_gui.UserInformation;
 
+/**
+ * A command that will display when no command is found.
+ * 
+ * @author Zachary Chandler
+ */
 public class CommandNotFoundCommand extends Command {
-
-    public static final String LOOK_UP_STRING = "";
     
     @Override
     public String[] getAliases() {
-        return new String[] {LOOK_UP_STRING, "COMMANDNOTFOUND"} ;
+        return new String[] {"", "COMMANDNOTFOUND"} ;
     }
 
     @Override

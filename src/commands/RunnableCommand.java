@@ -3,7 +3,7 @@ package commands;
 import console_gui.UserInformation;
 
 /**
- * A command that can be run.
+ * A class to run commands.
  * 
  * @author Zachary Chandler.
  */
@@ -32,11 +32,18 @@ public class RunnableCommand {
     public void run(UserInformation info) {
         com.runCommand(info, args);
     }
-    
+
     /**
      * @return the RunnableCommand of this Command.
      */
     public Command getRunnable() {
         return com;
+    }
+    
+    /**
+     * @return the RunnableCommand of this Command.
+     */
+    public String[] getArgs() {
+        return args.clone();
     }
 }
