@@ -1,0 +1,6 @@
+A simple backlog of features I am planning on implementing in the near future.
+
+add say command
+add me command
+add verbose feedback to the room instead of just the user for some commands
+add the new documentation

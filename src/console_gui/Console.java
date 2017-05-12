@@ -6,13 +6,12 @@ import java.util.regex.Pattern;
 import commands.RunnableCommand;
 import commands.MoveCommand;
 import commands.QuitCommand;
-import model.RoomManager;
 import model.RoomNode;
 import model.SerializationHelper;
 import model.UserSave;
 
 /**
- * The console program to run this program.
+ * The console...?
  *
  * @author Zachary Chandler
  */
@@ -24,34 +23,18 @@ public class Console {
     /**
      * This program loads and runs a world for a single user.
      */
-    public static void main(String[] args) {
-        RoomManager rm =  SerializationHelper.loadRoomManager();
+    public static void start(UserInformation info) {
         
-        if (rm == null) {
-            System.err.println("Failed to Load System!");
-            return;
-        }
+        int loginFails = 0;
+        while (loginFails < 3 && !login(info)) loginFails++;
         
-        rm.addAllConnectedRooms();
-        
-        
-        UserInputScanner input = new UserInputScanner(System.in);
-        UserInformation info = new UserInformation(rm, System.out, input);
-        
-        int fails = 0;
-        
-        while (!login(info) && fails < 3) fails++;
-        
-        if (fails >= 3) {
+        if (loginFails >= 3) {
             info.out.println("Failed to login, now exiting.");
             return;
         }
 
         MoveCommand.arrive(info);
-        
         while(mainLoop(info));
-        
-        SerializationHelper.saveRoomManager(rm);
     }
     
     /**
