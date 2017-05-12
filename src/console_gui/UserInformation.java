@@ -1,7 +1,10 @@
 package console_gui;
 
 import java.io.PrintStream;
+import java.util.List;
 
+import model.Player;
+import model.PlayersManager;
 import model.RoomManager;
 import model.RoomNode;
 
@@ -14,7 +17,9 @@ import model.RoomNode;
  *      
  * @author Zachary Chandler
  */
-public class UserInformation {
+public class UserInformation implements Player, Comparable<Player> {
+    
+    public static final PlayersManager MANAGER = new PlayersManager();
     
     /** The current room of the user. */
     private RoomNode currentRoom;
@@ -65,9 +70,25 @@ public class UserInformation {
      */
     public void setCurrentRoom(RoomNode currentRoom) {
         if (currentRoom != null) {
-            this.currentRoom = currentRoom;            
+            this.currentRoom = currentRoom;
+            MANAGER.setRoomOfPlayer(this, currentRoom);
         }
-        
+    }
+
+    /**
+     * Gets all of the players the given room.
+     * @param room the room to check.
+     * @return a list of players in that room.
+     */
+    public static List<Player> getPlayersInRoom(RoomNode room) {
+        return MANAGER.getPlayers(room);
+    }
+    
+    /**
+     * @return the players in the current room.
+     */
+    public List<Player> getPlayersInRoom() {
+        return getPlayersInRoom(currentRoom);
     }
 
     /**
@@ -82,5 +103,15 @@ public class UserInformation {
      */
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public int compareTo(Player o) {
+        return this.getUsername().compareTo(((UserInformation) o).getUsername());
+    }
+
+    @Override
+    public void displayToPlayer(String s) {
+        out.println(s);
     }
 }

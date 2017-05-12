@@ -21,6 +21,8 @@ public class ServerHandler implements Runnable {
     
     @Override
     public void run() {
+        System.out.printf("Opening server on port %s\n", server.getLocalPort());
+        
         while (true) {
             Socket client;
             try {
