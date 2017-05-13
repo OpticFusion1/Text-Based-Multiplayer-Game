@@ -1,6 +1,6 @@
 package commands;
 
-import console_gui.User;
+import console.User;
 import model.Direction;
 
 /**

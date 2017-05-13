@@ -1,6 +1,6 @@
 package commands;
 
-import console_gui.User;
+import console.User;
 
 /**
  * A class to run commands.

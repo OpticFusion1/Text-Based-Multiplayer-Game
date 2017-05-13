@@ -1,7 +1,7 @@
 package commands;
 
-import console_gui.User;
-import console_gui.UserInputScanner;
+import console.User;
+import console.UserInputScanner;
 
 /**
  * A command to help the user by displaying all commands and displaying the help page for a given command.

@@ -1,7 +1,7 @@
 package commands;
 
-import console_gui.Helper;
-import console_gui.User;
+import console.Helper;
+import console.User;
 import model.SerializationHelper;
 import model.UserSave;
 

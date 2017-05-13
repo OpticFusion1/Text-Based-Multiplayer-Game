@@ -6,9 +6,9 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 
 import commands.QuitCommand;
-import console_gui.Console;
-import console_gui.User;
-import console_gui.UserInputScanner;
+import console.Console;
+import console.User;
+import console.UserInputScanner;
 import model.RoomManager;
 
 public class ClientHandler implements Runnable {

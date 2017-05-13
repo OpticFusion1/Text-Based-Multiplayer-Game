@@ -2,8 +2,8 @@ package commands;
 
 import java.io.File;
 
-import console_gui.Helper;
-import console_gui.User;
+import console.Helper;
+import console.User;
 
 /**
  * A class to be able to run a command. Keep track of the help file

@@ -1,4 +1,4 @@
-package console_gui;
+package console;
 
 import java.io.File;
 import java.io.FileNotFoundException;

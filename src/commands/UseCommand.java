@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import console_gui.Helper;
-import console_gui.User;
-import console_gui.UserInputScanner;
+import console.Helper;
+import console.User;
+import console.UserInputScanner;
 import model.Item;
 
 /**

@@ -1,6 +1,6 @@
 package commands;
 
-import console_gui.User;
+import console.User;
 
 /**
  * A command that will display when no command is found.

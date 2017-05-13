@@ -1,7 +1,7 @@
 package commands;
 
-import console_gui.Helper;
-import console_gui.User;
+import console.Helper;
+import console.User;
 
 /**
  * A command to echo a line of text back to the user. Useful for item use.

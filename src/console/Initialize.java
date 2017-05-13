@@ -1,4 +1,4 @@
-package console_gui;
+package console;
 
 import model.RoomManager;
 import model.RoomNode;

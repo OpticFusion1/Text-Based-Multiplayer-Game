@@ -2,7 +2,7 @@ package commands;
 
 import java.util.List;
 
-import console_gui.User;
+import console.User;
 import model.Direction;
 import model.Item;
 import model.RoomNode;
