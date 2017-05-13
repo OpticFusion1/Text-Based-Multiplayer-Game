@@ -2,8 +2,8 @@ package network;
 
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import model.RoomManager;
 import model.SerializationHelper;
@@ -27,7 +27,7 @@ public class Server {
         }
 
         // Start server
-        final Executor threads = Executors.newFixedThreadPool(51);
+        final ThreadPoolExecutor threads = (ThreadPoolExecutor) Executors.newFixedThreadPool(51);
         final ServerHandler server = new ServerHandler(threads, rm, PORT);
         threads.execute(server);
         

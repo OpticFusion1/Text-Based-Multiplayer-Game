@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import commands.RunnableCommand;
-import commands.MoveCommand;
+import commands.LookCommand;
 import commands.QuitCommand;
 import model.RoomNode;
 import model.SerializationHelper;
@@ -33,7 +33,10 @@ public class Console {
             return;
         }
 
-        MoveCommand.arrive(info);
+        String message = Helper.buildString(info.getUsername(), " popped into existence");
+        User.chat.printlnToOthersInRoom(info, message);
+        info.input.insertNextCommand(LookCommand.instance);
+        
         while(mainLoop(info));
     }
     

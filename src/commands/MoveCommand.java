@@ -12,9 +12,6 @@ import model.RoomNode;
  * @author Zachary Chandler
  */
 public abstract class MoveCommand extends Command {
-
-    /** A simple static command we can use to run look right after moving. */
-    private static final RunnableCommand LOOK = new RunnableCommand(new String[] {"LOOK"}, new LookCommand());
     
     /** A method to allow subclasses to automatically move given a direction. */
     public static void move(User info, Direction d) {
@@ -25,32 +22,27 @@ public abstract class MoveCommand extends Command {
         } else {
             leaveMessage(info, d);
             info.setCurrentRoom(potentialRoom);
-            arrive(info, d);
+            arriveMessage(info);
+
+            info.input.insertNextCommand(LookCommand.instance);
         }
     }
 
     /** A method to display information when the user changes rooms. */
-    public static void arrive(User info) {
-        LOOK.run(info);
-        
+    public static void arriveMessage(User info) {
         String message = info.getUsername() + " arrived";
-        
         User.chat.printlnToOthersInRoom(info, message);
     }
     
     /** A method to display information when the user changes rooms. */
-    public static void arrive(User info, Direction d) {
-        LOOK.run(info);
-
-        String message = Helper.buildString(info.getUsername(), " arrived from the ", d.lowercaseName);
-
+    public static void arriveMessage(User info, Direction d) {
+        String message = Helper.buildString(info.getUsername(), " arrived ", d.lowercaseName);
         User.chat.printlnToOthersInRoom(info, message);
     }
     
     /** A method to display information when the user changes rooms. */
     public static void leaveMessage(User info, Direction d) {
-        String message = Helper.buildString(info.getUsername(), " left to the ", d.lowercaseName);
-
+        String message = Helper.buildString(info.getUsername(), " left ", d.lowercaseName);
         User.chat.printlnToOthersInRoom(info, message);
     }
 }

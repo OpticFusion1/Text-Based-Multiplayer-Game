@@ -20,9 +20,13 @@ public class PlayerManager {
     /** room of a player */
     private TreeMap<User, RoomNode> playerToRoom;
 
+    /** unmodifiable map of players in a room */
+    private TreeMap<RoomNode, List<User>> unmodifiableRoomToPlayers;
+    
     /** Creates a new player manager without any players in it. */
     public PlayerManager() {
         this.roomToPlayers = new TreeMap<RoomNode, List<User>>();
+        this.unmodifiableRoomToPlayers = new TreeMap<RoomNode, List<User>>();
         this.playerToRoom = new TreeMap<User, RoomNode>();
     }
     
@@ -52,6 +56,7 @@ public class PlayerManager {
         if (rooms == null) {
             rooms = new LinkedList<User>();
             roomToPlayers.put(room, rooms);
+            unmodifiableRoomToPlayers.put(room, Collections.unmodifiableList(rooms));
         }
         
         rooms.add(p);
@@ -64,6 +69,6 @@ public class PlayerManager {
      * @return the players in the room.
      */
     public List<User> getPlayers(RoomNode room) {
-        return Collections.unmodifiableList(roomToPlayers.get(room));
+        return unmodifiableRoomToPlayers.get(room);
     }
 }

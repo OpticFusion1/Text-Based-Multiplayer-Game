@@ -1,6 +1,5 @@
 A simple backlog of features I am planning on implementing in the near future.
 
-figure out law of demeter
 implement player display in look
 write some actual tests
 push to master!

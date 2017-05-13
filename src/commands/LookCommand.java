@@ -14,6 +14,9 @@ import model.RoomNode;
  * @author Zachary Chandler
  */
 public class LookCommand extends Command {
+    
+    /** A simple static instance to avoid needless declarations of the object. */
+    public static final RunnableCommand instance = new RunnableCommand(new String[] {"LOOK"}, new LookCommand());
 
     @Override
     public String[] getAliases() {
@@ -34,17 +37,24 @@ public class LookCommand extends Command {
         
         
         List<Item> itemsInTheRoom = r.getItems();
+        List<User> playersInTheRoom = info.getPlayersInRoom();
         
-        if (!itemsInTheRoom.isEmpty()) {
+        if (!itemsInTheRoom.isEmpty() || !playersInTheRoom.isEmpty()) {
             info.println("You can see:");
             
-            
+            for (User p : playersInTheRoom) {
+                if (p != info) {
+                    info.print('\t');
+                    info.print(p.getUsername());
+                    info.print('\n');
+                }
+            }
             
             for (Item i : itemsInTheRoom) {
                 info.print('\t');
                 info.print(i.getName());
                 info.print('\n');
-            }            
+            }
         }
         
         info.print("Possible Directions: ");

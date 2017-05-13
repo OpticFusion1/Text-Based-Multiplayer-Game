@@ -1,6 +1,7 @@
 package console;
 
 import java.io.PrintStream;
+import java.util.List;
 
 import model.RoomManager;
 import model.RoomNode;
@@ -10,7 +11,8 @@ import model.RoomNode;
  * 
  * Responsibilities:
  *      keep track of the current room.
- *      keep track of a room manager
+ *      keep track of a room manager.
+ *      keep track of a player manager.
  *      
  * @author Zachary Chandler
  */
@@ -74,6 +76,10 @@ public class User implements Comparable<User> {
             this.currentRoom = currentRoom;
             MANAGER.setRoomOfPlayer(this, currentRoom);
         }
+    }
+    
+    public List<User> getPlayersInRoom() {
+        return MANAGER.getPlayers(currentRoom);
     }
 
     /**
