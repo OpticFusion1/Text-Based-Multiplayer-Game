@@ -3,6 +3,11 @@ package commands;
 import console.Helper;
 import console.User;
 
+/**
+ * writes a message to everyone in the room.
+ *
+ * @author Zachary Chandler
+ */
 public class SayCommand extends Command {
 
     @Override

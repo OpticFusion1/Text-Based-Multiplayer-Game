@@ -3,8 +3,12 @@ package commands;
 import console.Helper;
 import console.User;
 
+/**
+ * writes a message to everyone in the room and displays it in third person.
+ *
+ * @author Zachary Chandler
+ */
 public class MeCommand extends Command {
-
     @Override
     public String[] getAliases() {
         return new String[] {"ME"};
@@ -36,6 +40,4 @@ public class MeCommand extends Command {
     public String getPreferredName() {
         return "me";
     }
-
-
 }

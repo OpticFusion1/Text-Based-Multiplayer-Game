@@ -38,6 +38,8 @@ public class LookCommand extends Command {
         if (!itemsInTheRoom.isEmpty()) {
             info.println("You can see:");
             
+            
+            
             for (Item i : itemsInTheRoom) {
                 info.print('\t');
                 info.print(i.getName());
