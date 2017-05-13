@@ -1,5 +1,5 @@
 A simple backlog of features I am planning on implementing in the near future.
 
-implement player display in look
+flesh out User.login and User.logout
 write some actual tests
 push to master!

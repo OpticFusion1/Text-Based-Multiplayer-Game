@@ -29,19 +29,19 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         boolean closedGracefully;
-        System.out.printf("Connected: %s\n", getConnectionName());
+        System.out.printf("Connected: %s\n", getConnectorName());
         
         try {
             Console.start(info);
             closedGracefully = true;
         } catch (NoSuchElementException e) {
-            System.out.printf("%s has closed the connection\n", getConnectionName());
+            System.out.printf("%s has closed the connection\n", getConnectorName());
             QuitCommand.saveUser(info);
             closedGracefully = false;
         }
 
         if (closedGracefully) {
-            System.out.printf("%s has logged out\n", getConnectionName());            
+            System.out.printf("%s has logged out\n", getConnectorName());            
         }
         
         try { 
@@ -52,7 +52,7 @@ public class ClientHandler implements Runnable {
         
     }
     
-    private String getConnectionName() {
+    private String getConnectorName() {
         String name = info.getUsername();
         return name == null ? soc.toString() : name;
     }

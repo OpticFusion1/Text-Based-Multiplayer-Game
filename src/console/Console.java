@@ -1,5 +1,7 @@
 package console;
 
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +22,8 @@ public class Console {
     /** A constant for white space so we don't have to re-create it. */
     private static final Pattern WHITE_SPACE = Pattern.compile("\\s");
     
+    private static final Set<String> loggedInPlayers = new TreeSet<String>();
+    
     /**
      * This program loads and runs a world for a single user.
      */
@@ -38,6 +42,7 @@ public class Console {
         info.input.insertNextCommand(LookCommand.instance);
         
         while(mainLoop(info));
+        loggedInPlayers.remove(info.getUsername().toUpperCase());
     }
     
     /**
@@ -62,10 +67,15 @@ public class Console {
             
             if (ans.equals("YES") || ans.equals("Y")) {
                 info.setUsername(username);
+                QuitCommand.saveUser(info);
+                info.setCurrentRoom(info.getCurrentRoom());
                 result = true;
             } else {
                 result = false;
             }
+        } else if (loggedInPlayers.contains(username.toUpperCase())) {
+            info.println("This account is already logged in!");
+            result = false;
         } else {
             UserSave save = SerializationHelper.loadUser(username);
             info.setUsername(save.username);
@@ -73,9 +83,12 @@ public class Console {
             RoomNode room = info.rooms.getRoom(save.currentRoomID);
             if (room != null) {
                 info.setCurrentRoom(room);
+            } else {
+                info.setCurrentRoom(info.getCurrentRoom());
             }
             
             result = true;
+            loggedInPlayers.add(username.toUpperCase());
         }
         
         return result;

@@ -58,7 +58,7 @@ public class User implements Comparable<User> {
         this.out = out;
         this.input = input;
         this.rooms = rooms;
-        currentRoom = rooms.getStartingRoom();
+        this.currentRoom = rooms.getStartingRoom();
     }
     
     /**
