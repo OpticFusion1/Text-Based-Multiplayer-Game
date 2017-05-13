@@ -3,3 +3,7 @@ A simple backlog of features I am planning on implementing in the near future.
 lowercase Direction names
 implement law of Demeter
 add the new documentation
+push to master!
+
+tell don't show
+write more tests
