@@ -1,6 +1,7 @@
 package commands;
 
-import console_gui.UserInformation;
+import console_gui.Helper;
+import console_gui.User;
 import model.Direction;
 import model.RoomNode;
 
@@ -30,11 +31,11 @@ public class SeparateCommand extends Command {
     }
     
     @Override
-    public void runCommand(UserInformation info, String[] args) {
+    public void runCommand(User info, String[] args) {
         boolean error = false;
         
         if (args.length != 2) {
-            info.out.print("Invalid number of arguments, ");
+            info.print("Invalid number of arguments, ");
             
             error = true;
         } else {
@@ -42,13 +43,13 @@ public class SeparateCommand extends Command {
             Direction oppositeDirection = Direction.getOppositeDirection(directionToWallOff);
             
             if (directionToWallOff == null) {
-                info.out.print("Direction not found, ");
+                info.print("Direction not found, ");
                 error = true;
             } else {
                 RoomNode room = info.getCurrentRoom().getDirection(directionToWallOff);
                 
                 if (room == null) {
-                    info.out.println("There isn't a room there!");
+                    info.println("There isn't a room there!");
                 } else {
                     info.getCurrentRoom().setDirection(directionToWallOff, null);
                     
@@ -56,14 +57,17 @@ public class SeparateCommand extends Command {
                         room.setDirection(oppositeDirection, null);                        
                     }
                     
-                    info.out.printf("Sperated %s from %s\n", info.getCurrentRoom().getName(), room.getName());
+                    String message = Helper.buildString(info.getUsername(), " separated ",
+                            info.getCurrentRoom().getName(), "from", room.getName());
+                    
+                    info.printlnToRoom(message);
                 }
             }
             
         }
         
         if (error) {
-            info.out.print("see help seperate for more details.\n");
+            info.print("see help seperate for more details.\n");
         }
         
     }

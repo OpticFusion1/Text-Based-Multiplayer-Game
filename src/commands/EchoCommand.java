@@ -1,7 +1,7 @@
 package commands;
 
 import console_gui.Helper;
-import console_gui.UserInformation;
+import console_gui.User;
 
 /**
  * A command to echo a line of text back to the user. Useful for item use.
@@ -16,11 +16,11 @@ public class EchoCommand extends Command {
     }
 
     @Override
-    public void runCommand(UserInformation info, String[] args) {
+    public void runCommand(User info, String[] args) {
         
         if (args.length > 1) {
             String value = Helper.mergeStrings(args, 1, args.length - 1);
-            info.out.println(value);
+            info.println(value);
         }
         
     }

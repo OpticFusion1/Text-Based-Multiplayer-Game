@@ -1,6 +1,7 @@
 package commands;
 
-import console_gui.UserInformation;
+import console_gui.Helper;
+import console_gui.User;
 import model.SerializationHelper;
 import model.UserSave;
 
@@ -24,9 +25,12 @@ public class QuitCommand extends Command {
     }
     
     @Override
-    public void runCommand(UserInformation info, String[] args) {
+    public void runCommand(User info, String[] args) {
         saveUser(info);
-        info.out.println(EXIT_MESSAGE);
+        info.println(EXIT_MESSAGE);
+        
+        String message = Helper.buildString(info.getUsername(), " popped out of existence.");
+        info.printlnToOthersInRoom(message);
     }
     
     /**
@@ -35,7 +39,7 @@ public class QuitCommand extends Command {
      * 
      * @param info the user to save.
      */
-    public static void saveUser(UserInformation info) {
+    public static void saveUser(User info) {
         SerializationHelper.saveUser(new UserSave(info.getCurrentRoom().getRoomID(), info.getUsername()));
     }
 

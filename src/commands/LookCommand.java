@@ -2,7 +2,7 @@ package commands;
 
 import java.util.List;
 
-import console_gui.UserInformation;
+import console_gui.User;
 import model.Direction;
 import model.Item;
 import model.RoomNode;
@@ -26,34 +26,34 @@ public class LookCommand extends Command {
     }
     
     @Override
-    public void runCommand(UserInformation info, String[] args) {
+    public void runCommand(User info, String[] args) {
     	RoomNode r = info.getCurrentRoom();
 
-    	info.out.println(r.getName());
-        info.out.println(r.getDescription());
+    	info.println(r.getName());
+        info.println(r.getDescription());
         
         
         List<Item> itemsInTheRoom = r.getItems();
         
         if (!itemsInTheRoom.isEmpty()) {
-            info.out.println("You can see:");
+            info.println("You can see:");
             
             for (Item i : itemsInTheRoom) {
-                info.out.print('\t');
-                info.out.print(i.getName());
-                info.out.print('\n');
+                info.print('\t');
+                info.print(i.getName());
+                info.print('\n');
             }            
         }
         
-        info.out.print("Possible Directions: ");
+        info.print("Possible Directions: ");
 
         for (Direction d : Direction.values()) {
             if (r.getDirection(d) != null) {
-                info.out.printf("%s ", d.toString());
+                info.printf("%s ", d.lowercaseName);
             }
         }
         
-        info.out.print('\n');
+        info.print('\n');
     }
 
     @Override

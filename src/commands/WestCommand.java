@@ -5,7 +5,7 @@ package commands;
  * 
  * @author Zachary Chandler
  */
-import console_gui.UserInformation;
+import console_gui.User;
 import model.Direction;
 
 public class WestCommand extends MoveCommand {
@@ -21,7 +21,7 @@ public class WestCommand extends MoveCommand {
     }
     
     @Override
-    public void runCommand(UserInformation info, String[] args) {
+    public void runCommand(User info, String[] args) {
         move(info, Direction.WEST);
     }
 

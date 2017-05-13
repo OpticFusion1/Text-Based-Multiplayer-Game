@@ -1,7 +1,7 @@
 package commands;
 
 import console_gui.Helper;
-import console_gui.UserInformation;
+import console_gui.User;
 import model.Item;
 
 /**
@@ -22,11 +22,11 @@ public class ItemCommand extends Command {
     }
     
     @Override
-    public void runCommand(UserInformation info, String[] args) {
+    public void runCommand(User info, String[] args) {
         boolean error = false;
         
         if (args.length < 3) {
-            info.out.print("Not enough arguements, ");
+            info.print("Not enough arguements, ");
             error = true;
         } else {
             String name = args[2];
@@ -38,7 +38,7 @@ public class ItemCommand extends Command {
                 field = CommandType.valueOf(args[1].toUpperCase()); 
                 
                 if (field.minimumArgs > args.length) {
-                    info.out.print("Not enough arguements, ");
+                    info.print("Not enough arguements, ");
                     error = true;
                 } else {
                     value = Helper.mergeStrings(args, field.minimumArgs - 1, args.length - 1);
@@ -46,11 +46,11 @@ public class ItemCommand extends Command {
             } catch (IllegalArgumentException e) {
                 field = null;
                 error = true;
-                info.out.printf("Option not found %s, ", args[1]);
+                info.printf("Option not found %s, ", args[1]);
             }
             
             if (item == null && needsItem(field)) {
-                info.out.printf("Item %s not found, ", name);
+                info.printf("Item %s not found, ", name);
                 error = true;
             }
             
@@ -85,55 +85,60 @@ public class ItemCommand extends Command {
         }
         
         if (error) {
-            info.out.print("see 'help item' for more information.\n");
+            info.print("see 'help item' for more information.\n");
         }
     }
 
-    private void setuse(UserInformation info, Item item, String value) {
+    private void setuse(User info, Item item, String value) {
         item.setOnUse(value);
-        info.out.printf("Set %s to run '%s' on use\n", item.getName(), value);
+        info.printf("Set %s to run '%s' on use\n", item.getName(), value);
     }
 
-    private void destroy(UserInformation info, String value) {
+    private void destroy(User info, String value) {
         Item item = info.getCurrentRoom().findItem(value);
         
         if (item == null) {
-            info.out.printf("Could not find %s to destroy.\n", value);            
+            info.printf("Could not find %s to destroy.\n", value);            
         } else {
+            String message = Helper.buildString(info.getUsername(), " destroyed ", item.getName());
+            
             info.getCurrentRoom().removeItem(item);
-            info.out.printf("Destroyed: %s\n", value);
+            info.printlnToRoom(message);
         }
     }
 
-    private void create(UserInformation info, String value) {
+    private void create(User info, String value) {
         info.getCurrentRoom().addItem(new Item(value));
-        info.out.printf("Created: %s\n", value);
+        
+        String message = Helper.buildString(info.getUsername(), " created ", value);
+        info.printlnToRoom(message);
     }
 
-    private void alias(UserInformation info, Item item, String value) {
+    private void alias(User info, Item item, String value) {
         item.addAlias(value);
-        info.out.printf("Aliased %s as %s\n", item.getName(), value);
+        info.printf("Aliased %s as %s\n", item.getName(), value);
     }
     
-    private void describe(UserInformation info, Item item, String value) {
+    private void describe(User info, Item item, String value) {
         item.setDescription(value);
-        info.out.printf("Described %s as %s\n", item.getName(), value);
+        info.printf("Described %s as %s\n", item.getName(), value);
     }
     
-    private void rename(UserInformation info, Item item, String value) {
+    private void rename(User info, Item item, String value) {
         item.setName(value);
-        info.out.printf("Renamed %s to %s\n", item.getName(), value);
+        String message = Helper.buildString(info.getUsername(), " renamed ", item.getName(), " to ", value);
+        info.printlnToRoom(message);
     }
     
-    private void unalias(UserInformation info, Item item, String value) {
+    private void unalias(User info, Item item, String value) {
         item.removeAlias(value);
-        info.out.printf("Unaliased %s as %s\n", item.getName(), value); 
+        info.printf("Unaliased %s as %s\n", item.getName(), value); 
     }
 
     private boolean needsItem(CommandType field) {
         return field != CommandType.CREATE && field != CommandType.DESTROY;
     }
-
+    
     private enum CommandType {
         CREATE(3), DESTROY(3), RENAME(4), DESCRIBE(4), ALIAS(4), UNALIAS(4), SETUSE(4);
         

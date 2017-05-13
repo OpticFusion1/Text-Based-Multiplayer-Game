@@ -3,7 +3,7 @@ package commands;
 import java.io.File;
 
 import console_gui.Helper;
-import console_gui.UserInformation;
+import console_gui.User;
 
 /**
  * A class to be able to run a command. Keep track of the help file
@@ -42,7 +42,7 @@ public abstract class Command implements Comparable<Command>{
     * @param info the user that will have the command run.
     * @param args the arguments of the command.
     */
-   public abstract void runCommand(UserInformation info, String[] args);
+   public abstract void runCommand(User info, String[] args);
    
    /**
     * @return the help file for the object. 

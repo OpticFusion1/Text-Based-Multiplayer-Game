@@ -1,10 +1,7 @@
 package console_gui;
 
 import java.io.PrintStream;
-import java.util.List;
 
-import model.Player;
-import model.PlayersManager;
 import model.RoomManager;
 import model.RoomNode;
 
@@ -17,9 +14,9 @@ import model.RoomNode;
  *      
  * @author Zachary Chandler
  */
-public class UserInformation implements Player, Comparable<Player> {
+public class User implements Comparable<User> {
     
-    public static final PlayersManager MANAGER = new PlayersManager();
+    public static final PlayerManager MANAGER = new PlayerManager();
     
     /** The current room of the user. */
     private RoomNode currentRoom;
@@ -31,7 +28,7 @@ public class UserInformation implements Player, Comparable<Player> {
     public final RoomManager rooms;
 
     /** A PrintStream to the user. */
-    public final PrintStream out;
+    private final PrintStream out;
     
     /** A way to get input from the user. */
     public final UserInputScanner input;
@@ -47,7 +44,7 @@ public class UserInformation implements Player, Comparable<Player> {
      * @param out an output stream to the user.
      * @param input a way to get input from the user.
      */
-    public UserInformation(RoomManager rooms, PrintStream out, UserInputScanner input) {
+    public User(RoomManager rooms, PrintStream out, UserInputScanner input) {
         if (rooms == null) {
             throw new NullPointerException("Cannot use null RoomManager in CurrentInformation instantiation!");
         }
@@ -76,19 +73,25 @@ public class UserInformation implements Player, Comparable<Player> {
     }
 
     /**
-     * Gets all of the players the given room.
-     * @param room the room to check.
-     * @return a list of players in that room.
+     * Display a string to everyone in the room.
+     * @param s the string to display.
      */
-    public static List<Player> getPlayersInRoom(RoomNode room) {
-        return MANAGER.getPlayers(room);
+    public void printlnToRoom(String s) {
+        for (User p : MANAGER.getPlayers(currentRoom)) {
+            p.println(s);
+        }
     }
     
     /**
-     * @return the players in the current room.
+     * Display a string to everyone in the room excluding this user.
+     * @param s the string to display.
      */
-    public List<Player> getPlayersInRoom() {
-        return getPlayersInRoom(currentRoom);
+    public void printlnToOthersInRoom(String s) {
+        for (User p : MANAGER.getPlayers(currentRoom)) {
+            if (p != this) {
+                p.println(s);                
+            }
+        }
     }
 
     /**
@@ -104,14 +107,49 @@ public class UserInformation implements Player, Comparable<Player> {
     public void setUsername(String username) {
         this.username = username;
     }
+    
+    /**
+     * Display a line of text to the player.
+     * @param s the line of text.
+     */
+    public void println(String s) {
+        out.println(s);
+    }
+    
+    /**
+     * Displays a printf to the player.
+     * @param str1 the string format.
+     * @param args the arguments in the string.
+     */
+    public void printf(String str1, Object... args) {
+        out.printf(str1, args);
+    }
+    
+    /**
+     * Display some text to the player without adding a newline.
+     * @param s the text.
+     */
+    public void print(String s) {
+        out.print(s);
+    }
+    
+    /**
+     * Prints a char to the users console.
+     * @param c
+     */
+    public void print(char c) {
+        out.print(c);
+    }
 
-    @Override
-    public int compareTo(Player o) {
-        return this.getUsername().compareTo(((UserInformation) o).getUsername());
+    /**
+     * Prints a newline to the users console.
+     */
+    public void println() {
+        out.println();
     }
 
     @Override
-    public void displayToPlayer(String s) {
-        out.println(s);
+    public int compareTo(User o) {
+        return this.getUsername().compareTo(o.getUsername());
     }
 }

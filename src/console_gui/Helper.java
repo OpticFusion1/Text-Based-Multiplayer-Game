@@ -113,4 +113,14 @@ public class Helper {
         input.close();
         return result.toString();
     }
+    
+    public static String buildString(String... args) {
+        StringBuilder result = new StringBuilder();
+        
+        for (String s : args) {
+            result.append(s);
+        }
+        
+        return result.toString();
+    }
 }

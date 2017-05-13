@@ -1,6 +1,6 @@
 package commands;
 
-import console_gui.UserInformation;
+import console_gui.User;
 import model.Direction;
 
 /**
@@ -21,7 +21,7 @@ public class EastCommand extends MoveCommand {
     }
 
     @Override
-    public void runCommand(UserInformation info, String[] args) {
+    public void runCommand(User info, String[] args) {
         move(info, Direction.EAST);
     }
 

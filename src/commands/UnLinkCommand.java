@@ -1,6 +1,7 @@
 package commands;
 
-import console_gui.UserInformation;
+import console_gui.Helper;
+import console_gui.User;
 import model.Direction;
 import model.RoomNode;
 
@@ -22,34 +23,37 @@ public class UnLinkCommand extends Command {
     }
     
     @Override
-    public void runCommand(UserInformation info, String[] args) {
+    public void runCommand(User info, String[] args) {
 
         boolean error = false;
         
         if (args.length != 2) {
-            info.out.print("Invalid number of arguments, ");
+            info.print("Invalid number of arguments, ");
             
             error = true;
         } else {
             Direction directionToUnlink = Direction.translateDirection(args[1]);
             
             if (directionToUnlink == null) {
-                info.out.print("Direction not found, ");
+                info.print("Direction not found, ");
                 error = true;
             } else {
                 RoomNode room = info.getCurrentRoom().getDirection(directionToUnlink);
                 
                 if (room == null) {
-                    info.out.println("There isn't a room there!");
+                    info.println("There isn't a room there!");
                 } else {
                     info.getCurrentRoom().setDirection(directionToUnlink, null);
-                    info.out.printf("Removed pathway %s to %s\n", directionToUnlink.toString(), room.getName());
+                    
+                    String message = Helper.buildString(info.getUsername(), " removed pathway ",
+                            directionToUnlink.lowercaseName, " to ", room.getName());
+                    info.printlnToRoom(message);
                 }
             }
         }
         
         if (error) {
-            info.out.print("see 'help unlink' for more information\n");
+            info.print("see 'help unlink' for more information\n");
         }
     }
 

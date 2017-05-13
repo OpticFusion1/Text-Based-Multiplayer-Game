@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import console_gui.Helper;
-import console_gui.UserInformation;
+import console_gui.User;
 import console_gui.UserInputScanner;
 import model.Item;
 
@@ -32,7 +32,7 @@ public class UseCommand extends Command {
     }
 
     @Override
-    public void runCommand(UserInformation info, String[] args) {
+    public void runCommand(User info, String[] args) {
         boolean error = false;
         
         Integer recursions = recursionCounters.get(info.getUsername());
@@ -46,10 +46,10 @@ public class UseCommand extends Command {
         }
         
         if (recursions > MAX_RECURSIONS ) {
-            info.out.print("Max use command recursions hit, ");
+            info.print("Max use command recursions hit, ");
             error = true;
         } else if (args.length < 2) {
-            info.out.print("Not enough arguments, ");
+            info.print("Not enough arguments, ");
             error = true;
         } else {
             String itemName = Helper.mergeStrings(args, 1, args.length - 1);
@@ -57,7 +57,7 @@ public class UseCommand extends Command {
             Item i = info.getCurrentRoom().findItem(itemName);
             
             if (i == null) {
-                info.out.print("Item not found, ");
+                info.print("Item not found, ");
                 error = true;
             } else {
                 List<RunnableCommand> toAdd = UserInputScanner.getCommands(i.getOnUse());
@@ -77,7 +77,7 @@ public class UseCommand extends Command {
         }
         
         if (error) {
-            info.out.print(" see 'help use' for more details.\n");
+            info.print(" see 'help use' for more details.\n");
         }
     }
 

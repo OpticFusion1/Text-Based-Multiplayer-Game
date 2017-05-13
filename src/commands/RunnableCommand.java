@@ -1,6 +1,6 @@
 package commands;
 
-import console_gui.UserInformation;
+import console_gui.User;
 
 /**
  * A class to run commands.
@@ -29,7 +29,7 @@ public class RunnableCommand {
      * Runs the command.
      * @param info the user that the command will be run on.
      */
-    public void run(UserInformation info) {
+    public void run(User info) {
         com.runCommand(info, args);
     }
 

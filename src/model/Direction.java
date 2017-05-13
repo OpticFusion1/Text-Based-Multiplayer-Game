@@ -7,6 +7,8 @@ package model;
 public enum Direction {
     UP, DOWN, NORTH, EAST, SOUTH, WEST;
     
+    public final String lowercaseName = this.toString().toLowerCase();
+    
     /**
      * Translate the given string into a direction.
      * @param directionAsString.

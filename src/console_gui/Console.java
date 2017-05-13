@@ -23,13 +23,13 @@ public class Console {
     /**
      * This program loads and runs a world for a single user.
      */
-    public static void start(UserInformation info) {
+    public static void start(User info) {
         
         int loginFails = 0;
         while (loginFails < 3 && !login(info)) loginFails++;
         
         if (loginFails >= 3) {
-            info.out.println("Failed to login, now exiting.");
+            info.println("Failed to login, now exiting.");
             return;
         }
 
@@ -42,19 +42,19 @@ public class Console {
      * @param info the user we will be talking to.
      * @return if the user was able to log in.
      */
-    public static boolean login(UserInformation info) {
+    public static boolean login(User info) {
         boolean result;
         
-        info.out.print("Please Enter Your Username: ");
+        info.print("Please Enter Your Username: ");
         
         String username = info.input.nextLine();
         Matcher matches = WHITE_SPACE.matcher(username);
         
         if (matches.find()) {
-            info.out.println("Error, user names cannot contain whitespace!");
+            info.println("Error, user names cannot contain whitespace!");
             result = false;
         } else if (!SerializationHelper.userExists(username)) {
-            info.out.print("Unable to find user, would you like to create a new save? (YES/NO): ");
+            info.print("Unable to find user, would you like to create a new save? (YES/NO): ");
             String ans = info.input.nextLine().toUpperCase();
             
             if (ans.equals("YES") || ans.equals("Y")) {
@@ -84,12 +84,8 @@ public class Console {
      * @param info the user we will be using.
      * @return if the mainLoop should continue.
      */
-    public static boolean mainLoop(UserInformation info) {
+    public static boolean mainLoop(User info) {
         boolean result = true;
-        
-        if (!info.input.hasQueuedCommand()) {
-            info.out.print('>');
-        }
         
         RunnableCommand com = info.input.getNextCommand();
         com.run(info);

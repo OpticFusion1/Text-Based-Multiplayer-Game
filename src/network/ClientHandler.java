@@ -7,13 +7,13 @@ import java.util.NoSuchElementException;
 
 import commands.QuitCommand;
 import console_gui.Console;
-import console_gui.UserInformation;
+import console_gui.User;
 import console_gui.UserInputScanner;
 import model.RoomManager;
 
 public class ClientHandler implements Runnable {
 
-    private UserInformation info;
+    private User info;
     
     private Socket soc;
 
@@ -23,7 +23,7 @@ public class ClientHandler implements Runnable {
         UserInputScanner input = new UserInputScanner(user.getInputStream());
         PrintStream out = new PrintStream(user.getOutputStream(), true);
         
-        this.info = new UserInformation(rm, out, input);
+        this.info = new User(rm, out, input);
     }
     
     @Override
