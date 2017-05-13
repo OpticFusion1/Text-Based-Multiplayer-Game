@@ -68,7 +68,7 @@ public class ConnectCommand extends Command {
                     
                     String message = Helper.buildString(info.getUsername(), " connected ",
                             info.getCurrentRoom().getName(), " to ", room.getName());
-                    info.printlnToRoom(message);
+                    User.chat.printlnToRoom(info, message);
                 }
             }
         }

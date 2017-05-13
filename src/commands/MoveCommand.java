@@ -35,7 +35,7 @@ public abstract class MoveCommand extends Command {
         
         String message = info.getUsername() + " arrived";
         
-        info.printlnToOthersInRoom(message);
+        User.chat.printlnToOthersInRoom(info, message);
     }
     
     /** A method to display information when the user changes rooms. */
@@ -43,14 +43,14 @@ public abstract class MoveCommand extends Command {
         LOOK.run(info);
 
         String message = Helper.buildString(info.getUsername(), " arrived from the ", d.lowercaseName);
-        
-        info.printlnToOthersInRoom(message);
+
+        User.chat.printlnToOthersInRoom(info, message);
     }
     
     /** A method to display information when the user changes rooms. */
     public static void leaveMessage(User info, Direction d) {
         String message = Helper.buildString(info.getUsername(), " left to the ", d.lowercaseName);
 
-        info.printlnToOthersInRoom(message);
+        User.chat.printlnToOthersInRoom(info, message);
     }
 }

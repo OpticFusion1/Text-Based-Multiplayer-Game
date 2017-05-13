@@ -16,7 +16,11 @@ import model.RoomNode;
  */
 public class User implements Comparable<User> {
     
-    public static final PlayerManager MANAGER = new PlayerManager();
+    /** All of the players in the program. */
+    private static final PlayerManager MANAGER = new PlayerManager();
+    
+    /** The chat of the program. */
+    public static final Chat chat = new Chat(MANAGER);
     
     /** The current room of the user. */
     private RoomNode currentRoom;
@@ -69,28 +73,6 @@ public class User implements Comparable<User> {
         if (currentRoom != null) {
             this.currentRoom = currentRoom;
             MANAGER.setRoomOfPlayer(this, currentRoom);
-        }
-    }
-
-    /**
-     * Display a string to everyone in the room.
-     * @param s the string to display.
-     */
-    public void printlnToRoom(String s) {
-        for (User p : MANAGER.getPlayers(currentRoom)) {
-            p.println(s);
-        }
-    }
-    
-    /**
-     * Display a string to everyone in the room excluding this user.
-     * @param s the string to display.
-     */
-    public void printlnToOthersInRoom(String s) {
-        for (User p : MANAGER.getPlayers(currentRoom)) {
-            if (p != this) {
-                p.println(s);                
-            }
         }
     }
 

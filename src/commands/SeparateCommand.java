@@ -59,8 +59,8 @@ public class SeparateCommand extends Command {
                     
                     String message = Helper.buildString(info.getUsername(), " separated ",
                             info.getCurrentRoom().getName(), "from", room.getName());
-                    
-                    info.printlnToRoom(message);
+
+                    User.chat.printlnToRoom(info, message);
                 }
             }
             

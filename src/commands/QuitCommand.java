@@ -30,7 +30,7 @@ public class QuitCommand extends Command {
         info.println(EXIT_MESSAGE);
         
         String message = Helper.buildString(info.getUsername(), " popped out of existence.");
-        info.printlnToOthersInRoom(message);
+        User.chat.printlnToOthersInRoom(info, message);
     }
     
     /**

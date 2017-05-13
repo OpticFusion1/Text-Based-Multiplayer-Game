@@ -23,8 +23,8 @@ public class SayCommand extends Command {
             message.append(info.getUsername());
             message.append(": ");
             message.append(Helper.mergeStrings(args, 1, args.length - 1));
-            
-            info.printlnToRoom(message.toString());
+
+            User.chat.printlnToRoom(info, message.toString());
         } else {
             info.println(getShortHelpDescription());
         }

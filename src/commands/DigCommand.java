@@ -59,7 +59,7 @@ public class DigCommand extends Command {
                     String message = Helper.buildString(info.getUsername(), " creates a room to the ",
                             directionToDig.lowercaseName, ".");
 
-                    info.printlnToOthersInRoom(message);
+                    User.chat.printlnToOthersInRoom(info, message);
                     
                     info.getCurrentRoom().setDirection(directionToDig, newRoom);
                     newRoom.setDirection(oppositeDirection, info.getCurrentRoom());
