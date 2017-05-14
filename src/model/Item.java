@@ -33,11 +33,7 @@ public class Item implements Serializable {
      * @param name the name of the new item.
      */
     public Item(String name) {
-        this.setName(name);
-        this.description = "a very plain object";
-        this.aliases = new TreeSet<>();
-        this.aliases.add(name.toUpperCase());
-        this.onUse = "echo [nothing special happens]";
+        this(name, "a very plain object");
     }
     
     /** 
@@ -48,6 +44,9 @@ public class Item implements Serializable {
     public Item(String name, String description) {
         this.setName(name);
         this.description = description;
+        this.aliases = new TreeSet<>();
+        this.aliases.add(name.toUpperCase());
+        this.onUse = "echo [nothing special happens]";
     }
 
     /**
@@ -107,6 +106,7 @@ public class Item implements Serializable {
     }
     
     /**
+     * All aliases will be in upper case.
      * @return the aliases of the item.
      */
     public List<String> getAliases() {

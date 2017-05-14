@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,16 +22,16 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
     private static final long serialVersionUID = 4749342966413694748L;
     
     /** Items in this RoomNode. */
-    private List<Item> items;
+    private final List<Item> items;
     
-    /** Adjacent RoomNodes. */
-    private RoomNode up, down, north, south, east, west;
+    /** Adjacent room nodes. */
+    private final EnumMap<Direction, RoomNode> directions;
+    
+    /** A unique ID associated with the room. */
+    private final int roomID;
     
     /** A description of the room. */
     private String name;
-    
-    /** A unique ID associated with the room. */
-    private int roomID;
 
     /** The description of the room. */
 	private String description; 
@@ -40,21 +41,34 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
      * 
      * Preconditions:
      *      description may not be null.
+     *      name may not be null
      * 
-     * @param description.
      * @param roomID a unique ID associated with the room.
+     * @param name the name of the room.
+     * @param description the description of the room.
      */
     public RoomNode(int roomID, String name, String description) {
-        if (name == null) {
-            throw new NullPointerException("Cannot use null description in RoomNode constructor!");
+        if (name == null || description == null) {
+            throw new NullPointerException("Cannot use null in RoomNode constructor!");
         }
         
         this.name = name;
         this.roomID = roomID;
         this.description = description;
         this.items = new LinkedList<Item>();
+        this.directions = new EnumMap<>(Direction.class);
     }
     
+    /**
+     * 
+     * Instantiates a RoomNode with the given description.
+     * 
+     * Preconditions:
+     *      name may not be null
+     * 
+     * @param name the name of the room.
+     * @param description the description of the room.
+     */
     public RoomNode(int uniqueRoomID, String name) {
         this(uniqueRoomID, name, "A very bland room.");
     }
@@ -89,102 +103,6 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
         this.name = description;
     }
 
-    /**
-     * @return the up or null if their isn't one.
-     */
-    public RoomNode getUp() {
-        return up;
-    }
-
-    /**
-     * Sets an adjacent RoomNode
-     * 
-     * @param up the up to set
-     */
-    public void setUp(RoomNode up) {
-        this.up = up;
-    }
-
-    /**
-     * @return the down or null if their isn't one.
-     */
-    public RoomNode getDown() {
-        return down;
-    }
-
-    /**
-     * Sets an adjacent RoomNode
-     * 
-     * @param down the down to set
-     */
-    public void setDown(RoomNode down) {
-        this.down = down;
-    }
-
-    /**
-     * @return the north or null if their isn't one.
-     */
-    public RoomNode getNorth() {
-        return north;
-    }
-
-    /**
-     * Sets an adjacent RoomNode
-     * 
-     * @param north the north to set
-     */
-    public void setNorth(RoomNode north) {
-        this.north = north;
-    }
-
-    /**
-     * @return the south or null if their isn't one.
-     */
-    public RoomNode getSouth() {
-        return south;
-    }
-
-    /**
-     * Sets an adjacent RoomNode
-     * 
-     * @param south the south to set
-     */
-    public void setSouth(RoomNode south) {
-        this.south = south;
-    }
-
-    /**
-     * @return the east or null if their isn't one.
-     */
-    public RoomNode getEast() {
-        return east;
-    }
-
-    /**
-     * Sets an adjacent RoomNode
-     * 
-     * @param east the east to set
-     */
-    public void setEast(RoomNode east) {
-        this.east = east;
-    }
-
-    /**
-     * @return the west or null if their isn't one.
-     */
-    public RoomNode getWest() {
-        return west;
-    }
-
-    /**
-     * Sets an adjacent RoomNode
-     * 
-     * @param west the west to set
-     */
-    public void setWest(RoomNode west) {
-        this.west = west;
-    }
-
     @Override
     public int compareTo(RoomNode other) {
         return this.roomID - other.roomID;
@@ -194,18 +112,18 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
      * @return the items in this room.
      */
     public List<Item> getItems() {
-        if (items == null) {
-            items = new LinkedList<Item>();
-        }
-        
         return new ArrayList<Item>(items);
     }
 
     /**
+     * If the item is already in the list or null, no changes occur.
+     * 
      * @param item the items to add to the room.
      */
     public void addItem(Item item) {
-        this.items.add(item);
+        if (!items.contains(item) && item != null) {
+            this.items.add(item);            
+        }
     }
 
     /**
@@ -257,34 +175,19 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
 	 * @param room the room to put in the given direction.
 	 */
 	public void setDirection(Direction theDirection, RoomNode room) {
-	    switch (theDirection) {
-        case DOWN:  this.setDown(room);     break;
-        case UP:    this.setUp(room);       break;
-        case NORTH: this.setNorth(room);    break;
-        case SOUTH: this.setSouth(room);    break;
-        case EAST:  this.setEast(room);     break;
-        case WEST:  this.setWest(room);     break;
+	    if (theDirection != null) {
+	        directions.put(theDirection, room);
 	    }
 	}
 	
 	/**
-	 * Get the RoomNode in the given direction.
+	 * Get the RoomNode in the given direction. Throws NullPointerException if theDirection is null.
+	 * 
 	 * @param theDirection the direction to get.
 	 * @return the room in theDirection given.
 	 */
 	public RoomNode getDirection(Direction theDirection) {
-	    RoomNode result = null;
-	    
-	    switch (theDirection) {
-        case DOWN:  result = this.getDown();    break;
-        case UP:    result = this.getUp();      break;
-        case NORTH: result = this.getNorth();   break;
-        case SOUTH: result = this.getSouth();   break;
-        case EAST:  result = this.getEast();    break;
-        case WEST:  result = this.getWest();    break;
-        }
-	    
-	    return result;
+	    return directions.get(theDirection);
 	}
 	
 }

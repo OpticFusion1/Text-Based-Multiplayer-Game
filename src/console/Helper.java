@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.TreeSet;
 
+import model.Direction;
 import model.RoomNode;
 
 /**
@@ -33,12 +34,13 @@ public class Helper {
             System.out.println(node.getRoomID() + ": " + node.getName());
             seenNodes.add(node);
             
-            printAllConnectedRoomNodes(node.getUp(), seenNodes);
-            printAllConnectedRoomNodes(node.getDown(), seenNodes);
-            printAllConnectedRoomNodes(node.getNorth(), seenNodes);
-            printAllConnectedRoomNodes(node.getWest(), seenNodes);
-            printAllConnectedRoomNodes(node.getEast(), seenNodes);
-            printAllConnectedRoomNodes(node.getSouth(), seenNodes);
+
+            printAllConnectedRoomNodes(node.getDirection(Direction.UP), seenNodes);
+            printAllConnectedRoomNodes(node.getDirection(Direction.DOWN), seenNodes);
+            printAllConnectedRoomNodes(node.getDirection(Direction.NORTH), seenNodes);
+            printAllConnectedRoomNodes(node.getDirection(Direction.EAST), seenNodes);
+            printAllConnectedRoomNodes(node.getDirection(Direction.SOUTH), seenNodes);
+            printAllConnectedRoomNodes(node.getDirection(Direction.WEST), seenNodes);
         }
     }
     

@@ -70,11 +70,4 @@ public class PlayerInformation implements Serializable {
     public int getCurrentRoomID() {
         return currentRoomID;
     }
-
-    /**
-     * @param currentRoomID the currentRoomID to set
-     */
-    public void setCurrentRoomID(int currentRoomID) {
-        this.currentRoomID = currentRoomID;
-    }
 }

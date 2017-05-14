@@ -127,12 +127,12 @@ public final class RoomManager implements Serializable {
             seenRooms.add(room);
             this.trackRoom(room);
             
-            addAllConnectedRooms(seenRooms, room.getUp());
-            addAllConnectedRooms(seenRooms, room.getDown());
-            addAllConnectedRooms(seenRooms, room.getNorth());
-            addAllConnectedRooms(seenRooms, room.getWest());
-            addAllConnectedRooms(seenRooms, room.getEast());
-            addAllConnectedRooms(seenRooms, room.getSouth());
+            addAllConnectedRooms(seenRooms, room.getDirection(Direction.UP));
+            addAllConnectedRooms(seenRooms, room.getDirection(Direction.DOWN));
+            addAllConnectedRooms(seenRooms, room.getDirection(Direction.NORTH));
+            addAllConnectedRooms(seenRooms, room.getDirection(Direction.EAST));
+            addAllConnectedRooms(seenRooms, room.getDirection(Direction.SOUTH));
+            addAllConnectedRooms(seenRooms, room.getDirection(Direction.WEST));
         }
     }
 }

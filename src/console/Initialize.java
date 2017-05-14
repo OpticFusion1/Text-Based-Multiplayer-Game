@@ -12,7 +12,7 @@ import model.SerializationHelper;
 public class Initialize {
 
     public static void main(String[] args) {
-        RoomNode startingRoom = new RoomNode(0, "A thick forest.", "The trees grow tall and thick here. "
+        RoomNode startingRoom = new RoomNode(0, "Forest", "The trees grow tall and thick here. "
                 + "There is very little undergrowth, only a few rays of light pierce through the thick cannopy above."
                 + "To the east there is a small but dark cave that leads inwards. To the north is a faint path that "
                 + "leads through the forest.");

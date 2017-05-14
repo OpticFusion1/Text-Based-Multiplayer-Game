@@ -42,14 +42,13 @@ public class DigCommand extends Command {
         } else {
             String name = args[2];
             String description = (args.length == 4) ? args[3] : DEFUALT_DESCRIPTION;
-            
             Direction directionToDig = Direction.translateDirection(args[1]);
-            Direction oppositeDirection = Direction.getOppositeDirection(directionToDig);
-            
+                        
             if (directionToDig == null) {
                 info.print("Direction not found, ");
                 error = true;
             } else {
+                Direction oppositeDirection = Direction.getOppositeDirection(directionToDig);
                 RoomNode room = info.getCurrentRoom().getDirection(directionToDig);
                 
                 if (room != null) {
