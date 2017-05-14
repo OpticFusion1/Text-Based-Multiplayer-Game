@@ -1,0 +1,15 @@
+NAME
+    me - displays a message to everyone in the room in third person
+
+USAGE
+    me message
+
+DESCRIPTION
+    writes a message to everyone in the room and displays it in third person.
+
+ARGUMENTS
+    message,
+        the third person message to other players.
+
+EXAMPLE
+    me wakes up

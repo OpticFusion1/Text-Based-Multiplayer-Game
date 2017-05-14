@@ -1,6 +1,7 @@
 package commands;
 
-import console_gui.UserInformation;
+import console.Helper;
+import console.User;
 import model.Direction;
 import model.RoomNode;
 
@@ -29,32 +30,35 @@ public class DigCommand extends Command {
     }
     
     @Override
-    public void runCommand(UserInformation info, String[] args) {
+    public void runCommand(User info, String[] args) {
         boolean error = false;
         
         if (args.length < 3) {
-            info.out.print("Not enough arguments, ");
+            info.print("Not enough arguments, ");
             error = true;
         } else if (args.length > 4) {
-            info.out.print("Too many arguments, ");
+            info.print("Too many arguments, ");
             error = true;
         } else {
             String name = args[2];
             String description = (args.length == 4) ? args[3] : DEFUALT_DESCRIPTION;
-            
             Direction directionToDig = Direction.translateDirection(args[1]);
-            Direction oppositeDirection = Direction.getOppositeDirection(directionToDig);
-            
+                        
             if (directionToDig == null) {
-                info.out.print("Direction not found, ");
+                info.print("Direction not found, ");
                 error = true;
             } else {
+                Direction oppositeDirection = Direction.getOppositeDirection(directionToDig);
                 RoomNode room = info.getCurrentRoom().getDirection(directionToDig);
                 
                 if (room != null) {
-                    info.out.println("There is already a room there!");
+                    info.println("There is already a room there!");
                 } else {
                     RoomNode newRoom = new RoomNode(info.rooms.getUniqueRoomID(), name, description);
+                    String message = Helper.buildString(info.getUsername(), " creates a room to the ",
+                            directionToDig.lowercaseName, ".");
+
+                    User.chat.printlnToOthersInRoom(info, message);
                     
                     info.getCurrentRoom().setDirection(directionToDig, newRoom);
                     newRoom.setDirection(oppositeDirection, info.getCurrentRoom());
@@ -66,14 +70,13 @@ public class DigCommand extends Command {
         }
         
         if (error) {
-            info.out.print("see 'help dig' for more details.");
+            info.print("see 'help dig' for more details.");
         }
     }
 
     @Override
     public String getShortHelpDescription() {
-        return "Creates a new room in the given direction and connects it back\n"
-                + "                  to the current room.";
+        return "Creates a new room in the given direction.";
     }
 
 }

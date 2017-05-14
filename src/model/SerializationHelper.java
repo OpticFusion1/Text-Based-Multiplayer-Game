@@ -30,8 +30,8 @@ public class SerializationHelper {
      * @param username the user name the file is saved under.
      * @return a users save object.
      */
-    public static UserSave loadUser(String username) {
-        return (UserSave) loadObject(DATA_FOLDER + USERS_FOLDER + username + ".ser");
+    public static PlayerInformation loadUser(String username) {
+        return (PlayerInformation) loadObject(DATA_FOLDER + USERS_FOLDER + username + ".ser");
     }
     
     /**
@@ -39,8 +39,8 @@ public class SerializationHelper {
      * @param user the save object that will be stored.
      * @return if the file was successfully saved.
      */
-    public static boolean saveUser(UserSave user) {
-        return saveObject(user, DATA_FOLDER + USERS_FOLDER + user.username + ".ser"); 
+    public static boolean saveUser(PlayerInformation user) {
+        return saveObject(user, DATA_FOLDER + USERS_FOLDER + user.getUsername() + ".ser"); 
     }
     
     /**

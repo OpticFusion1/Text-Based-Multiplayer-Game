@@ -2,7 +2,7 @@ package commands;
 
 import java.util.List;
 
-import console_gui.UserInformation;
+import console.User;
 import model.Direction;
 import model.Item;
 import model.RoomNode;
@@ -14,6 +14,9 @@ import model.RoomNode;
  * @author Zachary Chandler
  */
 public class LookCommand extends Command {
+    
+    /** A simple static instance to avoid needless declarations of the object. */
+    public static final RunnableCommand instance = new RunnableCommand(new String[] {"LOOK"}, new LookCommand());
 
     @Override
     public String[] getAliases() {
@@ -26,34 +29,43 @@ public class LookCommand extends Command {
     }
     
     @Override
-    public void runCommand(UserInformation info, String[] args) {
+    public void runCommand(User info, String[] args) {
     	RoomNode r = info.getCurrentRoom();
 
-    	info.out.println(r.getName());
-        info.out.println(r.getDescription());
+    	info.println(r.getName());
+        info.println(r.getDescription());
         
         
         List<Item> itemsInTheRoom = r.getItems();
+        List<User> playersInTheRoom = info.getPlayersInRoom();
         
-        if (!itemsInTheRoom.isEmpty()) {
-            info.out.println("You can see:");
+        if (!itemsInTheRoom.isEmpty() || !playersInTheRoom.isEmpty()) {
+            info.println("You can see:");
+            
+            for (User p : playersInTheRoom) {
+                if (p != info) {
+                    info.print('\t');
+                    info.print(p.getUsername());
+                    info.print('\n');
+                }
+            }
             
             for (Item i : itemsInTheRoom) {
-                info.out.print('\t');
-                info.out.print(i.getName());
-                info.out.print('\n');
-            }            
-        }
-        
-        info.out.print("Possible Directions: ");
-
-        for (Direction d : Direction.values()) {
-            if (r.getDirection(d) != null) {
-                info.out.printf("%s ", d.toString());
+                info.print('\t');
+                info.print(i.getName());
+                info.print('\n');
             }
         }
         
-        info.out.print('\n');
+        info.print("Possible Directions: ");
+
+        for (Direction d : Direction.values()) {
+            if (r.getDirection(d) != null) {
+                info.printf("%s ", d.lowercaseName);
+            }
+        }
+        
+        info.print('\n');
     }
 
     @Override

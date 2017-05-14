@@ -7,8 +7,11 @@ package model;
 public enum Direction {
     UP, DOWN, NORTH, EAST, SOUTH, WEST;
     
+    public final String lowercaseName = this.toString().toLowerCase();
+    
     /**
-     * Translate the given string into a direction.
+     * Translate the given string into a direction. If directionAsString is null, a nullpointer exception is thrown. 
+     * 
      * @param directionAsString.
      * @return the direction the string describes, or null if it isn't a direction.
      */
@@ -59,6 +62,10 @@ public enum Direction {
      * @return the opposite direction or null if theDirection is null
      */
     public static Direction getOppositeDirection(Direction theDirection) {
+        if (theDirection == null) {
+            return null;
+        }
+        
         switch (theDirection) {
         case UP:    return DOWN;
         case DOWN:  return UP;

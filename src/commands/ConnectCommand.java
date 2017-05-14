@@ -1,7 +1,7 @@
 package commands;
 
-import console_gui.Helper;
-import console_gui.UserInformation;
+import console.Helper;
+import console.User;
 import model.Direction;
 import model.RoomNode;
 
@@ -25,14 +25,14 @@ public class ConnectCommand extends Command {
     }
     
     @Override
-    public void runCommand(UserInformation info, String[] args) {
+    public void runCommand(User info, String[] args) {
         boolean error = false;
         
         if (args.length < 3) {
-            info.out.print("Not enough arguments, ");
+            info.print("Not enough arguments, ");
             error = true;
         } else if (args.length > 3) {
-            info.out.println("Too many arguments, ");
+            info.println("Too many arguments, ");
             error = true;
         } else {
             Direction direction = Direction.translateDirection(args[1]);
@@ -41,15 +41,15 @@ public class ConnectCommand extends Command {
             Integer choice = Helper.safeParseInt(args[2]);
             
             if (direction == null) {
-                info.out.print("Direction not found, ");
+                info.print("Direction not found, ");
                 error = true;
             } else if (info.getCurrentRoom().getDirection(direction) != null) {
-                info.out.print("There is already a room that way, ");
+                info.print("There is already a room that way, ");
                 error = true;
             }
             
             if (choice == null) {
-                info.out.print("Invalid room number format, ");
+                info.print("Invalid room number format, ");
                 error = true;
             }
 
@@ -57,7 +57,7 @@ public class ConnectCommand extends Command {
                 RoomNode room = info.rooms.getRoom(choice);
                 
                 if (room == null) {
-                    info.out.print("Room not found, ");
+                    info.print("Room not found, ");
                     error = true;
                 } else {
                     info.getCurrentRoom().setDirection(direction, room);
@@ -65,13 +65,16 @@ public class ConnectCommand extends Command {
                     if (room.getDirection(oppositeDirection) == null) {
                         room.setDirection(oppositeDirection, info.getCurrentRoom());
                     }
-                    info.out.printf("Connected %s to %s\n", info.getCurrentRoom().getName(), room.getName());
+                    
+                    String message = Helper.buildString(info.getUsername(), " connected ",
+                            info.getCurrentRoom().getName(), " to ", room.getName());
+                    User.chat.printlnToRoom(info, message);
                 }
             }
         }
         
         if (error) {
-            info.out.print("see 'help connect' for more details.\n");
+            info.print("see 'help connect' for more details.\n");
         }
     }
 

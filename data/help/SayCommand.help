@@ -1,0 +1,15 @@
+NAME
+    say - displays a message to everyone in the room
+
+USAGE
+    say message
+
+DESCRIPTION
+    writes a message to everyone in the room.
+
+ARGUMENTS
+    message,
+        the message to other players.
+
+EXAMPLE
+    say "hello everyone, i'm new here."

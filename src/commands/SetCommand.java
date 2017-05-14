@@ -1,7 +1,7 @@
 package commands;
 
-import console_gui.Helper;
-import console_gui.UserInformation;
+import console.Helper;
+import console.User;
 import model.RoomNode;
 
 /**
@@ -22,11 +22,11 @@ public class SetCommand extends Command {
     }
     
     @Override
-    public void runCommand(UserInformation info, String[] args) {
+    public void runCommand(User info, String[] args) {
         boolean error = false;
         
         if (args.length < 4) {
-            info.out.print("Not enough arguements, ");
+            info.print("Not enough arguements, ");
             error = true;
         } else {
             String value = Helper.mergeStrings(args, 3, args.length - 1);
@@ -36,7 +36,7 @@ public class SetCommand extends Command {
                 fieldToSet = Field.valueOf(args[2].toUpperCase());                
             } catch (IllegalArgumentException e) {
                 fieldToSet = null;
-                info.out.print("Invalid argument, ");
+                info.print("Invalid argument, ");
                 error = true;
             }
             
@@ -46,20 +46,23 @@ public class SetCommand extends Command {
                     boolean result = setRoom(info.getCurrentRoom(), fieldToSet, value);
 
                     if (result) {
-                        info.out.printf("Set %s of %s\n", fieldToSet, info.getCurrentRoom().getName());
+                        String message = Helper.buildString(info.getUsername(), " set ", fieldToSet.toString(),
+                                " of the room to ", value);
+
+                        User.chat.printlnToRoom(info, message);
                     } else {
-                        info.out.printf("Could not set %s of %s\n", fieldToSet.toString(), info.getCurrentRoom().getName());            
+                        info.printf("Could not set %s of %s\n", fieldToSet.toString(), info.getCurrentRoom().getName());            
                     }
                     break;
                     
                 default:
-                    info.out.printf("Cannot set %s\n", args[1]);
+                    info.printf("Cannot set %s\n", args[1]);
                 }
             }
         }
         
         if (error) {
-            info.out.print("Usage \"set <room> <name|description> <value>\"\n");
+            info.print("Usage \"set <room> <name|description> <value>\"\n");
         }
     }
     

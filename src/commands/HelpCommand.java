@@ -1,7 +1,7 @@
 package commands;
 
-import console_gui.UserInformation;
-import console_gui.UserInputScanner;
+import console.User;
+import console.UserInputScanner;
 
 /**
  * A command to help the user by displaying all commands and displaying the help page for a given command.
@@ -21,23 +21,23 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public void runCommand(UserInformation info, String[] args) {
+    public void runCommand(User info, String[] args) {
         
         if (args.length < 2) {
-            info.out.println("\nPossible Commands");
+            info.println("\nPossible Commands");
             for (Command c : UserInputScanner.COMMANDS) {
-                info.out.printf("%-15s - %s\n", c.getPreferredName(), c.getShortHelpDescription());
+                info.printf("%-15s - %s\n", c.getPreferredName(), c.getShortHelpDescription());
             }            
         } else if (args.length == 2) {
             Command c = UserInputScanner.COMMAND_MAP.get(args[1].toUpperCase());
             
             if (c == null) {
-                info.out.println("Sorry, we couldn't not find that command.");
+                info.println("Sorry, we couldn't not find that command.");
             } else {
-                info.out.println(c.getHelpPage());
+                info.println(c.getHelpPage());
             }
         } else {
-            info.out.println("Usage 'help [commnad]'");
+            info.println("Usage 'help [commnad]'");
         }
     }
 

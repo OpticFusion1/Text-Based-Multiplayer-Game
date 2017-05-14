@@ -1,11 +1,6 @@
 package commands;
 
-/**
- * A command to move the user in a given direction.
- * 
- * @author Zachary Chandler
- */
-import console_gui.UserInformation;
+import console.User;
 import model.Direction;
 
 public class WestCommand extends MoveCommand {
@@ -21,7 +16,7 @@ public class WestCommand extends MoveCommand {
     }
     
     @Override
-    public void runCommand(UserInformation info, String[] args) {
+    public void runCommand(User info, String[] args) {
         move(info, Direction.WEST);
     }
 

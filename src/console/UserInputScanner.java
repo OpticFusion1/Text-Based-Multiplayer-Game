@@ -1,4 +1,4 @@
-package console_gui;
+package console;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import commands.RunnableCommand;
+import commands.SayCommand;
 import commands.CommandNotFoundCommand;
 import commands.DigCommand;
 import commands.DownCommand;
@@ -25,6 +26,7 @@ import commands.InspectCommand;
 import commands.ItemCommand;
 import commands.ConnectCommand;
 import commands.LookCommand;
+import commands.MeCommand;
 import commands.NorthCommand;
 import commands.QuitCommand;
 import commands.Command;
@@ -69,7 +71,9 @@ public class UserInputScanner {
             new ItemCommand(),
             new HelpCommand(),
             new UseCommand(),
-            new EchoCommand()
+            new EchoCommand(),
+            new SayCommand(),
+            new MeCommand()
     })));
     
     /** A map of aliases to commands for fast lookup time. */
