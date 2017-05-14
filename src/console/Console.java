@@ -10,7 +10,7 @@ import commands.LookCommand;
 import commands.QuitCommand;
 import model.RoomNode;
 import model.SerializationHelper;
-import model.UserSave;
+import model.PlayerInformation;
 
 /**
  * The console...?
@@ -78,10 +78,10 @@ public class Console {
      * @return if the user was successfully loaded.
      */
     private static boolean loadUser(User info, String username) {
-        UserSave save = SerializationHelper.loadUser(username);
-        info.setUsername(save.username);
+        PlayerInformation save = SerializationHelper.loadUser(username);
+        info.setUsername(save.getUsername());
         
-        RoomNode room = info.rooms.getRoom(save.currentRoomID);
+        RoomNode room = info.rooms.getRoom(save.getCurrentRoomID());
         if (room != null) {
             info.setCurrentRoom(room);
         } else {
@@ -99,18 +99,16 @@ public class Console {
      * @return if the user created a new player.
      */
     private static boolean createNewPlayer(User info, String username) {
-        boolean result;
+        boolean result = false;
         
         info.print("Unable to find user, would you like to create a new save? (YES/NO): ");
         String ans = info.input.nextLine().toUpperCase();
         
         if (ans.equals("YES") || ans.equals("Y")) {
-            info.setUsername(username);
-            info.setCurrentRoom(info.rooms.getStartingRoom());
-            QuitCommand.saveUser(info);
+            PlayerInformation p = new PlayerInformation(info.rooms.getStartingRoom(), username);
+            info.setPlayerInformation(p);
+            info.save();
             result = true;
-        } else {
-            result = false;
         }
         
         return result;

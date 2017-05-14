@@ -2,8 +2,6 @@ package commands;
 
 import console.Helper;
 import console.User;
-import model.SerializationHelper;
-import model.UserSave;
 
 /**
  * A command to handle player exiting.
@@ -26,21 +24,11 @@ public class QuitCommand extends Command {
     
     @Override
     public void runCommand(User info, String[] args) {
-        saveUser(info);
+        info.save();
         info.println(EXIT_MESSAGE);
         
         String message = Helper.buildString(info.getUsername(), " popped out of existence");
         User.chat.printlnToOthersInRoom(info, message);
-    }
-    
-    /**
-     * A method to save the current users information. The input and output streams need not exist for this method to 
-     * save properly.
-     * 
-     * @param info the user to save.
-     */
-    public static void saveUser(User info) {
-        SerializationHelper.saveUser(new UserSave(info.getCurrentRoom().getRoomID(), info.getUsername()));
     }
 
     @Override

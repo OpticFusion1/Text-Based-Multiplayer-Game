@@ -5,18 +5,30 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 
-import commands.QuitCommand;
 import console.Console;
 import console.User;
 import console.UserInputScanner;
 import model.RoomManager;
 
+/**
+ * The client thread that will run for a given user.
+ *
+ * @author Zachary Chandler
+ */
 public class ClientHandler implements Runnable {
 
+    /** The user to run for. */
     private User info;
     
+    /** The actual socket of the user. */
     private Socket soc;
 
+    /**
+     * Start a user with the given socket on the given rooms.
+     * @param user the socket of the connection.
+     * @param rm the rooms of the world.
+     * @throws IOException if an IO exception occurs.
+     */
     public ClientHandler(Socket user, RoomManager rm) throws IOException  {
         this.soc = user;
         
@@ -36,7 +48,7 @@ public class ClientHandler implements Runnable {
             closedGracefully = true;
         } catch (NoSuchElementException e) {
             System.out.printf("%s has closed the connection\n", getConnectorName());
-            QuitCommand.saveUser(info);
+            info.save();
             closedGracefully = false;
         }
 
@@ -52,6 +64,9 @@ public class ClientHandler implements Runnable {
         
     }
     
+    /**
+     * @return the name of the connection or the IP if the user hasn't logged in yet.
+     */
     private String getConnectorName() {
         String name = info.getUsername();
         return name == null ? soc.toString() : name;

@@ -3,8 +3,10 @@ package console;
 import java.io.PrintStream;
 import java.util.List;
 
+import model.PlayerInformation;
 import model.RoomManager;
 import model.RoomNode;
+import model.SerializationHelper;
 
 /**
  * A class to keep track of a users information
@@ -23,12 +25,6 @@ public class User implements Comparable<User> {
     
     /** The chat of the program. */
     public static final Chat chat = new Chat(roomMap);
-    
-    /** The current room of the user. */
-    private RoomNode currentRoom;
-    
-    /** The user name of the user. */
-    private String username;
 
     /** The rooms the user will traverse. */
     public final RoomManager rooms;
@@ -38,7 +34,9 @@ public class User implements Comparable<User> {
     
     /** A way to get input from the user. */
     public final UserInputScanner input;
-    
+
+    /** The information of the player. */
+    private PlayerInformation playerInformation;
     
     /**
      * Instantiate the current information on a given graph of rooms.
@@ -58,14 +56,29 @@ public class User implements Comparable<User> {
         this.out = out;
         this.input = input;
         this.rooms = rooms;
-        this.currentRoom = rooms.getStartingRoom();
+        this.playerInformation = new PlayerInformation(null, null);
+    }
+
+    /**
+     * @param p the player information to set on this user.
+     */
+    public void save() {
+        SerializationHelper.saveUser(playerInformation);
+    }
+    
+    /**
+     * @param p the player information to set on this user.
+     */
+    public void setPlayerInformation(PlayerInformation p) {
+        this.playerInformation = p;
+        setCurrentRoom(p.getRoom());
     }
     
     /**
      * @return the currentRoom
      */
     public RoomNode getCurrentRoom() {
-        return currentRoom;
+        return playerInformation.getRoom();
     }
     
     /**
@@ -73,27 +86,30 @@ public class User implements Comparable<User> {
      */
     public void setCurrentRoom(RoomNode currentRoom) {
         if (currentRoom != null) {
-            this.currentRoom = currentRoom;
+            playerInformation.setRoom(currentRoom);
             roomMap.setRoomOfPlayer(this, currentRoom);
         }
     }
     
+    /**
+     * @return all of the players in this users room.
+     */
     public List<User> getPlayersInRoom() {
-        return roomMap.getPlayers(currentRoom);
+        return roomMap.getPlayers(playerInformation.getRoom());
     }
 
     /**
      * @return the user name
      */
     public String getUsername() {
-        return username;
+        return playerInformation.getUsername();
     }
 
     /**
      * @param username the user name to set
      */
     public void setUsername(String username) {
-        this.username = username;
+        this.playerInformation.setUsername(username);
     }
     
     /**
