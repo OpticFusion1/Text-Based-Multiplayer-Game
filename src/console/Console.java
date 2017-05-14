@@ -10,7 +10,7 @@ import commands.LookCommand;
 import commands.QuitCommand;
 import model.RoomNode;
 import model.SerializationHelper;
-import model.PlayerInformation;
+import model.Player;
 
 /**
  * The console...?
@@ -39,7 +39,7 @@ public class Console {
         }
 
         String message = Helper.buildString(info.getUsername(), " popped into existence");
-        User.chat.printlnToOthersInRoom(info, message);
+        info.chat.printlnToOthersInRoom(message);
         info.input.insertNextCommand(LookCommand.instance);
         
         while(mainLoop(info));
@@ -78,8 +78,8 @@ public class Console {
      * @return if the user was successfully loaded.
      */
     private static boolean loadUser(User info, String username) {
-        PlayerInformation save = SerializationHelper.loadUser(username);
-        info.setUsername(save.getUsername());
+        Player save = SerializationHelper.loadUser(username);
+        info.setPlayer(save);
         
         RoomNode room = info.rooms.getRoom(save.getCurrentRoomID());
         if (room != null) {
@@ -105,8 +105,8 @@ public class Console {
         String ans = info.input.nextLine().toUpperCase();
         
         if (ans.equals("YES") || ans.equals("Y")) {
-            PlayerInformation p = new PlayerInformation(info.rooms.getStartingRoom(), username);
-            info.setPlayerInformation(p);
+            Player p = new Player(info, info.rooms.getStartingRoom(), username);
+            info.setPlayer(p);
             info.save();
             result = true;
         }

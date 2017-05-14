@@ -8,13 +8,15 @@ import java.io.Serializable;
  * 
  * @author Zachary Chandler
  */
-public class PlayerInformation implements Serializable {
+public class Character implements Serializable {
     
     /** Generated SVUID. */
     private static final long serialVersionUID = -2130515270184748942L;
+    
+    private static final RoomNode waitingRoom = new RoomNode(-1, "An Empty Room", "There is nothing here.");
 
     /** The user name of the user. */
-    private String username;
+    private String name;
 
     /** The room the user will load back into. */
     private int currentRoomID;
@@ -26,25 +28,25 @@ public class PlayerInformation implements Serializable {
      * Instantiate a UserSave with the given information.
      * 
      * @param saveRoom the room the user will be saved in.
-     * @param username the user name of the user.
+     * @param name the user name of the user.
      */
-    public PlayerInformation(RoomNode room, String username) {
-        setUsername(username);
+    public Character(RoomNode room, String name) {
+        setName(name);
         setRoom(room);
     }
 
     /**
-     * @return the username
+     * @return the name of the character
      */
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param username the username to set
+     * @param name the name to set
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -59,9 +61,22 @@ public class PlayerInformation implements Serializable {
      */
     public void setRoom(RoomNode room) {
         if (room != null) {
+            if (this.room != null) {
+                this.room.removeCharacter(this);
+            }
+            
             this.room = room;
             this.currentRoomID = room.getRoomID();
+            
+            this.room.addCharacter(this);
         }
+    }
+    
+    /**
+     * Cause the character to disappear.
+     */
+    public void disapear() {
+        setRoom(waitingRoom);
     }
 
     /**

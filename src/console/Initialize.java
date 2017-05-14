@@ -26,5 +26,4 @@ public class Initialize {
             System.err.println("Failed to Initialize a Save File!");
         }
     }
-
 }

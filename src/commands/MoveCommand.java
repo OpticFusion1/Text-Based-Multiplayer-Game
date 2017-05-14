@@ -31,18 +31,18 @@ public abstract class MoveCommand extends Command {
     /** A method to display information when the user changes rooms. */
     public static void arriveMessage(User info) {
         String message = info.getUsername() + " arrived";
-        User.chat.printlnToOthersInRoom(info, message);
+        info.chat.printlnToOthersInRoom(message);
     }
     
     /** A method to display information when the user changes rooms. */
     public static void arriveMessage(User info, Direction d) {
         String message = Helper.buildString(info.getUsername(), " arrived ", d.lowercaseName);
-        User.chat.printlnToOthersInRoom(info, message);
+        info.chat.printlnToOthersInRoom(message);
     }
     
     /** A method to display information when the user changes rooms. */
     public static void leaveMessage(User info, Direction d) {
         String message = Helper.buildString(info.getUsername(), " left ", d.lowercaseName);
-        User.chat.printlnToOthersInRoom(info, message);
+        info.chat.printlnToOthersInRoom(message);
     }
 }

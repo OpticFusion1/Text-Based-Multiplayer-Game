@@ -30,8 +30,8 @@ public class SerializationHelper {
      * @param username the user name the file is saved under.
      * @return a users save object.
      */
-    public static PlayerInformation loadUser(String username) {
-        return (PlayerInformation) loadObject(DATA_FOLDER + USERS_FOLDER + username + ".ser");
+    public static Player loadUser(String username) {
+        return (Player) loadObject(DATA_FOLDER + USERS_FOLDER + username + ".ser");
     }
     
     /**
@@ -39,8 +39,8 @@ public class SerializationHelper {
      * @param user the save object that will be stored.
      * @return if the file was successfully saved.
      */
-    public static boolean saveUser(PlayerInformation user) {
-        return saveObject(user, DATA_FOLDER + USERS_FOLDER + user.getUsername() + ".ser"); 
+    public static boolean saveUser(Player user) {
+        return saveObject(user, DATA_FOLDER + USERS_FOLDER + user.getName() + ".ser"); 
     }
     
     /**
@@ -115,7 +115,7 @@ public class SerializationHelper {
              //System.out.println("Saved system to " + fileName);
           } catch(IOException i) {
               System.err.println(i.getMessage());
-              System.err.println("FAILED to Save system to " + fileName);
+              System.err.println("FAILED to Save " + fileName);
               result = false;
           }
         

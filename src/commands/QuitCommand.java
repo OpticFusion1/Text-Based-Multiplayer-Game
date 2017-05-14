@@ -10,7 +10,7 @@ import console.User;
  */
 public class QuitCommand extends Command {
 
-    private static final String EXIT_MESSAGE = "Thank you for experiencing Node Traversing Simulator 2017";
+    private static final String EXIT_MESSAGE = "goodbye";
 
     @Override
     public String[] getAliases() {
@@ -24,11 +24,11 @@ public class QuitCommand extends Command {
     
     @Override
     public void runCommand(User info, String[] args) {
-        info.save();
         info.println(EXIT_MESSAGE);
-        
         String message = Helper.buildString(info.getUsername(), " popped out of existence");
-        User.chat.printlnToOthersInRoom(info, message);
+        info.chat.printlnToOthersInRoom(message);
+        
+        info.logout();
     }
 
     @Override

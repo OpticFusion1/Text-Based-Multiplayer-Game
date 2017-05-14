@@ -24,7 +24,7 @@ public class SayCommand extends Command {
             message.append(": ");
             message.append(Helper.mergeStrings(args, 1, args.length - 1));
 
-            User.chat.printlnToRoom(info, message.toString());
+            info.chat.printlnToRoom(message.toString());
         } else {
             info.println(getShortHelpDescription());
         }

@@ -6,38 +6,35 @@ package console;
  * @author Zachary Chandler
  */
 public class Chat {
-    
-    /** The players in the game. */
-    private final RoomToPlayerMap players;
+
+    private User info;
 
     /**
      * Instantiates a new chat for a player manager.
-     * @param players the players in the game.
+     * @param info the current user.
      */
-    public Chat(RoomToPlayerMap players) {
-        this.players = players;
+    public Chat(User info) {
+        this.info = info;
     }
     
     /**
      * Prints a string to the room.
-     * @param info the user who's room we will print to.
      * @param message the message to display to the room.
      */
-    public void printlnToRoom(User info, String message) {
-        for (User p : players.getPlayers(info.getCurrentRoom())) {
+    public void printlnToRoom(String message) {
+        for (User p : info.getPlayersInRoom()) {
             p.println(message);
         }
     }
     
     /**
      * Prints a string to the room excluding the given player.
-     * @param info the player in question.
      * @param message the string to display.
      */
-    public void printlnToOthersInRoom(User info, String message) {
-        for (User p : players.getPlayers(info.getCurrentRoom())) {
+    public void printlnToOthersInRoom(String message) {
+        for (User p : info.getPlayersInRoom()) {
             if (p != info) {
-                p.println(message);                
+                p.println(message);
             }
         }
     }

@@ -3,7 +3,7 @@ package console;
 import java.io.PrintStream;
 import java.util.List;
 
-import model.PlayerInformation;
+import model.Player;
 import model.RoomManager;
 import model.RoomNode;
 import model.SerializationHelper;
@@ -20,11 +20,8 @@ import model.SerializationHelper;
  */
 public class User implements Comparable<User> {
     
-    /** All of the players in the program. */
-    private static final RoomToPlayerMap roomMap = new RoomToPlayerMap();
-    
     /** The chat of the program. */
-    public static final Chat chat = new Chat(roomMap);
+    public final Chat chat = new Chat(this);
 
     /** The rooms the user will traverse. */
     public final RoomManager rooms;
@@ -36,7 +33,7 @@ public class User implements Comparable<User> {
     public final UserInputScanner input;
 
     /** The information of the player. */
-    private PlayerInformation playerInformation;
+    private Player playerInformation;
     
     /**
      * Instantiate the current information on a given graph of rooms.
@@ -56,7 +53,7 @@ public class User implements Comparable<User> {
         this.out = out;
         this.input = input;
         this.rooms = rooms;
-        this.playerInformation = new PlayerInformation(null, null);
+        this.playerInformation = new Player(this, null, null);
     }
 
     /**
@@ -66,12 +63,17 @@ public class User implements Comparable<User> {
         SerializationHelper.saveUser(playerInformation);
     }
     
+    public void logout() {
+        save();
+        playerInformation.disapear();
+    }
+    
     /**
      * @param p the player information to set on this user.
      */
-    public void setPlayerInformation(PlayerInformation p) {
+    public void setPlayer(Player p) {
         this.playerInformation = p;
-        setCurrentRoom(p.getRoom());
+        p.setUser(this);
     }
     
     /**
@@ -87,7 +89,6 @@ public class User implements Comparable<User> {
     public void setCurrentRoom(RoomNode currentRoom) {
         if (currentRoom != null) {
             playerInformation.setRoom(currentRoom);
-            roomMap.setRoomOfPlayer(this, currentRoom);
         }
     }
     
@@ -95,21 +96,21 @@ public class User implements Comparable<User> {
      * @return all of the players in this users room.
      */
     public List<User> getPlayersInRoom() {
-        return roomMap.getPlayers(playerInformation.getRoom());
+        return playerInformation.getRoom().getUsers();
     }
 
     /**
      * @return the user name
      */
     public String getUsername() {
-        return playerInformation.getUsername();
+        return playerInformation.getName();
     }
 
     /**
      * @param username the user name to set
      */
     public void setUsername(String username) {
-        this.playerInformation.setUsername(username);
+        this.playerInformation.setName(username);
     }
     
     /**

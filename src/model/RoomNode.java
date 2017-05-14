@@ -1,10 +1,12 @@
 package model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import console.User;
 
 /**
  * A room object that represents a room in a graph of interconnected nodes.
@@ -20,9 +22,15 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
     
     /** Generated SVUID */
     private static final long serialVersionUID = 4749342966413694748L;
-    
+
     /** Items in this RoomNode. */
     private final List<Item> items;
+    
+    /** Characters in this RoomNode. */
+    private final List<Character> characters;
+    
+    /** Users in this RoomNode. */
+    private transient List<User> users; 
     
     /** Adjacent room nodes. */
     private final EnumMap<Direction, RoomNode> directions;
@@ -34,7 +42,8 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
     private String name;
 
     /** The description of the room. */
-	private String description; 
+	private String description;
+
     
     /**
      * Instantiates a RoomNode with the given description.
@@ -57,6 +66,8 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
         this.description = description;
         this.items = new LinkedList<Item>();
         this.directions = new EnumMap<>(Direction.class);
+        this.characters = new LinkedList<>();
+        this.users = new LinkedList<>();
     }
     
     /**
@@ -109,10 +120,10 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
     }
 
     /**
-     * @return the items in this room.
+     * @return an unmodifiable list of items in this room.
      */
     public List<Item> getItems() {
-        return new ArrayList<Item>(items);
+        return Collections.unmodifiableList(items);
     }
 
     /**
@@ -189,5 +200,75 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
 	public RoomNode getDirection(Direction theDirection) {
 	    return directions.get(theDirection);
 	}
+
+    /**
+     * @return an unmodifiable list of characters in the room
+     */
+    public final List<Character> getCharacters() {
+        return Collections.unmodifiableList(characters);
+    }
+
+    private void addUser(User r) {
+        if (r == null) {
+            throw new NullPointerException("Null user in RoomNode.");
+        }
+        
+        if (users == null) {
+            users = new LinkedList<>();
+        }
+        
+        users.add(r);
+    }
+    
+    public List<User> getUsers() {
+        return Collections.unmodifiableList(users);
+    }
+
+    /**
+     * Add a character to the room. If c is null or already in the room, nothing is changed.
+     * 
+     * @param c the character to add.
+     */
+    public void addCharacter(Character c) {
+        if (!characters.contains(c) && c != null) {
+            characters.add(c);
+            
+            if (c instanceof Player) {
+                addUser(((Player) c).getUser());
+            }
+        }
+    }
+    
+    /**
+     * Remove a character from the room.
+     * @param c the character to remove.
+     * @return if the character was removed.
+     */
+    public boolean removeCharacter(Character c) {
+        if (c instanceof Player) {
+            users.remove(((Player) c).getUser());
+        }
+        
+        return characters.remove(c);
+    }
+    
+    /**
+     * Find a character in the room based on a given name.
+     * @param s the name of the character.
+     * @return the character found or null if it wasn't found.
+     */
+    public Character find(String s) {
+        Character result = null;
+        
+        for (Character c : characters) {
+            if (c.getName().equalsIgnoreCase(s)) {
+                result = c;
+                break;
+            }
+        }
+        
+        return result;
+    }
+
 	
 }

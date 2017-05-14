@@ -41,12 +41,12 @@ public class TeleportCommand extends Command {
                     info.println("Room not found!");
                 } else {
                     String message = Helper.buildString(info.getUsername(), " teleported in");
-                    User.chat.printlnToOthersInRoom(info, message);
+                    info.chat.printlnToOthersInRoom(message);
                     
                     info.setCurrentRoom(result);
 
                     message = Helper.buildString(info.getUsername(), " teleported out");
-                    User.chat.printlnToOthersInRoom(info, message);
+                    info.chat.printlnToOthersInRoom(message);
                     
                     info.input.insertNextCommand(LookCommand.instance);
                 }

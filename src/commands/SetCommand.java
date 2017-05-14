@@ -49,7 +49,7 @@ public class SetCommand extends Command {
                         String message = Helper.buildString(info.getUsername(), " set ", fieldToSet.toString(),
                                 " of the room to ", value);
 
-                        User.chat.printlnToRoom(info, message);
+                        info.chat.printlnToRoom(message);
                     } else {
                         info.printf("Could not set %s of %s\n", fieldToSet.toString(), info.getCurrentRoom().getName());            
                     }

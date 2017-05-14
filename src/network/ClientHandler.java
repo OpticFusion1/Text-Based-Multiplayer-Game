@@ -3,6 +3,8 @@ package network;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import console.Console;
@@ -22,6 +24,8 @@ public class ClientHandler implements Runnable {
     
     /** The actual socket of the user. */
     private Socket soc;
+    
+    private static List<ClientHandler> clients = new LinkedList<>();
 
     /**
      * Start a user with the given socket on the given rooms.
@@ -36,6 +40,7 @@ public class ClientHandler implements Runnable {
         PrintStream out = new PrintStream(user.getOutputStream(), true);
         
         this.info = new User(rm, out, input);
+        clients.add(this);
     }
     
     @Override
@@ -48,7 +53,7 @@ public class ClientHandler implements Runnable {
             closedGracefully = true;
         } catch (NoSuchElementException e) {
             System.out.printf("%s has closed the connection\n", getConnectorName());
-            info.save();
+            info.logout();
             closedGracefully = false;
         }
 
@@ -62,6 +67,7 @@ public class ClientHandler implements Runnable {
             e.getMessage();
         }            
         
+        clients.remove(this);
     }
     
     /**
@@ -70,6 +76,19 @@ public class ClientHandler implements Runnable {
     private String getConnectorName() {
         String name = info.getUsername();
         return name == null ? soc.toString() : name;
+    }
+    
+    /**
+     * Close all of the clients.
+     */
+    public static void close() {
+        for (ClientHandler c : clients) {
+            try {
+                c.soc.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

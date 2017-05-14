@@ -43,8 +43,9 @@ public class Server {
 
         // Close connections
         server.close();
+        ClientHandler.close();
         adminInput.close();
-        System.exit(0);
+        threads.shutdown();
     }
 
 }

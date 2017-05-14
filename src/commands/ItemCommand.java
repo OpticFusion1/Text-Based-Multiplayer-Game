@@ -103,7 +103,7 @@ public class ItemCommand extends Command {
             String message = Helper.buildString(info.getUsername(), " destroyed ", item.getName());
             
             info.getCurrentRoom().removeItem(item);
-            User.chat.printlnToRoom(info, message);
+            info.chat.printlnToRoom(message);
         }
     }
 
@@ -111,7 +111,7 @@ public class ItemCommand extends Command {
         info.getCurrentRoom().addItem(new Item(value));
         
         String message = Helper.buildString(info.getUsername(), " created ", value);
-        User.chat.printlnToRoom(info, message);
+        info.chat.printlnToRoom(message);
     }
 
     private void alias(User info, Item item, String value) {
@@ -127,7 +127,7 @@ public class ItemCommand extends Command {
     private void rename(User info, Item item, String value) {
         item.setName(value);
         String message = Helper.buildString(info.getUsername(), " renamed ", item.getName(), " to ", value);
-        User.chat.printlnToRoom(info, message);
+        info.chat.printlnToRoom(message);
     }
     
     private void unalias(User info, Item item, String value) {
