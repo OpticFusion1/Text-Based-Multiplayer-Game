@@ -12,7 +12,7 @@ import model.RoomNode;
  *
  * @author Zachary Chandler
  */
-public class PlayerManager {
+public class RoomToPlayerMap {
 
     /** players that are in a room */
     private TreeMap<RoomNode, List<User>> roomToPlayers;
@@ -24,7 +24,7 @@ public class PlayerManager {
     private TreeMap<RoomNode, List<User>> unmodifiableRoomToPlayers;
     
     /** Creates a new player manager without any players in it. */
-    public PlayerManager() {
+    public RoomToPlayerMap() {
         this.roomToPlayers = new TreeMap<RoomNode, List<User>>();
         this.unmodifiableRoomToPlayers = new TreeMap<RoomNode, List<User>>();
         this.playerToRoom = new TreeMap<User, RoomNode>();

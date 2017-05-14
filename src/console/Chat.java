@@ -8,13 +8,13 @@ package console;
 public class Chat {
     
     /** The players in the game. */
-    private final PlayerManager players;
+    private final RoomToPlayerMap players;
 
     /**
      * Instantiates a new chat for a player manager.
      * @param players the players in the game.
      */
-    public Chat(PlayerManager players) {
+    public Chat(RoomToPlayerMap players) {
         this.players = players;
     }
     

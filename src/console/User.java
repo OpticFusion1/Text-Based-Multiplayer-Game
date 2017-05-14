@@ -19,10 +19,10 @@ import model.RoomNode;
 public class User implements Comparable<User> {
     
     /** All of the players in the program. */
-    private static final PlayerManager MANAGER = new PlayerManager();
+    private static final RoomToPlayerMap roomMap = new RoomToPlayerMap();
     
     /** The chat of the program. */
-    public static final Chat chat = new Chat(MANAGER);
+    public static final Chat chat = new Chat(roomMap);
     
     /** The current room of the user. */
     private RoomNode currentRoom;
@@ -74,12 +74,12 @@ public class User implements Comparable<User> {
     public void setCurrentRoom(RoomNode currentRoom) {
         if (currentRoom != null) {
             this.currentRoom = currentRoom;
-            MANAGER.setRoomOfPlayer(this, currentRoom);
+            roomMap.setRoomOfPlayer(this, currentRoom);
         }
     }
     
     public List<User> getPlayersInRoom() {
-        return MANAGER.getPlayers(currentRoom);
+        return roomMap.getPlayers(currentRoom);
     }
 
     /**
