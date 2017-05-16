@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 import console.Console;
 import console.User;
 import console.UserInputScanner;
-import model.RoomManager;
+import model.Universe;
 
 /**
  * The client thread that will run for a given user.
@@ -29,13 +29,13 @@ public class ClientHandler implements Runnable {
      * @param rm the rooms of the world.
      * @throws IOException if an IO exception occurs.
      */
-    public ClientHandler(Socket user, RoomManager rm) throws IOException  {
+    public ClientHandler(Socket user, Universe u) throws IOException  {
         this.soc = user;
         
         UserInputScanner input = new UserInputScanner(user.getInputStream());
         PrintStream out = new PrintStream(user.getOutputStream(), true);
         
-        this.info = new User(rm, out, input);
+        this.info = new User(u, out, input);
     }
     
     @Override
@@ -48,7 +48,6 @@ public class ClientHandler implements Runnable {
             closedGracefully = true;
         } catch (NoSuchElementException e) {
             System.out.printf("%s has closed the connection\n", getConnectorName());
-            info.logout();
             closedGracefully = false;
         }
 

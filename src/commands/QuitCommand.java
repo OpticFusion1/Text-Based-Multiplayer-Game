@@ -1,6 +1,5 @@
 package commands;
 
-import console.Helper;
 import console.User;
 
 /**
@@ -25,10 +24,6 @@ public class QuitCommand extends Command {
     @Override
     public void runCommand(User info, String[] args) {
         info.println(EXIT_MESSAGE);
-        String message = Helper.buildString(info.getUsername(), " popped out of existence");
-        info.chat.printlnToOthersInRoom(message);
-        
-        info.logout();
     }
 
     @Override

@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import model.RoomManager;
+import model.Universe;
 
 public class ServerHandler implements Runnable {
 
@@ -14,11 +14,11 @@ public class ServerHandler implements Runnable {
     //private RoomManager rooms;
     private Clients clients;
 
-    public ServerHandler(ThreadPoolExecutor threads, RoomManager rooms, int port) throws IOException {
+    public ServerHandler(ThreadPoolExecutor threads, Universe u, int port) throws IOException {
         this.server = new ServerSocket(port);
         this.threads = threads;
         //this.rooms = rooms;
-        this.clients = new Clients(rooms);
+        this.clients = new Clients(u);
     }
     
     @Override
@@ -56,6 +56,7 @@ public class ServerHandler implements Runnable {
             System.out.println("I/O Exception while closing server.");
             return;
         }
+        clients.closeClients();
         
         System.out.println("Closing server.");
     }

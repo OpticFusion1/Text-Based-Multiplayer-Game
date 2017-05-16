@@ -35,7 +35,7 @@ public class TeleportCommand extends Command {
                 info.println("Invalid number format, ");
                 error = true;
             } else {
-                RoomNode result = info.rooms.getRoom(choice);
+                RoomNode result = info.u.rooms.getRoom(choice);
                 
                 if (result == null) {
                     info.println("Room not found!");

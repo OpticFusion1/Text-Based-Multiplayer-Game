@@ -8,12 +8,10 @@ import java.io.Serializable;
  * 
  * @author Zachary Chandler
  */
-public class Character implements Serializable {
+public abstract class Character implements Serializable {
     
     /** Generated SVUID. */
     private static final long serialVersionUID = -2130515270184748942L;
-    
-    private static final RoomNode waitingRoom = new RoomNode(-1, "An Empty Room", "There is nothing here.");
 
     /** The user name of the user. */
     private String name;
@@ -33,6 +31,16 @@ public class Character implements Serializable {
     public Character(RoomNode room, String name) {
         setName(name);
         setRoom(room);
+    }
+    
+    /**
+     * Instantiate a Character with the given name. The current room will be null so any calls to getRoom without 
+     * setting a non-null room will result in a null.
+     * 
+     * @param name
+     */
+    protected Character(String name) {
+        setName(name);
     }
 
     /**
@@ -73,10 +81,13 @@ public class Character implements Serializable {
     }
     
     /**
-     * Cause the character to disappear.
+     * Cause the character to be removed from the room.
      */
-    public void disapear() {
-        setRoom(waitingRoom);
+    public void removeFromRoom() {
+        if (this.room != null) {
+            this.room.removeCharacter(this);
+            this.room = null;
+        }
     }
 
     /**

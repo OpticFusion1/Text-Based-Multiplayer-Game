@@ -3,6 +3,7 @@ package console;
 import model.RoomManager;
 import model.RoomNode;
 import model.SerializationHelper;
+import model.Universe;
 
 /**
  * Initializes a simple save file of the room manager.
@@ -18,7 +19,9 @@ public class Initialize {
                 + "leads through the forest.");
         RoomManager roomManager = new RoomManager(startingRoom);
         
-        boolean saved = SerializationHelper.saveRoomManager(roomManager);
+        Universe u = new Universe(roomManager);
+        
+        boolean saved = SerializationHelper.saveUniverse(u);
         
         if (saved) {
             System.out.println("Sucessfully Initialized a Save File!");

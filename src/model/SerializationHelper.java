@@ -20,10 +20,10 @@ public class SerializationHelper {
     private static final String USERS_FOLDER = "users/";
     
     /** The name of the file storing all of the rooms. */
-    private static final String ROOM_MANAGER_FILE = "rooms.ser";
+    private static final String UNIVERSE_FILE = "rooms.ser";
     
     /** The folders that lead to where user data will be saved. */
-    private static final String ROOM_MANAGER_SAVE = DATA_FOLDER + ROOM_MANAGER_FILE;
+    private static final String UNIVERSE_SAVE = DATA_FOLDER + UNIVERSE_FILE;
 
     /**
      * Load a given user's save.
@@ -56,16 +56,16 @@ public class SerializationHelper {
     /**
      * @return the room manager.
      */
-    public static RoomManager loadRoomManager() {
-        return (RoomManager) loadObject(ROOM_MANAGER_SAVE);
+    public static Universe loadUniverse() {
+        return (Universe) loadObject(UNIVERSE_SAVE);
     }
     
     /**
      * @param rm the room manager to save.
      * @return if the save was successful.
      */
-    public static boolean saveRoomManager(RoomManager rm) {
-        return saveObject(rm, ROOM_MANAGER_SAVE);
+    public static boolean saveUniverse(Universe u) {
+        return saveObject(u, UNIVERSE_SAVE);
     }
     
     /**

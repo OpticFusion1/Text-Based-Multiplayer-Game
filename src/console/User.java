@@ -4,9 +4,9 @@ import java.io.PrintStream;
 import java.util.List;
 
 import model.Player;
-import model.RoomManager;
 import model.RoomNode;
 import model.SerializationHelper;
+import model.Universe;
 
 /**
  * A class to keep track of a users information
@@ -24,7 +24,7 @@ public class User implements Comparable<User> {
     public final Chat chat = new Chat(this);
 
     /** The rooms the user will traverse. */
-    public final RoomManager rooms;
+    public final Universe u;
 
     /** A PrintStream to the user. */
     private final PrintStream out;
@@ -45,14 +45,14 @@ public class User implements Comparable<User> {
      * @param out an output stream to the user.
      * @param input a way to get input from the user.
      */
-    public User(RoomManager rooms, PrintStream out, UserInputScanner input) {
-        if (rooms == null) {
+    public User(Universe u, PrintStream out, UserInputScanner input) {
+        if (u == null) {
             throw new NullPointerException("Cannot use null RoomManager in CurrentInformation instantiation!");
         }
         
         this.out = out;
         this.input = input;
-        this.rooms = rooms;
+        this.u = u;
         this.playerInformation = new Player(this, null, null);
     }
 
@@ -62,18 +62,20 @@ public class User implements Comparable<User> {
     public void save() {
         SerializationHelper.saveUser(playerInformation);
     }
-    
-    public void logout() {
-        save();
-        playerInformation.disapear();
-    }
-    
+
     /**
      * @param p the player information to set on this user.
      */
     public void setPlayer(Player p) {
         this.playerInformation = p;
         p.setUser(this);
+    }
+    
+    /**
+     * @param p the player information to set on this user.
+     */
+    public Player getPlayer() {
+        return playerInformation;
     }
     
     /**

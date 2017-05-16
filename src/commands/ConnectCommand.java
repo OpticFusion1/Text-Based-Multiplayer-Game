@@ -54,7 +54,7 @@ public class ConnectCommand extends Command {
             }
 
             if (!error) {
-                RoomNode room = info.rooms.getRoom(choice);
+                RoomNode room = info.u.rooms.getRoom(choice);
                 
                 if (room == null) {
                     info.print("Room not found, ");

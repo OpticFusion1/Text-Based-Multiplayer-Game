@@ -1,5 +1,6 @@
 package console;
 
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -22,28 +23,81 @@ public class Console {
     /** A constant for white space so we don't have to re-create it. */
     private static final Pattern WHITE_SPACE = Pattern.compile("\\s");
     
+    private static final int MAX_LOGIN_ATTEMPTS = 3;
+    
     /** The players that are currently logged in. */
     private static final Set<String> loggedInPlayers = new TreeSet<String>();
     
     /**
      * This program loads and runs a world for a single user.
+     * @throws NoSuchElementException if the user closed the connection while running.
      */
-    public static void start(User info) {
+    public static void start(User info) throws NoSuchElementException {
         
-        int loginFails = 0;
-        while (loginFails < 3 && !login(info)) loginFails++;
-        
-        if (loginFails >= 3) {
+        if (!login(info)) {
             info.println("Failed to login, now exiting.");
-            return;
+        } else {
+            play(info);
         }
-
+        
+    }
+    
+    /**
+     * Let the user start playing. They appear in the game and when this method exits they are logged out of the game.
+     * 
+     * the user must be logged in.
+     * 
+     * @param info the user.
+     * @throws NoSuchElementException if the user closes the connection while they are playing.
+     */
+    private static void play(User info) throws NoSuchElementException {
         String message = Helper.buildString(info.getUsername(), " popped into existence");
         info.chat.printlnToOthersInRoom(message);
         info.input.insertNextCommand(LookCommand.instance);
         
-        while(mainLoop(info));
+        NoSuchElementException ex = null;
+        
+        try {
+            while(mainLoop(info));
+        } catch (NoSuchElementException e) {
+            // save it for now, we will need to clean up first.
+            ex = e;
+        }
+        
+        message = Helper.buildString(info.getUsername(), " popped out of existence");
+        info.chat.printlnToOthersInRoom(message);
+        cleanup(info);
+        
+        if (ex != null) {
+            throw ex;
+        }
+    }
+    
+    /**
+     * Cleanups the user, logs them out, saves their character, removes them from the logged in players, and removes
+     * their entity from the tracked entities in their universe.
+     * 
+     * the user must be logged.
+     * 
+     * @param info
+     */
+    private static void cleanup(User info) {
+        info.save();
+        info.getPlayer().removeFromRoom();        
         loggedInPlayers.remove(info.getUsername().toUpperCase());
+        info.u.entities.removePlayer(info.getPlayer());
+    }
+    
+    /**
+     * @param info the user to log in.
+     * @return if the user was logged in.
+     */
+    private static boolean login(User info) {
+        int loginFails = 0;
+        
+        while (loginFails < MAX_LOGIN_ATTEMPTS && !attemptLogin(info)) loginFails++;
+        
+        return loginFails < MAX_LOGIN_ATTEMPTS;
     }
     
     /**
@@ -51,7 +105,7 @@ public class Console {
      * @param info the user we will be talking to.
      * @return if the user was able to log in.
      */
-    public static boolean login(User info) {
+    private static boolean attemptLogin(User info) {
         boolean result;
 
         String username = getUserName(info);
@@ -65,7 +119,8 @@ public class Console {
         }
         
         if (result) {
-            loggedInPlayers.add(username.toUpperCase());            
+            loggedInPlayers.add(username.toUpperCase());    
+            info.u.entities.addPlayer(info.getPlayer());
         }
         
         return result;
@@ -79,13 +134,14 @@ public class Console {
      */
     private static boolean loadUser(User info, String username) {
         Player save = SerializationHelper.loadUser(username);
+        save.setUser(info);
         info.setPlayer(save);
         
-        RoomNode room = info.rooms.getRoom(save.getCurrentRoomID());
+        RoomNode room = info.u.rooms.getRoom(save.getCurrentRoomID());
         if (room != null) {
             info.setCurrentRoom(room);
         } else {
-            info.setCurrentRoom(info.getCurrentRoom());
+            info.setCurrentRoom(info.u.rooms.getStartingRoom());
         }
         
         return true;
@@ -105,7 +161,7 @@ public class Console {
         String ans = info.input.nextLine().toUpperCase();
         
         if (ans.equals("YES") || ans.equals("Y")) {
-            Player p = new Player(info, info.rooms.getStartingRoom(), username);
+            Player p = new Player(info, info.u.rooms.getStartingRoom(), username);
             info.setPlayer(p);
             info.save();
             result = true;
@@ -120,7 +176,7 @@ public class Console {
      * @param info the user to talk to.
      * @return the user name of the user or null if it was invalid.
      */
-    public static String getUserName(User info) {
+    private static String getUserName(User info) {
         String name;
         
         info.print("Please Enter Your Username: ");
@@ -147,7 +203,7 @@ public class Console {
      * @param info the user we will be using.
      * @return if the mainLoop should continue.
      */
-    public static boolean mainLoop(User info) {
+    private static boolean mainLoop(User info) {
         boolean result = true;
         
         RunnableCommand com = info.input.getNextCommand();

@@ -5,20 +5,20 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
-import model.RoomManager;
+import model.Universe;
 
 public class Clients {
     List<ClientHandler> clients;
-    private RoomManager rooms;
+    private Universe u;
     
     
-    public Clients(RoomManager rooms) {
+    public Clients(Universe u) {
         clients = new LinkedList<>();
-        this.rooms = rooms;
+        this.u = u;
     }
     
     public Runnable addClient(Socket s) throws IOException {
-        ClientHandler c = new ClientHandler(s, rooms);
+        ClientHandler c = new ClientHandler(s, u);
         clients.add(c);
         
         return ()-> {

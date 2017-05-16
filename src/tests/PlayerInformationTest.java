@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import model.Character;
+import model.NonPlayerCharacter;
 import model.RoomNode;
 
 public class PlayerInformationTest {
@@ -19,8 +20,8 @@ public class PlayerInformationTest {
     public void setUp() throws Exception {
         initialRoom = new RoomNode(5, "name");
         
-        playerWithNulls = new Character(null, null);
-        playerWithBasicValues = new Character(initialRoom, "name");
+        playerWithNulls = new NonPlayerCharacter(null, null);
+        playerWithBasicValues = new NonPlayerCharacter(initialRoom, "name");
     }
 
     @Test

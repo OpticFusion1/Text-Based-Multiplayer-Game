@@ -10,8 +10,9 @@ public class Player extends Character {
     transient private User user;
 
     public Player(User user, RoomNode room, String name) {
-        super(room, name);
+        super(name);
         this.user = user;
+        setRoom(room);
     }
 
     /**
