@@ -8,8 +8,8 @@ public class Universe implements Serializable {
     public final RoomManager rooms;
     public final Entities entities;
     
-    public Universe(RoomManager rooms) {
-        this.rooms = rooms;
+    public Universe() {
+        this.rooms = new RoomManager();
         this.entities = new Entities();
     }
 }

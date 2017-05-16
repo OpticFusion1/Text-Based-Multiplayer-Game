@@ -20,7 +20,6 @@ public class Server {
             System.err.println("Failed to Load System!");
             return;
         } else {
-            u.rooms.addAllConnectedRooms();
             System.out.println("Loaded System.");
         }
 
@@ -36,7 +35,6 @@ public class Server {
         }
         
         // Save data
-        u.entities.purgeTrackedPlayers();
         SerializationHelper.saveUniverse(u);
         System.out.println("Saved Universe.");
 

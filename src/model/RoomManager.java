@@ -2,9 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
  * A room manager that holds a graph of nodes.
@@ -33,28 +31,25 @@ public final class RoomManager implements Serializable {
     /**
      * Instantiates a RoomManager with the given starting room. And adds all connected rooms to be tracked.
      * 
-     * Preconditions:
-     *      startingRoom may not be null.
-     * 
      * @param startingRoom
      */
-    public RoomManager(RoomNode startingRoom) {
-        if (startingRoom == null) {
-            throw new NullPointerException("Cannot have a null startingRoom in a RoomManager.");
-        }
-        
-        this.startingRoom = startingRoom;
-        this.nextRoomID = startingRoom.getRoomID() + 1;
+    public RoomManager() {
+        this.nextRoomID = 0;
         this.rooms = new TreeMap<>();
-        
-        this.addAllConnectedRooms();
+        this.startingRoom = newRoom();
     }
     
     /**
-     * @return a unique room ID.
+     * @return a new room that is tracked by this room manager
      */
-    public int getUniqueRoomID() {
-        return nextRoomID++;
+    public RoomNode newRoom() {
+        return newRoom("simple room", "a very bland room");
+    }
+
+    public RoomNode newRoom(String name, String description) {
+        RoomNode result = new RoomNode(nextRoomID++, name, description);
+        trackRoom(result);
+        return result;
     }
     
     /**
@@ -73,12 +68,14 @@ public final class RoomManager implements Serializable {
      *      
      * @param startingRoom the startingRoom to set
      */
-    public void setStartingRoom(RoomNode startingRoom) {
-        if (startingRoom == null) {
-            throw new NullPointerException("Cannot have a null startingRoom in a RoomManager.");
+    public void setStartingRoom(int room) {
+        RoomNode newStartingRoom  = rooms.get(room);
+        
+        if (newStartingRoom == null) {
+            throw new IllegalArgumentException("Could not find room: " + room);
         }
         
-        this.startingRoom = startingRoom;
+        this.startingRoom = newStartingRoom;
     }
     
     /**
@@ -96,32 +93,25 @@ public final class RoomManager implements Serializable {
      * 
      * @param room the room to track.
      */
-    public void trackRoom(RoomNode room) {
+    private void trackRoom(RoomNode room) {
         if (!this.rooms.containsKey(room.getRoomID())) {
             this.rooms.put(room.getRoomID(), room);            
         }
     }
     
+    /*
     /**
      * Searches and adds all rooms connected to the starting node that are not being tracked.
-     */
+     *
     public void addAllConnectedRooms() {
         addAllConnectedRooms(new TreeSet<RoomNode>(), this.startingRoom);
-    }
-    
-    /**
-     * Removes all known rooms that are disconnected from the starting room.
-     */
-    public void purgeDisconnectedRooms() {
-        this.rooms = new TreeMap<>();
-        addAllConnectedRooms();
     }
     
     /**
      * Adds all of the connected rooms to be tracked.
      * @param seenRooms the rooms already seen and added.
      * @param room the current room.
-     */
+     *
     private void addAllConnectedRooms(Set<RoomNode> seenRooms, RoomNode room) {
         if (room != null && !seenRooms.contains(room)) {
             seenRooms.add(room);
@@ -135,4 +125,5 @@ public final class RoomManager implements Serializable {
             addAllConnectedRooms(seenRooms, room.getDirection(Direction.WEST));
         }
     }
+    */
 }

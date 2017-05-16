@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import model.Character;
 import model.NonPlayerCharacter;
+import model.RoomManager;
 import model.RoomNode;
 
 public class PlayerInformationTest {
@@ -18,8 +19,8 @@ public class PlayerInformationTest {
     
     @Before
     public void setUp() throws Exception {
-        initialRoom = new RoomNode(5, "name");
-        
+        initialRoom = new RoomManager().getStartingRoom();
+        initialRoom.setName("name");
         playerWithNulls = new NonPlayerCharacter(null, null);
         playerWithBasicValues = new NonPlayerCharacter(initialRoom, "name");
     }
@@ -33,7 +34,7 @@ public class PlayerInformationTest {
     
     @Test
     public void testPlayerInformation_ValidPlayer() {
-        assertEquals(playerWithBasicValues.getCurrentRoomID(), 5);
+        assertEquals(playerWithBasicValues.getCurrentRoomID(), 0);
         assertEquals(playerWithBasicValues.getRoom(), initialRoom);
         assertEquals(playerWithBasicValues.getName(), "name");
     }

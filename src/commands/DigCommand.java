@@ -54,7 +54,7 @@ public class DigCommand extends Command {
                 if (room != null) {
                     info.println("There is already a room there!");
                 } else {
-                    RoomNode newRoom = new RoomNode(info.u.rooms.getUniqueRoomID(), name, description);
+                    RoomNode newRoom = info.u.rooms.newRoom(name, description);
                     String message = Helper.buildString(info.getUsername(), " creates a room to the ",
                             directionToDig.lowercaseName, ".");
 
@@ -62,8 +62,6 @@ public class DigCommand extends Command {
                     
                     info.getCurrentRoom().setDirection(directionToDig, newRoom);
                     newRoom.setDirection(oppositeDirection, info.getCurrentRoom());
-
-                    info.u.rooms.trackRoom(newRoom);
                     MoveCommand.move(info, directionToDig);
                 }
             }

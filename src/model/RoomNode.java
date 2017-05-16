@@ -1,5 +1,7 @@
 package model;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -30,7 +32,7 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
     private final List<Character> characters;
     
     /** Users in this RoomNode. */
-    private transient List<User> users; 
+    private final List<User> users; 
     
     /** Adjacent room nodes. */
     private final EnumMap<Direction, RoomNode> directions;
@@ -56,7 +58,7 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
      * @param name the name of the room.
      * @param description the description of the room.
      */
-    public RoomNode(int roomID, String name, String description) {
+    protected RoomNode(int roomID, String name, String description) {
         if (name == null || description == null) {
             throw new NullPointerException("Cannot use null in RoomNode constructor!");
         }
@@ -80,7 +82,7 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
      * @param name the name of the room.
      * @param description the description of the room.
      */
-    public RoomNode(int uniqueRoomID, String name) {
+    protected RoomNode(int uniqueRoomID, String name) {
         this(uniqueRoomID, name, "A very bland room.");
     }
 
@@ -213,10 +215,6 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
             throw new NullPointerException("Null user in RoomNode.");
         }
         
-        if (users == null) {
-            users = new LinkedList<>();
-        }
-        
         users.add(r);
     }
     
@@ -270,5 +268,10 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
         return result;
     }
 
-	
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        List<User> swap = new LinkedList<>(users);
+        users.clear();
+        out.defaultWriteObject();
+        users.addAll(swap);
+    }	
 }

@@ -1,5 +1,7 @@
 package model;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -40,8 +42,11 @@ public class Entities implements Serializable {
     public boolean removePlayer(Player p) {
         return players.remove(p);
     }
-    
-    public void purgeTrackedPlayers() {
-        players.clear();
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+      List<Player> swap = new LinkedList<>(players);
+      players.clear();
+      out.defaultWriteObject();
+      players.addAll(swap);
     }
 }
