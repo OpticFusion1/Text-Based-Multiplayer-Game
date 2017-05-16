@@ -43,7 +43,6 @@ public class Server {
 
         // Close connections
         server.close();
-        ClientHandler.close();
         adminInput.close();
         threads.shutdown();
     }

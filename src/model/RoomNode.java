@@ -229,7 +229,7 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
      * 
      * @param c the character to add.
      */
-    public void addCharacter(Character c) {
+    protected void addCharacter(Character c) {
         if (!characters.contains(c) && c != null) {
             characters.add(c);
             
@@ -244,7 +244,7 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
      * @param c the character to remove.
      * @return if the character was removed.
      */
-    public boolean removeCharacter(Character c) {
+    protected boolean removeCharacter(Character c) {
         if (c instanceof Player) {
             users.remove(((Player) c).getUser());
         }

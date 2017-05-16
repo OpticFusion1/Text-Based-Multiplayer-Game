@@ -11,12 +11,14 @@ public class ServerHandler implements Runnable {
 
     private ServerSocket server;
     private ThreadPoolExecutor threads;
-    private RoomManager rooms;
+    //private RoomManager rooms;
+    private Clients clients;
 
     public ServerHandler(ThreadPoolExecutor threads, RoomManager rooms, int port) throws IOException {
         this.server = new ServerSocket(port);
         this.threads = threads;
-        this.rooms = rooms;
+        //this.rooms = rooms;
+        this.clients = new Clients(rooms);
     }
     
     @Override
@@ -34,7 +36,7 @@ public class ServerHandler implements Runnable {
             
             try {
                 if (threads.getPoolSize() < threads.getMaximumPoolSize()) {
-                    threads.execute(new ClientHandler(client, rooms));                    
+                    threads.execute(clients.addClient(client));                    
                 } else {
                     client.close();
                 }
@@ -44,6 +46,9 @@ public class ServerHandler implements Runnable {
         }
     }
 
+    /**
+     * Shutdown the server and all connections.
+     */
     public void close() {
         try {
             server.close();
