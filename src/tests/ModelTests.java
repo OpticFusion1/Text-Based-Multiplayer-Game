@@ -9,7 +9,8 @@ import org.junit.runner.RunWith;
     ItemTest.class,
     PlayerInformationTest.class,
     RoomManagerTest.class,
-    RoomNodeTest.class
+    RoomNodeTest.class,
+    SkillSetTest.class
 })
 
 public class ModelTests {
