@@ -3,44 +3,39 @@ package network;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import console.Console;
 import console.User;
 import console.UserInputScanner;
-import model.RoomManager;
+import model.Universe;
 
 /**
  * The client thread that will run for a given user.
  *
  * @author Zachary Chandler
  */
-public class ClientHandler implements Runnable {
+public class Client implements Runnable {
 
     /** The user to run for. */
     private User info;
     
     /** The actual socket of the user. */
     private Socket soc;
-    
-    private static List<ClientHandler> clients = new LinkedList<>();
 
     /**
-     * Start a user with the given socket on the given rooms.
+     * Start a user with the given socket on the given universe.
      * @param user the socket of the connection.
-     * @param rm the rooms of the world.
+     * @param u the Universe.
      * @throws IOException if an IO exception occurs.
      */
-    public ClientHandler(Socket user, RoomManager rm) throws IOException  {
+    public Client(Socket user, Universe u) throws IOException  {
         this.soc = user;
         
         UserInputScanner input = new UserInputScanner(user.getInputStream());
         PrintStream out = new PrintStream(user.getOutputStream(), true);
         
-        this.info = new User(rm, out, input);
-        clients.add(this);
+        this.info = new User(u, out, input);
     }
     
     @Override
@@ -53,7 +48,6 @@ public class ClientHandler implements Runnable {
             closedGracefully = true;
         } catch (NoSuchElementException e) {
             System.out.printf("%s has closed the connection\n", getConnectorName());
-            info.logout();
             closedGracefully = false;
         }
 
@@ -65,9 +59,7 @@ public class ClientHandler implements Runnable {
             soc.close();
         } catch (IOException e) {
             e.getMessage();
-        }            
-        
-        clients.remove(this);
+        }
     }
     
     /**
@@ -79,15 +71,13 @@ public class ClientHandler implements Runnable {
     }
     
     /**
-     * Close all of the clients.
+     * Close the current client.
      */
-    public static void close() {
-        for (ClientHandler c : clients) {
-            try {
-                c.soc.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public void close() {
+        try {
+            soc.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

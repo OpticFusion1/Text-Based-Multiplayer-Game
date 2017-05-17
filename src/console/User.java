@@ -4,9 +4,9 @@ import java.io.PrintStream;
 import java.util.List;
 
 import model.Player;
-import model.RoomManager;
 import model.RoomNode;
 import model.SerializationHelper;
+import model.Universe;
 
 /**
  * A class to keep track of a users information
@@ -24,7 +24,7 @@ public class User implements Comparable<User> {
     public final Chat chat = new Chat(this);
 
     /** The rooms the user will traverse. */
-    public final RoomManager rooms;
+    public final Universe u;
 
     /** A PrintStream to the user. */
     private final PrintStream out;
@@ -33,62 +33,67 @@ public class User implements Comparable<User> {
     public final UserInputScanner input;
 
     /** The information of the player. */
-    private Player playerInformation;
+    private Player ply;
     
     /**
-     * Instantiate the current information on a given graph of rooms.
+     * Instantiate a user with the given I/O streams and the given universe.
      * 
      * Preconditions:
-     *      rooms must not be null.
+     *      universe must not be null.
      *      
-     * @param rooms the room graph we will have information on.
+     * @param u the universe this user resides in.
      * @param out an output stream to the user.
-     * @param input a way to get input from the user.
+     * @param input an input stream from the user.
      */
-    public User(RoomManager rooms, PrintStream out, UserInputScanner input) {
-        if (rooms == null) {
-            throw new NullPointerException("Cannot use null RoomManager in CurrentInformation instantiation!");
+    public User(Universe u, PrintStream out, UserInputScanner input) {
+        if (u == null) {
+            throw new NullPointerException("Cannot use null Universe in User instantiation!");
         }
         
         this.out = out;
         this.input = input;
-        this.rooms = rooms;
-        this.playerInformation = new Player(this, null, null);
+        this.u = u;
+        this.ply = new Player(this, null, "connecting user");
     }
 
     /**
-     * @param p the player information to set on this user.
+     * Save the users information. Including player details.
      */
     public void save() {
-        SerializationHelper.saveUser(playerInformation);
+        SerializationHelper.saveUser(ply);
     }
-    
-    public void logout() {
-        save();
-        playerInformation.disapear();
+
+    /**
+     * @param p the player to set for this user.
+     */
+    public void setPlayer(Player p) {
+        this.ply = p;
+        p.setUser(this);
     }
     
     /**
-     * @param p the player information to set on this user.
+     * @return the player of this user.
      */
-    public void setPlayer(Player p) {
-        this.playerInformation = p;
-        p.setUser(this);
+    public Player getPlayer() {
+        return ply;
     }
     
     /**
      * @return the currentRoom
      */
     public RoomNode getCurrentRoom() {
-        return playerInformation.getRoom();
+        return ply.getRoom();
     }
     
     /**
-     * @param currentRoom the currentRoom to set
+     * Sets the current room of the user. If currentRoom is null, the user doesn't change rooms.
+     * 
+     * @param currentRoom the current room to set.
      */
     public void setCurrentRoom(RoomNode currentRoom) {
         if (currentRoom != null) {
-            playerInformation.setRoom(currentRoom);
+            // characters handle changing rooms, so just call that method.
+            ply.setRoom(currentRoom);
         }
     }
     
@@ -96,21 +101,21 @@ public class User implements Comparable<User> {
      * @return all of the players in this users room.
      */
     public List<User> getPlayersInRoom() {
-        return playerInformation.getRoom().getUsers();
+        return ply.getRoom().getUsers();
     }
 
     /**
-     * @return the user name
+     * @return the user name of the user or null, if no name is set.
      */
     public String getUsername() {
-        return playerInformation.getName();
+        return ply.getName();
     }
 
     /**
      * @param username the user name to set
      */
     public void setUsername(String username) {
-        this.playerInformation.setName(username);
+        this.ply.setName(username);
     }
     
     /**

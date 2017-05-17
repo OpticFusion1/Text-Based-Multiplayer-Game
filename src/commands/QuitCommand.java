@@ -1,10 +1,9 @@
 package commands;
 
-import console.Helper;
 import console.User;
 
 /**
- * A command to handle player exiting.
+ * A command to display an exit message to the player.
  *
  * @author Zachary Chandler
  */
@@ -25,10 +24,6 @@ public class QuitCommand extends Command {
     @Override
     public void runCommand(User info, String[] args) {
         info.println(EXIT_MESSAGE);
-        String message = Helper.buildString(info.getUsername(), " popped out of existence");
-        info.chat.printlnToOthersInRoom(message);
-        
-        info.logout();
     }
 
     @Override

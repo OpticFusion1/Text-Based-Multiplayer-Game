@@ -13,7 +13,7 @@ public class InspectCommand extends Command {
 
     @Override
     public String[] getAliases() {
-        return new String[] {"INSPECT"};
+        return new String[] {"INSPECT", "INS"};
     }
 
     @Override

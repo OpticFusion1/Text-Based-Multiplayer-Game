@@ -4,7 +4,7 @@ import console.Helper;
 import console.User;
 
 /**
- * writes a message to everyone in the room and displays it in third person.
+ * Writes a message to everyone in the room and displays it in third person.
  *
  * @author Zachary Chandler
  */

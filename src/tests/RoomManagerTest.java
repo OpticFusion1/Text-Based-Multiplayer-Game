@@ -5,61 +5,72 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.Direction;
 import model.RoomManager;
 import model.RoomNode;
 
+/**
+ * A class to test the room manager.
+ *
+ * @author Zachary Chandler
+ */
 public class RoomManagerTest {
 
-    private RoomManager simpleRooms;
-    private RoomNode simpleRoom;
+    RoomManager rooms;
     
     @Before
-    public void setup() {
-        simpleRoom = new RoomNode(0, "The Void");
-        simpleRoom.setDirection(Direction.DOWN, new RoomNode(1, "The Sky" ));
-        simpleRooms = new RoomManager(simpleRoom);
+    public void setUp() throws Exception {
+        rooms = new RoomManager();
     }
 
     @Test
-    public void Constructor_MultipleRoomsBeforeCall_AllRoomsTracked() {
-        assertEquals("Room manager should be able to lookup rooms that already exist!",
-                 simpleRooms.getRoom(1), simpleRoom.getDirection(Direction.DOWN));
+    public void testRoomManager() {
+        assertNotEquals(rooms.getStartingRoom(), null);
     }
 
     @Test
-    public void trackRoom_NodeInGraph_IsTracked() {
-        simpleRoom.setDirection(Direction.UP, new RoomNode(2, "More Void", "A description"));
-        simpleRooms.trackRoom(simpleRoom.getDirection(Direction.UP));
+    public void testNewRoom() {
+        assertTrue(rooms.newRoom() instanceof RoomNode);
+    }
+
+    @Test
+    public void testNewRoomStringString() {
+        RoomNode room = rooms.newRoom("name", "description");
         
-        assertEquals("Room manager should be able to track rooms that are connected to the graph!",
-                 simpleRooms.getRoom(2), simpleRoom.getDirection(Direction.UP));
+        assertEquals(room.getName(), "name");
+        assertEquals(room.getDescription(), "description");
+        assertEquals(rooms.getRoom(room.getRoomID()), room);
+    }
+
+    @Test
+    public void testGetStartingRoom() {
+        assertNotEquals(rooms.getStartingRoom(), null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetStartingRoom_InvalidID_IllegalArgumentException() {
+        rooms.setStartingRoom(-5);
     }
     
-
     @Test
-    public void trackRoom_NodeInGraphButOverwrittingID_IsNotTracked() {
-        simpleRoom.setDirection(Direction.UP, new RoomNode(1, "More Void", "A description"));
-        simpleRooms.trackRoom(simpleRoom.getDirection(Direction.UP));
+    public void testSetStartingRoom_ValidID_IsSet() {
+        RoomNode room = rooms.newRoom("name", "description");
         
-        assertEquals("Room manager should not lose track of nodes with invalid IDs!",
-                 simpleRooms.getRoom(1), simpleRoom.getDirection(Direction.DOWN));
+        rooms.setStartingRoom(room.getRoomID());
+        assertEquals(room, rooms.getStartingRoom());
     }
 
     @Test
-    public void addAllConnectedRooms_NewRoomsInEachDirection_AllNewRoomsAdded() {
-        simpleRoom.setDirection(Direction.UP, new RoomNode(2, "More Void"));
-        simpleRoom.setDirection(Direction.NORTH, new RoomNode(3, "More Void" ));
-        simpleRoom.setDirection(Direction.EAST, new RoomNode(4, "More Void"));
-        simpleRoom.setDirection(Direction.SOUTH, new RoomNode(5, "More Void"));
-        simpleRoom.setDirection(Direction.WEST, new RoomNode(6, "More Void"));
+    public void testGetRoom_InvalidID_Null() {
+        assertEquals(null, rooms.getRoom(2));
+        assertEquals(null, rooms.getRoom(-5));
+    }
 
-        simpleRooms.addAllConnectedRooms();
-        assertEquals("Room manager didn't add all connected nodes!", simpleRooms.getRoom(2), simpleRoom.getDirection(Direction.UP));
-        assertEquals("Room manager didn't add all connected nodes!", simpleRooms.getRoom(3), simpleRoom.getDirection(Direction.NORTH));
-        assertEquals("Room manager didn't add all connected nodes!", simpleRooms.getRoom(4), simpleRoom.getDirection(Direction.EAST));
-        assertEquals("Room manager didn't add all connected nodes!", simpleRooms.getRoom(5), simpleRoom.getDirection(Direction.SOUTH));
-        assertEquals("Room manager didn't add all connected nodes!", simpleRooms.getRoom(6), simpleRoom.getDirection(Direction.WEST));
+    @Test
+    public void testGetRoom_ValidID_CorrectRoom() {
+        RoomNode room = rooms.newRoom("name", "description");
+
+        assertEquals(room, rooms.getRoom(room.getRoomID()));
+        assertEquals(rooms.getStartingRoom(), rooms.getRoom(rooms.getStartingRoom().getRoomID()));
     }
 
 }
