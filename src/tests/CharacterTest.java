@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import model.Character;
+import model.DamageType;
 import model.NonPlayerCharacter;
 import model.RoomManager;
 import model.RoomNode;
@@ -82,4 +83,44 @@ public class CharacterTest {
         assertEquals(normalCharacter.getRoom(), null);
     }
 
+    @Test
+    public void testGetHealth_InitialHealth_NonZero() {
+    	assertNotEquals(0, normalCharacter.getHealth());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testHarm_NullDamageType_NullPointerException() {
+    	normalCharacter.harm(null, normalCharacter, 5);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testHarm_NullHarmer_NullPointerException() {
+    	normalCharacter.harm(DamageType.PHYSICAL, null, 5);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHarm_NegativeDamage_IllegalArgumentException() {
+    	normalCharacter.harm(DamageType.PHYSICAL, normalCharacter, -1);
+    }
+    
+    @Test
+    public void testHarm_ZeroDamage_NoDamageTaken() {
+    	assertEquals(0, normalCharacter.harm(DamageType.PHYSICAL,
+    						normalCharacter, 0));
+    }
+    
+    @Test
+    public void testHarm_FiveDamageOnNakedCharacter_DamageTakenInResult() {
+    	assertEquals(5, normalCharacter.harm(DamageType.PHYSICAL,
+    						normalCharacter, 5));
+    }
+    
+    @Test
+    public void testHarm_FiveDamageOnNakedCharacter_HealthIsExactlyFiveLower() {
+    	int health = normalCharacter.getHealth();
+    	
+    	normalCharacter.harm(DamageType.PHYSICAL, normalCharacter, 5);
+    	
+    	assertEquals(health - 5, normalCharacter.getHealth());
+    }
 }

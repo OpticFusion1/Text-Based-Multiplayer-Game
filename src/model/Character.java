@@ -115,4 +115,30 @@ public abstract class Character implements Serializable {
     public int getCurrentRoomID() {
         return currentRoomID;
     }
+
+    /**
+     * @return the health of the player.
+     */
+	public int getHealth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/**
+	 * Harm the character from the given attacker. If type or attacker is null,
+	 * a NullPointerException is thrown.
+	 * 
+	 * The amount of actual damage inflicted may be lower than the given amount.
+	 * It is possible that the character had a lower amount of health than the
+	 * given amount, or that the character has some immunity to that damage.
+	 * 
+	 * @param type the type of damage afflicting this player.
+	 * @param attacker the character harming this character.
+	 * @param amount the amount of damage being inflicted.
+	 * @return the amount of actual damage inflicted.
+	 */
+	public int harm(DamageType type, Character attacker, int amount) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
