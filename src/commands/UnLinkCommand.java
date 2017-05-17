@@ -48,7 +48,7 @@ public class UnLinkCommand extends Command {
                     String message = Helper.buildString(info.getUsername(), " removed pathway ",
                             directionToUnlink.lowercaseName, " to ", room.getName());
                     
-                    User.chat.printlnToRoom(info, message);
+                    info.chat.printlnToRoom(message);
                 }
             }
         }

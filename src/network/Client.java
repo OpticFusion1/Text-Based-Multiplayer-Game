@@ -8,14 +8,14 @@ import java.util.NoSuchElementException;
 import console.Console;
 import console.User;
 import console.UserInputScanner;
-import model.RoomManager;
+import model.Universe;
 
 /**
  * The client thread that will run for a given user.
  *
  * @author Zachary Chandler
  */
-public class ClientHandler implements Runnable {
+public class Client implements Runnable {
 
     /** The user to run for. */
     private User info;
@@ -24,18 +24,18 @@ public class ClientHandler implements Runnable {
     private Socket soc;
 
     /**
-     * Start a user with the given socket on the given rooms.
+     * Start a user with the given socket on the given universe.
      * @param user the socket of the connection.
-     * @param rm the rooms of the world.
+     * @param u the Universe.
      * @throws IOException if an IO exception occurs.
      */
-    public ClientHandler(Socket user, RoomManager rm) throws IOException  {
+    public Client(Socket user, Universe u) throws IOException  {
         this.soc = user;
         
         UserInputScanner input = new UserInputScanner(user.getInputStream());
         PrintStream out = new PrintStream(user.getOutputStream(), true);
         
-        this.info = new User(rm, out, input);
+        this.info = new User(u, out, input);
     }
     
     @Override
@@ -48,7 +48,6 @@ public class ClientHandler implements Runnable {
             closedGracefully = true;
         } catch (NoSuchElementException e) {
             System.out.printf("%s has closed the connection\n", getConnectorName());
-            info.save();
             closedGracefully = false;
         }
 
@@ -60,8 +59,7 @@ public class ClientHandler implements Runnable {
             soc.close();
         } catch (IOException e) {
             e.getMessage();
-        }            
-        
+        }
     }
     
     /**
@@ -70,6 +68,17 @@ public class ClientHandler implements Runnable {
     private String getConnectorName() {
         String name = info.getUsername();
         return name == null ? soc.toString() : name;
+    }
+    
+    /**
+     * Close the current client.
+     */
+    public void close() {
+        try {
+            soc.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

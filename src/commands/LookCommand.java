@@ -39,7 +39,7 @@ public class LookCommand extends Command {
         List<Item> itemsInTheRoom = r.getItems();
         List<User> playersInTheRoom = info.getPlayersInRoom();
         
-        if (!itemsInTheRoom.isEmpty() || !playersInTheRoom.isEmpty()) {
+        if (!itemsInTheRoom.isEmpty() || playersInTheRoom.size() > 1) {
             info.println("You can see:");
             
             for (User p : playersInTheRoom) {

@@ -20,32 +20,32 @@ public class SerializationHelper {
     private static final String USERS_FOLDER = "users/";
     
     /** The name of the file storing all of the rooms. */
-    private static final String ROOM_MANAGER_FILE = "rooms.ser";
+    private static final String UNIVERSE_FILE = "rooms.ser";
     
     /** The folders that lead to where user data will be saved. */
-    private static final String ROOM_MANAGER_SAVE = DATA_FOLDER + ROOM_MANAGER_FILE;
+    private static final String UNIVERSE_SAVE = DATA_FOLDER + UNIVERSE_FILE;
 
     /**
-     * Load a given user's save.
+     * Load a given player file.
      * @param username the user name the file is saved under.
-     * @return a users save object.
+     * @return a player object with the given username.
      */
-    public static PlayerInformation loadUser(String username) {
-        return (PlayerInformation) loadObject(DATA_FOLDER + USERS_FOLDER + username + ".ser");
+    public static Player loadUser(String username) {
+        return (Player) loadObject(DATA_FOLDER + USERS_FOLDER + username + ".ser");
     }
     
     /**
-     * Saves a users information.
-     * @param user the save object that will be stored.
+     * Saves a player object.
+     * @param ply the player object that will be stored.
      * @return if the file was successfully saved.
      */
-    public static boolean saveUser(PlayerInformation user) {
-        return saveObject(user, DATA_FOLDER + USERS_FOLDER + user.getUsername() + ".ser"); 
+    public static boolean saveUser(Player ply) {
+        return saveObject(ply, DATA_FOLDER + USERS_FOLDER + ply.getName() + ".ser"); 
     }
     
     /**
-     * Check if a given user save file exists.
-     * @param username the user name to check.
+     * Check if a given player save file exists.
+     * @param username the user name of the player to check.
      * @return if there is a save file with the given user name.
      */
     public static boolean userExists(String username) {
@@ -54,24 +54,24 @@ public class SerializationHelper {
     }
     
     /**
-     * @return the room manager.
+     * @return the saved universe.
      */
-    public static RoomManager loadRoomManager() {
-        return (RoomManager) loadObject(ROOM_MANAGER_SAVE);
+    public static Universe loadUniverse() {
+        return (Universe) loadObject(UNIVERSE_SAVE);
     }
     
     /**
-     * @param rm the room manager to save.
+     * @param u the universe to save.
      * @return if the save was successful.
      */
-    public static boolean saveRoomManager(RoomManager rm) {
-        return saveObject(rm, ROOM_MANAGER_SAVE);
+    public static boolean saveUniverse(Universe u) {
+        return saveObject(u, UNIVERSE_SAVE);
     }
     
     /**
      * Load an object.
      * @param fileName the file path to the object
-     * @return the object that was loaded.
+     * @return the object that was loaded or null if there was an error.
      */
     public static Object loadObject(String fileName) {
         Object result;
@@ -115,7 +115,7 @@ public class SerializationHelper {
              //System.out.println("Saved system to " + fileName);
           } catch(IOException i) {
               System.err.println(i.getMessage());
-              System.err.println("FAILED to Save system to " + fileName);
+              System.err.println("FAILED to Save " + fileName);
               result = false;
           }
         

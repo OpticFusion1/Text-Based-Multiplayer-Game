@@ -2,17 +2,13 @@ package model;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
- * A room manager that holds a graph of nodes.
- * 
- * Responsibilities:
- *      keep track of the starting room.
- *      generate unique room IDs.
- *      look up rooms from their ID
+ * A room manager that generates rooms, and can look them up after generating. A RoomManager:
+ *      keeps track of the starting room.
+ *      generates new rooms to use.
+ *      looks up rooms from their ID.
  * 
  * @author Zachary Chandler
  */
@@ -29,38 +25,37 @@ public final class RoomManager implements Serializable {
     
     /** The next Unique ID to use. */
     private int nextRoomID;
-    
+
     /**
-     * Instantiates a RoomManager with the given starting room. And adds all connected rooms to be tracked.
-     * 
-     * Preconditions:
-     *      startingRoom may not be null.
-     * 
-     * @param startingRoom
+     * Instantiates a RoomManager with a single starting room.
      */
-    public RoomManager(RoomNode startingRoom) {
-        if (startingRoom == null) {
-            throw new NullPointerException("Cannot have a null startingRoom in a RoomManager.");
-        }
-        
-        this.startingRoom = startingRoom;
-        this.nextRoomID = startingRoom.getRoomID() + 1;
+    public RoomManager() {
+        this.nextRoomID = 0;
         this.rooms = new TreeMap<>();
-        
-        this.addAllConnectedRooms();
+        this.startingRoom = newRoom();
     }
     
     /**
-     * @return a unique room ID.
+     * @return a new room that is tracked by this room manager
      */
-    public int getUniqueRoomID() {
-        return nextRoomID++;
+    public RoomNode newRoom() {
+        return newRoom("simple room", "a very bland room");
+    }
+
+    /**
+     * Create a new room for the given name and description.
+     * @param name the name of the new room.
+     * @param description the description of the new room.
+     * @return the new room.
+     */
+    public RoomNode newRoom(String name, String description) {
+        RoomNode result = new RoomNode(nextRoomID++, name, description);
+        trackRoom(result);
+        return result;
     }
     
     /**
-     * Postconditions:
-     *      startingRoom will never be null.
-     * 
+     * Gets the starting room of the room manager. The start room will never be null.
      * @return the startingRoom
      */
     public RoomNode getStartingRoom() {
@@ -68,21 +63,24 @@ public final class RoomManager implements Serializable {
     }
 
     /**
-     * Preconditions:
-     *      startingRoom may not be null.
-     *      
-     * @param startingRoom the startingRoom to set
+     * Set the starting room of the RoomManager. If no room with the roomID is found, an IllegalArgumentException is
+     * thrown.
+     * 
+     * @param roomID the ID of the room to set.
      */
-    public void setStartingRoom(RoomNode startingRoom) {
-        if (startingRoom == null) {
-            throw new NullPointerException("Cannot have a null startingRoom in a RoomManager.");
+    public void setStartingRoom(int roomID) {
+        RoomNode newStartingRoom  = rooms.get(roomID);
+        
+        if (newStartingRoom == null) {
+            throw new IllegalArgumentException("Could not find room: " + roomID);
         }
         
-        this.startingRoom = startingRoom;
+        this.startingRoom = newStartingRoom;
     }
     
     /**
-     * Get the room for this ID. If this room hasn't been added, it will not be found.
+     * Get the room for the given ID. If no room is found, a null room is returned.
+     * 
      * @param roomID the ID to search for.
      * @return the RoomNode or null if it is not found.
      */
@@ -91,48 +89,13 @@ public final class RoomManager implements Serializable {
     }
     
     /**
-     * Adds the given room to the tracked nodes. Undefined behavior for nodes not in the current graph. If a node is
-     * already being tracked with that ID then subsequent call to getRoom will return the original room.
+     * Adds the given room to the tracked nodes.
      * 
      * @param room the room to track.
      */
-    public void trackRoom(RoomNode room) {
+    private void trackRoom(RoomNode room) {
         if (!this.rooms.containsKey(room.getRoomID())) {
             this.rooms.put(room.getRoomID(), room);            
-        }
-    }
-    
-    /**
-     * Searches and adds all rooms connected to the starting node that are not being tracked.
-     */
-    public void addAllConnectedRooms() {
-        addAllConnectedRooms(new TreeSet<RoomNode>(), this.startingRoom);
-    }
-    
-    /**
-     * Removes all known rooms that are disconnected from the starting room.
-     */
-    public void purgeDisconnectedRooms() {
-        this.rooms = new TreeMap<>();
-        addAllConnectedRooms();
-    }
-    
-    /**
-     * Adds all of the connected rooms to be tracked.
-     * @param seenRooms the rooms already seen and added.
-     * @param room the current room.
-     */
-    private void addAllConnectedRooms(Set<RoomNode> seenRooms, RoomNode room) {
-        if (room != null && !seenRooms.contains(room)) {
-            seenRooms.add(room);
-            this.trackRoom(room);
-            
-            addAllConnectedRooms(seenRooms, room.getDirection(Direction.UP));
-            addAllConnectedRooms(seenRooms, room.getDirection(Direction.DOWN));
-            addAllConnectedRooms(seenRooms, room.getDirection(Direction.NORTH));
-            addAllConnectedRooms(seenRooms, room.getDirection(Direction.EAST));
-            addAllConnectedRooms(seenRooms, room.getDirection(Direction.SOUTH));
-            addAllConnectedRooms(seenRooms, room.getDirection(Direction.WEST));
         }
     }
 }

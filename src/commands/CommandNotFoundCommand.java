@@ -3,7 +3,8 @@ package commands;
 import console.User;
 
 /**
- * A command that will display when no command is found.
+ * A command that will display when no command is found. In the form of:
+ *      Command not found (...)
  * 
  * @author Zachary Chandler
  */
@@ -24,14 +25,9 @@ public class CommandNotFoundCommand extends Command {
         // do we have multiple commands OR is there only one command, but it isn't the empty string
         if (args.length > 1 || (args.length == 1 && !args[0].equals(""))) {
             
-            info.print("Command not found (" + args.length + "): ");
-            
-            for (int i = 0; i < args.length; i++) {
-                info.print(args[i]);
-                info.print(',');
-            }
-            
-            info.println();    
+            info.print("Command not found (");
+            info.print(args[0]);
+            info.print(")\n"); 
         }
     }
 

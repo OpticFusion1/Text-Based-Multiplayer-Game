@@ -4,7 +4,7 @@ import console.Helper;
 import console.User;
 
 /**
- * writes a message to everyone in the room and displays it in third person.
+ * Writes a message to everyone in the room and displays it in third person.
  *
  * @author Zachary Chandler
  */
@@ -24,7 +24,7 @@ public class MeCommand extends Command {
             message.append(' ');
             message.append(Helper.mergeStrings(args, 1, args.length - 1));
 
-            User.chat.printlnToRoom(info, message.toString());
+            info.chat.printlnToRoom(message.toString());
         } else {
             info.println(getShortHelpDescription());
         }

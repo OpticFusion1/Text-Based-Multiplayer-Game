@@ -54,7 +54,7 @@ public class ConnectCommand extends Command {
             }
 
             if (!error) {
-                RoomNode room = info.rooms.getRoom(choice);
+                RoomNode room = info.u.rooms.getRoom(choice);
                 
                 if (room == null) {
                     info.print("Room not found, ");
@@ -68,7 +68,7 @@ public class ConnectCommand extends Command {
                     
                     String message = Helper.buildString(info.getUsername(), " connected ",
                             info.getCurrentRoom().getName(), " to ", room.getName());
-                    User.chat.printlnToRoom(info, message);
+                    info.chat.printlnToRoom(message);
                 }
             }
         }
