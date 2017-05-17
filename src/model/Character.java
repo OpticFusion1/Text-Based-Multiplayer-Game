@@ -26,8 +26,8 @@ public abstract class Character implements Serializable {
     private String upperCaseName;
 
     /**
-     * Instantiate a Character in the given room with the given name.
-     * if name is null, a NullPointerException is thrown.
+     * Instantiate a Character in the given room with the given name. if name is null, a NullPointerException is thrown.
+     * If room is null, this user will not be in any room. 
      * 
      * @param saveRoom the room to place the character into.
      * @param name the name of the character.

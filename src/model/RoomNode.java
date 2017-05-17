@@ -239,6 +239,7 @@ public class RoomNode implements Serializable, Comparable<RoomNode> {
      * Find a character in the room based on a given name.
      * @param s the name of the character.
      * @return the character found or null if it wasn't found.
+     * @throws NullPointerException if s is null.
      */
     public Character find(String s) {
         s = s.toUpperCase();

@@ -12,7 +12,10 @@ public class NonPlayerCharacter extends Character {
     private static final long serialVersionUID = 2853191703651175761L;
 
     /**
-     * Create a new npc in the given room for the given name. If name is null, a NullPointerException is thrown.
+     * Create a new npc in the given room for the given name. If name is null, a NullPointerException is thrown. If 
+     * room is null, this user will not be in any room. 
+     * 
+     * 
      * @param room the room to place the new npc in.
      * @param name the name of the npc.
      * @throws NullPointerException if name is null.

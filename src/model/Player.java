@@ -17,7 +17,7 @@ public class Player extends Character {
 
     /**
      * Create a new player for the given user in the given room with the given name. If name is null or user is null a 
-     * NullPointerException is thrown.
+     * NullPointerException is thrown. If room is null, this user will not be in any room. 
      * 
      * @param user the user of this player.
      * @param room the room to place the player in.

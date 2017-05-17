@@ -7,9 +7,9 @@ import org.junit.runner.RunWith;
 @Suite.SuiteClasses({
     DirectionTest.class,
     ItemTest.class,
-    PlayerInformationTest.class,
+    CharacterTest.class,
     RoomManagerTest.class,
-    RoomNodeTest.class
+    RoomNodeTest.class,
 })
 
 public class ModelTests {

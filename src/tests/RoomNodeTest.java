@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import model.Direction;
 import model.Item;
+import model.NonPlayerCharacter;
 import model.RoomManager;
 import model.RoomNode;
 
@@ -18,8 +19,8 @@ public class RoomNodeTest {
     RoomManager rooms;
     
     RoomNode withNameDescription;
-    
     RoomNode withItems;
+    RoomNode withCharacters;
     
     List<Item> items;
     
@@ -37,6 +38,11 @@ public class RoomNodeTest {
         items.add(new Item("item 3"));
         items.add(new Item("item 4"));
         items.add(new Item("item 5"));
+        
+        withCharacters = rooms.newRoom();
+        new NonPlayerCharacter(withCharacters, "aname");
+        new NonPlayerCharacter(withCharacters, "rei");
+        new NonPlayerCharacter(withCharacters, "wa");
         
         for (Item i : items) {
             withItems.addItem(i);
@@ -59,16 +65,6 @@ public class RoomNodeTest {
         assertEquals(withNameDescription.getDirection(Direction.UP), null);
         assertEquals(withNameDescription.getDirection(Direction.DOWN), null);
     }
-
-    /*@Test(expected = NullPointerException.class)
-    public void testRoomNodeIntStringString_NullName() {
-        new RoomNode(0, "name", null);
-    }
-    
-    @Test(expected = NullPointerException.class)
-    public void testRoomNodeIntStringString_NullDescription() {
-        new RoomNode(0, null, "description");
-    }*/
 
     @Test
     public void testSetName() {
@@ -143,11 +139,23 @@ public class RoomNodeTest {
         assertTrue(withNameDescription.getDirection(Direction.NORTH) != null);
     }
     
+    @Test(expected = NullPointerException.class)
+    public void testSetDirection_NullDirection_Exception() {
+        withNameDescription.setDirection(null, rooms.newRoom());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testFindCharacter_NullName_NullPointerException() {
+        withCharacters.find(null);
+    }
+
     @Test
-    public void testSetDirection_NullDirection_NoChanges() {
-        withNameDescription.setDirection(Direction.NORTH, rooms.newRoom());
-        assertTrue(withNameDescription.getDirection(Direction.NORTH) != null);
-        withNameDescription.setDirection(null, null);
-        assertTrue(withNameDescription.getDirection(Direction.NORTH) != null);
+    public void testFindCharacter_CharacterNotInThere_NullReturned() {
+        assertEquals(null, withCharacters.find("notaname"));
+    }
+    
+    @Test
+    public void testFindCharacter_CharacterInThere_CharacterReturned() {
+        assertEquals("aname", withCharacters.find("aname").getName());
     }
 }
