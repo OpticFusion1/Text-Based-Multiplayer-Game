@@ -199,7 +199,7 @@ public class Console {
             RunnableCommand com = info.input.getNextCommand();
             com.run(info);
             
-            result = com.getRunnable() instanceof QuitCommand;
+            result = !(com.getRunnable() instanceof QuitCommand);
         }
     }
     

@@ -53,7 +53,7 @@ public class User implements Comparable<User> {
         this.out = out;
         this.input = input;
         this.u = u;
-        this.ply = new Player(this, null, null);
+        this.ply = new Player(this, null, "connecting user");
     }
 
     /**
