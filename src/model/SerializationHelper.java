@@ -26,26 +26,26 @@ public class SerializationHelper {
     private static final String UNIVERSE_SAVE = DATA_FOLDER + UNIVERSE_FILE;
 
     /**
-     * Load a given user's save.
+     * Load a given player file.
      * @param username the user name the file is saved under.
-     * @return a users save object.
+     * @return a player object with the given username.
      */
     public static Player loadUser(String username) {
         return (Player) loadObject(DATA_FOLDER + USERS_FOLDER + username + ".ser");
     }
     
     /**
-     * Saves a users information.
-     * @param user the save object that will be stored.
+     * Saves a player object.
+     * @param ply the player object that will be stored.
      * @return if the file was successfully saved.
      */
-    public static boolean saveUser(Player user) {
-        return saveObject(user, DATA_FOLDER + USERS_FOLDER + user.getName() + ".ser"); 
+    public static boolean saveUser(Player ply) {
+        return saveObject(ply, DATA_FOLDER + USERS_FOLDER + ply.getName() + ".ser"); 
     }
     
     /**
-     * Check if a given user save file exists.
-     * @param username the user name to check.
+     * Check if a given player save file exists.
+     * @param username the user name of the player to check.
      * @return if there is a save file with the given user name.
      */
     public static boolean userExists(String username) {
@@ -54,14 +54,14 @@ public class SerializationHelper {
     }
     
     /**
-     * @return the room manager.
+     * @return the saved universe.
      */
     public static Universe loadUniverse() {
         return (Universe) loadObject(UNIVERSE_SAVE);
     }
     
     /**
-     * @param rm the room manager to save.
+     * @param u the universe to save.
      * @return if the save was successful.
      */
     public static boolean saveUniverse(Universe u) {
@@ -71,7 +71,7 @@ public class SerializationHelper {
     /**
      * Load an object.
      * @param fileName the file path to the object
-     * @return the object that was loaded.
+     * @return the object that was loaded or null if there was an error.
      */
     public static Object loadObject(String fileName) {
         Object result;

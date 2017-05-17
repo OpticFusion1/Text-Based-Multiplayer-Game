@@ -1,8 +1,6 @@
 package console;
 
 import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,19 +12,17 @@ import model.SerializationHelper;
 import model.Player;
 
 /**
- * The console...?
- *
+ * The console deals with logging players and launching incoming commands from users.
+ * 
  * @author Zachary Chandler
  */
 public class Console {
     
-    /** A constant for white space so we don't have to re-create it. */
+    /** A constant for white space so we can easily check if a name contains white space. */
     private static final Pattern WHITE_SPACE = Pattern.compile("\\s");
     
+    /** The maximum number of login attempts before the console gives up. */
     private static final int MAX_LOGIN_ATTEMPTS = 3;
-    
-    /** The players that are currently logged in. */
-    private static final Set<String> loggedInPlayers = new TreeSet<String>();
     
     /**
      * This program loads and runs a world for a single user.
@@ -43,9 +39,9 @@ public class Console {
     }
     
     /**
-     * Let the user start playing. They appear in the game and when this method exits they are logged out of the game.
+     * Let the user start playing. when this method exits the user is logged out of the game.
      * 
-     * the user must be logged in.
+     * Precondition, login method must have returned true on this user.
      * 
      * @param info the user.
      * @throws NoSuchElementException if the user closes the connection while they are playing.
@@ -58,7 +54,7 @@ public class Console {
         NoSuchElementException ex = null;
         
         try {
-            while(mainLoop(info));
+            mainLoop(info);
         } catch (NoSuchElementException e) {
             // save it for now, we will need to clean up first.
             ex = e;
@@ -74,17 +70,11 @@ public class Console {
     }
     
     /**
-     * Cleanups the user, logs them out, saves their character, removes them from the logged in players, and removes
+     * Cleans up the user, logs them out, saves their character, removes them from the logged in players, and removes
      * their entity from the tracked entities in their universe.
-     * 
-     * the user must be logged.
-     * 
-     * @param info
      */
     private static void cleanup(User info) {
         info.save();
-        info.getPlayer().removeFromRoom();        
-        loggedInPlayers.remove(info.getUsername().toUpperCase());
         info.u.entities.removePlayer(info.getPlayer());
     }
     
@@ -95,7 +85,9 @@ public class Console {
     private static boolean login(User info) {
         int loginFails = 0;
         
-        while (loginFails < MAX_LOGIN_ATTEMPTS && !attemptLogin(info)) loginFails++;
+        while (loginFails < MAX_LOGIN_ATTEMPTS && !attemptLogin(info)) {
+            loginFails++;            
+        }
         
         return loginFails < MAX_LOGIN_ATTEMPTS;
     }
@@ -119,7 +111,6 @@ public class Console {
         }
         
         if (result) {
-            loggedInPlayers.add(username.toUpperCase());    
             info.u.entities.addPlayer(info.getPlayer());
         }
         
@@ -148,7 +139,7 @@ public class Console {
     }
 
     /**
-     * Prompt the user if they want to create a new player, if so create the player. 
+     * Prompt the user if they want to create a new player, if so create a player with the given username.
      * 
      * @param info the user.
      * @param username the name of the player to create.
@@ -171,8 +162,9 @@ public class Console {
     }
 
     /**
-     * Get a valid user name from the player, a valid user name is one that doesn't contain whitespace, and isn't
-     * already logged in.
+     * Get a user name from the player, a valid user name is one that doesn't contain whitespace, and isn't
+     * already logged in. If one could not be obtained on the first try, a null is returned.
+     * 
      * @param info the user to talk to.
      * @return the user name of the user or null if it was invalid.
      */
@@ -187,7 +179,7 @@ public class Console {
         if (matches.find()) {
             info.println("Error, user names cannot contain whitespace!");
             name = null;
-        } else if (loggedInPlayers.contains(name.toUpperCase())) {
+        } else if (info.u.entities.isPlayerLoggedIn(name)) {
             info.println("This account is already logged in!");
             name = null;
         } 
@@ -195,25 +187,20 @@ public class Console {
         return name;
     }
     
-    
-    
     /**
-     * Runs the main loop of the program, essentially running commands from the user.
+     * Runs commands from the user until they logout.
      * 
      * @param info the user we will be using.
-     * @return if the mainLoop should continue.
      */
-    private static boolean mainLoop(User info) {
+    private static void mainLoop(User info) {
         boolean result = true;
         
-        RunnableCommand com = info.input.getNextCommand();
-        com.run(info);
-        
-        if (com.getRunnable() instanceof QuitCommand) {
-            result = false;
+        while (result) {
+            RunnableCommand com = info.input.getNextCommand();
+            com.run(info);
+            
+            result = com.getRunnable() instanceof QuitCommand;
         }
-        
-        return result;
     }
     
 }

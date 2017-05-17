@@ -6,7 +6,7 @@ import model.SerializationHelper;
 import model.Universe;
 
 /**
- * Initializes a simple save file of the room manager.
+ * Initializes a simple save file for the universe.
  * 
  * @author Zachary Chandler
  */

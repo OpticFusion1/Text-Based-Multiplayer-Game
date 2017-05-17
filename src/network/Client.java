@@ -15,7 +15,7 @@ import model.Universe;
  *
  * @author Zachary Chandler
  */
-public class ClientHandler implements Runnable {
+public class Client implements Runnable {
 
     /** The user to run for. */
     private User info;
@@ -24,12 +24,12 @@ public class ClientHandler implements Runnable {
     private Socket soc;
 
     /**
-     * Start a user with the given socket on the given rooms.
+     * Start a user with the given socket on the given universe.
      * @param user the socket of the connection.
-     * @param rm the rooms of the world.
+     * @param u the Universe.
      * @throws IOException if an IO exception occurs.
      */
-    public ClientHandler(Socket user, Universe u) throws IOException  {
+    public Client(Socket user, Universe u) throws IOException  {
         this.soc = user;
         
         UserInputScanner input = new UserInputScanner(user.getInputStream());
@@ -71,7 +71,7 @@ public class ClientHandler implements Runnable {
     }
     
     /**
-     * Close all of the clients.
+     * Close the current client.
      */
     public void close() {
         try {

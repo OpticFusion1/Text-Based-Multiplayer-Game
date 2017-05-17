@@ -6,10 +6,7 @@ import console.Helper;
 import console.User;
 
 /**
- * A class to be able to run a command. Keep track of the help file
- * 
- * Each inheriting class needs to be interchangeable with other instances of itself. Such that a call to any method is
- * equivalent between all instances of any inheriting class.
+ * A class to run a command. And to load and display a help file.
  * 
  * @author Zachary Chandler
  */
@@ -39,7 +36,7 @@ public abstract class Command implements Comparable<Command>{
    
    /**
     * Run the command for the given arguments on the given user.
-    * @param info the user that will have the command run.
+    * @param info the user that will run the command
     * @param args the arguments of the command.
     */
    public abstract void runCommand(User info, String[] args);
@@ -50,7 +47,9 @@ public abstract class Command implements Comparable<Command>{
    public abstract String getShortHelpDescription();
 
    /**
-    * @return preferred command name
+    * A name that will be displayed and associated with the command.
+    * 
+    * @return preferred name for the command.
     */
    public abstract String getPreferredName();
    
@@ -60,16 +59,6 @@ public abstract class Command implements Comparable<Command>{
     */
    public String getHelpPage() {
        return this.helpPage;
-   }
-   
-   @Override
-   public final int hashCode() {
-       return this.getClass().hashCode();
-   }
-   
-   @Override
-   public final boolean equals(Object other) {
-       return this.getClass().equals(other.getClass());
    }
    
    @Override

@@ -3,7 +3,7 @@ package commands;
 import console.User;
 
 /**
- * A command to handle player exiting.
+ * A command to display an exit message to the player.
  *
  * @author Zachary Chandler
  */

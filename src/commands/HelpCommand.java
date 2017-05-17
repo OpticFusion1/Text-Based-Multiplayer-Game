@@ -4,7 +4,7 @@ import console.User;
 import console.UserInputScanner;
 
 /**
- * A command to help the user by displaying all commands and displaying the help page for a given command.
+ * A command to help the user by displaying all commands or displaying the help page for a given command.
  * 
  * @author Zachary Chandler
  */

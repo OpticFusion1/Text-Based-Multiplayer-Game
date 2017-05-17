@@ -13,20 +13,25 @@ public abstract class Character implements Serializable {
     /** Generated SVUID. */
     private static final long serialVersionUID = -2130515270184748942L;
 
-    /** The user name of the user. */
+    /** The name of the character. */
     private String name;
 
-    /** The room the user will load back into. */
+    /** The room ID of the current room. */
     private int currentRoomID;
 
     /** The room of the player. */
     private transient RoomNode room;
 
+    /** The name of this character in upper case. */
+    private String upperCaseName;
+
     /**
-     * Instantiate a UserSave with the given information.
+     * Instantiate a Character in the given room with the given name.
+     * if name is null, a NullPointerException is thrown.
      * 
-     * @param saveRoom the room the user will be saved in.
-     * @param name the user name of the user.
+     * @param saveRoom the room to place the character into.
+     * @param name the name of the character.
+     * @throws a NullPointerException if name is null.
      */
     public Character(RoomNode room, String name) {
         setName(name);
@@ -37,7 +42,10 @@ public abstract class Character implements Serializable {
      * Instantiate a Character with the given name. The current room will be null so any calls to getRoom without 
      * setting a non-null room will result in a null.
      * 
-     * @param name
+     * If name is null, a NullPointerException is thrown.
+     * 
+     * @param name the name of the character.
+     * @throws NullPointerException if name is null.
      */
     protected Character(String name) {
         setName(name);
@@ -49,22 +57,33 @@ public abstract class Character implements Serializable {
     public String getName() {
         return name;
     }
+    
+    /**
+     * @return the upper case value of this characters name.
+     */
+    public String getUpperCaseName() {
+        return upperCaseName;
+    }
 
     /**
+     * if name is null, a NullPointerException is thrown.
      * @param name the name to set
      */
     public void setName(String name) {
+        this.upperCaseName = name.toUpperCase();
         this.name = name;
     }
 
     /**
-     * @return the room
+     * @return the current room the character is in
      */
     public RoomNode getRoom() {
         return room;
     }
 
     /**
+     * Sets the current room of the character. If the given room is null, the current room will not change.
+     * 
      * @param room the room to set
      */
     public void setRoom(RoomNode room) {
@@ -83,7 +102,7 @@ public abstract class Character implements Serializable {
     /**
      * Cause the character to be removed from the room.
      */
-    public void removeFromRoom() {
+    public void removeFromCurrentRoom() {
         if (this.room != null) {
             this.room.removeCharacter(this);
             this.room = null;

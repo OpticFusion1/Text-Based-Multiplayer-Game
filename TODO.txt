@@ -1,2 +1,9 @@
-re-write tests
 address comments
+re-write tests
+
+
+
+Possible Refactorings in the future:
+merge move commands into one command.
+item and set commands can utilize the command framework.
+rename Chat class or move it back into user.

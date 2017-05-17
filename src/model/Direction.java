@@ -58,7 +58,7 @@ public enum Direction {
     
     /**
      * Get the opposite direction of theDirection
-     * @param theDirection
+     * @param theDirection the direction to lookup.
      * @return the opposite direction or null if theDirection is null
      */
     public static Direction getOppositeDirection(Direction theDirection) {

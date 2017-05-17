@@ -1,47 +1,84 @@
 package network;
 
 import java.io.IOException;
-import java.util.Scanner;
-import java.util.concurrent.Executors;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import model.SerializationHelper;
 import model.Universe;
 
-public class Server {
+/**
+ * A server thread to listen to incoming connections and start client threads.
+ *
+ * @author Zachary Chandler
+ */
+public class Server implements Runnable {
 
-    public static final int PORT = 2222;
+    /** The ServerSocket. */
+    private ServerSocket server;
     
-    public static void main(String[] args) throws IOException {
+    /** The threads to add to. */
+    private ThreadPoolExecutor threads;
+    
+    /** The clients of this server. */
+    private Clients clients;
+
+    /**
+     * Initializes a ServerSocket for the given universe, on the given port, with a given thread pool to add to. This
+     * constructor does not start the server, it only initializes all of the variables required for the server.
+     * 
+     * @param threads the threads the clients of the server will run on.
+     * @param u the universe the clients will reside in.
+     * @param port the port the server will listen on.
+     * @throws IOException if an error occurs while starting the server socket.
+     */
+    public Server(ThreadPoolExecutor threads, Universe u, int port) throws IOException {
+        this.server = new ServerSocket(port);
+        this.threads = threads;
+        this.clients = new Clients(u);
+    }
+    
+    /**
+     * Runs the server. Starts listening for incoming connections and starts the given clients.
+     */
+    @Override
+    public void run() {
+        System.out.printf("Opening server on port %s\n", server.getLocalPort());
         
-        // Initialize data
-        Universe u =  SerializationHelper.loadUniverse();
-        if (u == null) {
-            System.err.println("Failed to Load System!");
+        while (true) {
+            Socket client;
+            try {
+                client = server.accept();
+            } catch (IOException e1) {
+                System.out.println("Closing port listener.");
+                return;
+            }
+            
+            try {
+                if (threads.getPoolSize() < threads.getMaximumPoolSize()) {
+                    threads.execute(clients.addClient(client));                    
+                } else {
+                    client.close();
+                }
+            } catch (IOException e) {
+                System.out.printf("Unable to start client handler for incoming connection: %s\n", client);
+            }                
+        }
+    }
+
+    /**
+     * Shutdown the server and all client connections.
+     */
+    public void close() {
+        try {
+            server.close();
+        } catch (IOException e) {
+            System.out.println("I/O Exception while closing server.");
             return;
-        } else {
-            System.out.println("Loaded System.");
         }
-
-        // Start server
-        final ThreadPoolExecutor threads = (ThreadPoolExecutor) Executors.newFixedThreadPool(51);
-        final ServerHandler server = new ServerHandler(threads, u, PORT);
-        threads.execute(server);
+        clients.closeClients();
         
-        // Start handling administrative commands
-        Scanner adminInput = new Scanner(System.in);
-        if (adminInput.hasNextLine()) {
-            adminInput.nextLine();            
-        }
-        
-        // Save data
-        SerializationHelper.saveUniverse(u);
-        System.out.println("Saved Universe.");
-
-        // Close connections
-        server.close();
-        adminInput.close();
-        threads.shutdown();
+        System.out.println("Closing server.");
     }
 
 }

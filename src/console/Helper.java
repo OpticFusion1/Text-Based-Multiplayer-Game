@@ -116,6 +116,11 @@ public class Helper {
         return result.toString();
     }
     
+    /**
+     * Builds a continuous string from the arguments.
+     * @param args the strings to merge together.
+     * @return a continuous string of all the arguments.
+     */
     public static String buildString(String... args) {
         StringBuilder result = new StringBuilder();
         
