@@ -1,5 +1,7 @@
 package tests;
 
+import static model.Skill.ARCANA;
+import static model.Skill.STRENGTH;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -111,4 +113,153 @@ public class SkillSetTest {
 	public void testGetXPForLevel_OnMaxLevel_ReturnsValueAboveZero() {
 		assertTrue(0 < SkillSet.getXPForLevel(SkillSet.MAX_LEVEL));
 	}
+	
+    @Test
+    public void testConsume_ZeroArcana_NoChanges() {
+        int amount = skills.getPool(ARCANA);
+
+        assertTrue(skills.consume(ARCANA, 0));
+        assertEquals(amount, skills.getPool(ARCANA));
+    }
+
+    @Test
+    public void testConsume_OneArcana_OneLessArcana() {
+        int amount = skills.getPool(ARCANA);
+
+        assertTrue(skills.consume(ARCANA, 1));
+        assertEquals(amount - 1, skills.getPool(ARCANA));
+    }
+
+    @Test
+    public void testConsume_AllArcana_ArcanaAtZero() {
+        int amount = skills.getPool(ARCANA);
+
+        assertTrue(skills.consume(ARCANA, amount));
+        assertEquals(0, skills.getPool(ARCANA));
+    }
+    
+    @Test
+    public void testConsume_AllArcanaPlusOne_ArcanaNotConsumed() {
+        int amount = skills.getPool(ARCANA);
+
+        assertFalse(skills.consume(ARCANA, amount + 1));
+        assertEquals(amount, skills.getPool(ARCANA));
+    }
+
+    @Test
+    public void testConsume_TwiceAvailableArcana_ArcanaNotConsumed() {
+        int amount = skills.getPool(ARCANA);
+
+        assertFalse(skills.consume(ARCANA, amount + amount));
+        assertEquals(amount, skills.getPool(ARCANA));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testConsume_NullType_NullPointerException() {
+        skills.consume(null, 0);
+    }
+    
+    @Test(expected = NullPointerException.class)
+    public void testGetPool_NullType_NullPointerException() {
+        skills.getPool(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testConsume_NonConsumable_IllegalArgumentException() {
+        skills.consume(STRENGTH, 0);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testConsume_NegativeAmount_IllegalArgumentException() {
+        skills.consume(ARCANA, -1);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetSkill_NonConsumable_IllegalArgumentException() {
+        skills.getPool(STRENGTH);
+    }
+    
+    @Test
+    public void testRefill_ZeroArcana_NoChanges() {
+        int amount = skills.getPool(ARCANA);
+
+        skills.refill(ARCANA, 0);
+        assertEquals(amount, skills.getPool(ARCANA));
+    }
+
+    @Test
+    public void testRefill_OneArcana_OneLessArcana() {
+        assertTrue(skills.consume(ARCANA, skills.getPool(ARCANA)));
+        skills.refill(ARCANA, 1);
+        assertEquals(1, skills.getPool(ARCANA));
+    }
+
+    @Test
+    public void testRefill_AllArcana_ArcanaAtMax() {
+        int amount = skills.getPool(ARCANA);
+        
+        assertTrue(skills.consume(ARCANA, amount));
+        assertEquals(0, skills.getPool(ARCANA));
+        
+        skills.refill(ARCANA, amount);
+        assertEquals(amount, skills.getPool(ARCANA));
+    }
+
+    @Test
+    public void testRefill_AllArcanaPlusOne_ArcanaAtMax() {
+        int amount = skills.getPool(ARCANA);
+        
+        assertTrue(skills.consume(ARCANA, amount));
+        assertEquals(0, skills.getPool(ARCANA));
+        
+        skills.refill(ARCANA, amount + 1);
+        assertEquals(amount, skills.getPool(ARCANA));
+    }
+
+    @Test
+    public void testRefill_TwiceMaxArcana_ArcanaAtMax() {
+        int amount = skills.getPool(ARCANA);
+        
+        assertTrue(skills.consume(ARCANA, amount));
+        assertEquals(0, skills.getPool(ARCANA));
+        
+        skills.refill(ARCANA, amount + amount);
+        assertEquals(amount, skills.getPool(ARCANA));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testRefill_NullType_NullPointerException() {
+        skills.refill(null, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRefill_NonConsumable_IllegalArgumentException() {
+        skills.refill(STRENGTH, 0);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testRefill_NegativeAmount_IllegalArgumentException() {
+        skills.refill(ARCANA, -1);
+    }
+    
+    @Test
+    public void testAddXP_PastNewLevel_PoolIsRefilledToMax() {
+        int amount = skills.getPool(ARCANA);
+        assertTrue(skills.consume(ARCANA, amount));
+        assertEquals(0, skills.getPool(ARCANA));
+        
+        
+        skills.addXP(ARCANA, SkillSet.getXPForLevel(2));
+        assertEquals(200, skills.getPool(ARCANA));
+    }
+    
+    @Test
+    public void testAddXP_WithinLevel_PoolIsNotRefilled() {
+        int amount = skills.getPool(ARCANA);
+        assertTrue(skills.consume(ARCANA, amount / 2));
+        assertEquals(amount / 2, skills.getPool(ARCANA));
+        
+        skills.addXP(ARCANA, amount / 2);
+        assertEquals(50, skills.getPool(ARCANA));
+    }
 }

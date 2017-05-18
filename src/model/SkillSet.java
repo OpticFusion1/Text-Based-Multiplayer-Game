@@ -31,7 +31,7 @@ public class SkillSet {
 		this.skills = new EnumMap<Skill, SkillValue>(Skill.class);
 		
 		for (Skill s :Skill.values()) {
-			skills.put(s, new SkillValue());
+			skills.put(s, new SkillValue(1));
 		}
 		
 	}
@@ -46,7 +46,10 @@ public class SkillSet {
 	}
 	
 	/**
-	 * If the given xp exceeds the amount required for the MAX_LEVEL, the level stays at MAX_LEVEL
+	 * If the given xp exceeds the amount required for the MAX_LEVEL, the level stays at MAX_LEVEL. If the xp exceeds
+	 * the current level, the skill levels up. If a level up occurs and the skill is consumable, the pool for that skill
+	 * is refilled to the new max.
+	 * 
 	 * @param skill the skill to add xp to.
 	 * @param amount the amount of xp to add.
 	 * @throws NullPointerException of skill is null.
@@ -76,6 +79,72 @@ public class SkillSet {
 	}
 	
 	/**
+	 * @param i the level
+	 * @return the maximum pool size for that level.
+	 */
+	public static int getMaxPoolSizeForLevel(int i) {
+	    return i * 100;
+	}
+	
+	/**
+	 * Consume part of the pool of a consumable skill. If the amount is greater than the available pool, the method
+	 * returns false and the pool does not change. Otherwise the amount given is taken from the pool and the method
+	 * returns true. If amount is negative or type is not consumable an IllegalArgumentException is thrown. If type
+	 * is null, a NullPointerException is thrown.
+	 *  
+	 * @param type the type of skill to consume.
+	 * @param amount the amount to consume.
+	 * @return if any of the pool was consumed.
+	 * @throws NullPointerException if type is null.
+	 * @throws IllegalArgumentException if type is not consumable.
+	 */
+    public boolean consume(Skill type, int amount) {
+        if (type == null) {
+            throw new NullPointerException();
+        } else if (!type.consumable || amount < 0) {
+            throw new IllegalArgumentException();
+        }
+        
+        return skills.get(type).consume(amount);
+    }
+
+    /**
+     * @param type the pool to get.
+     * @return the amount left in the pool.
+     * @throws NullPointerException if type is null.
+     * @throws IllegalArgumentException if type is not consumable.
+     */
+    public int getPool(Skill type) {
+        if (type == null) {
+            throw new NullPointerException();
+        } else if (!type.consumable) {
+            throw new IllegalArgumentException();
+        }
+        
+        return skills.get(type).getPool();
+    }
+
+    /**
+     * Refill part of the pool of a consumable skill. If the amount is greater than the available pool, the the pool
+     * is set to the max. Otherwise the amount given is added to the pool.  If amount is negative or type is not
+     * consumable an IllegalArgumentException is thrown. If type is null, a NullPointerException is thrown.
+     * 
+     * @param type the skill to refill the pool of.
+     * @param amount the amount of the pool to refill.
+     * @throws NullPointerException if type is null.
+     * @throws IllegalArgumentException is type is not consumable or amount is negative. 
+     */
+    public void refill(Skill type, int amount) {
+        if (type == null) {
+            throw new NullPointerException();
+        } else if (!type.consumable || amount < 0) {
+            throw new IllegalArgumentException();
+        }
+        
+        skills.get(type).refill(amount);
+    }
+    
+	/**
 	 * A class to hold and manage the values in a skill.
 	 * 
 	 * @author Zachary Chandler
@@ -83,12 +152,15 @@ public class SkillSet {
 	private class SkillValue {
 		private int level;
 		private int xp;
+		private int pool;
 		
 		/**
 		 * Creates a new skill with zero xp and levels.
+		 * @throws ArrayIndexOutOfBoundsException if level is out of accessable levels.
 		 */
-		public SkillValue() {
-			addXP(0);
+		public SkillValue(int level) {
+			addXP(getXPForLevel(level));
+			pool = getMaxPoolSizeForLevel(level);
 		}
 		
 		/**
@@ -106,7 +178,10 @@ public class SkillSet {
 		}
 		
 		/**
-		 * If the given xp exceeds the amount required for the MAX_LEVEL, the level stays at MAX_LEVEL
+		 * If the given xp exceeds the amount required for the MAX_LEVEL, the level stays at MAX_LEVEL. If the xp
+		 * exceeds the current level, the skill levels up. If a level up occurs and the skill is consumable, the pool
+		 * for that skill is refilled to the new max.
+		 * 
 		 * @param xp the amount of xp to add.
 		 * @throws IllegalArgumentException if the amount of xp is negative.
 		 */
@@ -119,8 +194,55 @@ public class SkillSet {
 			
 			while (level < MAX_LEVEL && xp >= SkillSet.getXPForLevel(level + 1)) {
 				level++;
+				pool = getMaxPoolSizeForLevel(level);
 			}
 		}
+
+        /**
+         * @return the pool
+         */
+        public int getPool() {
+            return pool;
+        }
+
+        /**
+         * Attempts to consume a part of the pool. If amount is greater than the available pool, the pool doesn't change
+         * and the method returns false. Otherwise the pool shrinks by the amount and returns true. If amount is 
+         * negative, an IllegalArgumentException is thrown.
+         * 
+         * @param amount the amount of the pool to take.
+         * @return if any of the pool was taken.
+         * @throws IllegalArgumentException if amount is negative.
+         */
+        public boolean consume(int amount) {
+            if (amount < 0) {
+                throw new IllegalArgumentException();
+            }
+
+            if (amount > pool) {
+                return false;
+            } else {
+                pool -= amount;
+                return true;
+            }
+        }
+        
+        /**
+         * Refills the pool by the given amount up to the max pool size for the current level.
+         * @param amount of the pool to refill.
+         * @throws IllegalArgumentException if amount is negative.
+         */
+        public void refill(int amount) {
+            if (amount < 0) {
+                throw new IllegalArgumentException();
+            }
+            
+            pool += amount;
+            
+            if (pool > getMaxPoolSizeForLevel(level)) {
+                pool = getMaxPoolSizeForLevel(level);
+            }
+        }
 	}
 }
 

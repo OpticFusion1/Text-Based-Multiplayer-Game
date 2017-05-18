@@ -114,13 +114,31 @@ public class CharacterTest {
     	assertEquals(5, normalCharacter.harm(DamageType.PHYSICAL,
     						normalCharacter, 5));
     }
-    
+
     @Test
     public void testHarm_FiveDamageOnNakedCharacter_HealthIsExactlyFiveLower() {
-    	int health = normalCharacter.getHealth();
-    	
-    	normalCharacter.harm(DamageType.PHYSICAL, normalCharacter, 5);
-    	
-    	assertEquals(health - 5, normalCharacter.getHealth());
+        int health = normalCharacter.getHealth();
+        
+        normalCharacter.harm(DamageType.PHYSICAL, normalCharacter, 5);
+        
+        assertEquals(health - 5, normalCharacter.getHealth());
+    }
+
+    @Test
+    public void testHarm_OverCurrentHealth_HealthStopsAtZero() {
+        int health = normalCharacter.getHealth();
+        
+        normalCharacter.harm(DamageType.PHYSICAL, normalCharacter, health + health);
+        
+        assertEquals(0, normalCharacter.getHealth());
+    }
+
+    @Test
+    public void testHarm_OnCurrentHealth_HealthStopsAtZero() {
+        int health = normalCharacter.getHealth();
+        
+        normalCharacter.harm(DamageType.PHYSICAL, normalCharacter, health);
+        
+        assertEquals(0, normalCharacter.getHealth());
     }
 }

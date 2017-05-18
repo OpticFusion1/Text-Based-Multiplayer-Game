@@ -24,6 +24,9 @@ public abstract class Character implements Serializable {
 
     /** The name of this character in upper case. */
     private String upperCaseName;
+    
+    /** The skills of the player. */
+    public final SkillSet skills;
 
     /**
      * Instantiate a Character in the given room with the given name. if name is null, a NullPointerException is thrown.
@@ -34,7 +37,7 @@ public abstract class Character implements Serializable {
      * @throws a NullPointerException if name is null.
      */
     public Character(RoomNode room, String name) {
-        setName(name);
+        this(name);
         setRoom(room);
     }
     
@@ -49,6 +52,8 @@ public abstract class Character implements Serializable {
      */
     protected Character(String name) {
         setName(name);
+        
+        this.skills = new SkillSet();
     }
 
     /**
@@ -120,8 +125,7 @@ public abstract class Character implements Serializable {
      * @return the health of the player.
      */
 	public int getHealth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return skills.getPool(Skill.VITALITY);
 	}
 
 	/**
@@ -136,9 +140,28 @@ public abstract class Character implements Serializable {
 	 * @param attacker the character harming this character.
 	 * @param amount the amount of damage being inflicted.
 	 * @return the amount of actual damage inflicted.
+	 * @throws NullPointerException if attacker or type is null.
+	 * @throws IllegalArgumentException if amount is negative.
 	 */
 	public int harm(DamageType type, Character attacker, int amount) {
-		// TODO Auto-generated method stub
-		return 0;
+	    if (type == null || attacker == null) {
+	        throw new NullPointerException();
+	    }
+	    
+	    if (amount < 0) {
+	        throw new IllegalArgumentException();
+	    }
+	    
+	    int result;
+	    
+	    if (amount >= getHealth()) {
+	        result = getHealth();
+	        skills.consume(Skill.VITALITY, getHealth());
+	    } else {
+	        result = amount;
+	        skills.consume(Skill.VITALITY, amount);
+	    }
+	    
+		return result;
 	}
 }

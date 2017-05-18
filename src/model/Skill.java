@@ -6,5 +6,11 @@ package model;
  * @author Zachary Chandler
  */
 public enum Skill {
-	STRENGTH, STAMINA, APTITUDE, ARCANA, FAITH, BLESSING
+	STRENGTH(false), STAMINA(true), APTITUDE(false), ARCANA(true), FAITH(false), BLESSING(true), VITALITY(true);
+	
+	public final boolean consumable;
+	
+	Skill(boolean consumable) {
+	    this.consumable = consumable;
+	}
 }
