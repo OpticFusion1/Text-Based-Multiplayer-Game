@@ -16,7 +16,7 @@ public class SkillSet {
 	private static final int[] XP_FOR_LEVEL = new int[MAX_LEVEL]; {
 		int value = 0;
 		for (int i = 0; i < MAX_LEVEL; i++) {
-			value += (i + 1) * 100;
+			value += i * 100;
 			XP_FOR_LEVEL[i] = value; 
 		}
 	}
@@ -25,7 +25,7 @@ public class SkillSet {
 	private EnumMap<Skill, SkillValue> skills;
 	
 	/**
-	 * Create a new set of skills with level zero in all skills.
+	 * Create a new set of skills with level one in all skills and zero xp in all skills.
 	 */
 	public SkillSet() {
 		this.skills = new EnumMap<Skill, SkillValue>(Skill.class);
@@ -46,6 +46,7 @@ public class SkillSet {
 	}
 	
 	/**
+	 * If the given xp exceeds the amount required for the MAX_LEVEL, the level stays at MAX_LEVEL
 	 * @param skill the skill to add xp to.
 	 * @param amount the amount of xp to add.
 	 * @throws NullPointerException of skill is null.
@@ -87,8 +88,7 @@ public class SkillSet {
 		 * Creates a new skill with zero xp and levels.
 		 */
 		public SkillValue() {
-			this.xp = 0;
-			this.level = 0;
+			addXP(0);
 		}
 		
 		/**
@@ -106,6 +106,7 @@ public class SkillSet {
 		}
 		
 		/**
+		 * If the given xp exceeds the amount required for the MAX_LEVEL, the level stays at MAX_LEVEL
 		 * @param xp the amount of xp to add.
 		 * @throws IllegalArgumentException if the amount of xp is negative.
 		 */
@@ -116,7 +117,7 @@ public class SkillSet {
 			
 			this.xp += xp;
 			
-			while (xp >= SkillSet.getXPForLevel(level + 1)) {
+			while (level < MAX_LEVEL && xp >= SkillSet.getXPForLevel(level + 1)) {
 				level++;
 			}
 		}

@@ -18,10 +18,10 @@ public class SkillSetTest {
 	}
 
 	@Test
-	public void testSkillSet() {
+	public void testSkillSet_StartAtLevelOne() {
 		for (Skill s : Skill.values()) {
 			assertEquals(0, skills.getXP(s));
-			assertEquals(0, skills.getLevel(s));			
+			assertEquals(1, skills.getLevel(s));			
 		}
 	}
 
@@ -43,28 +43,44 @@ public class SkillSetTest {
 	@Test
 	public void testAddXP_UnderLevel_LevelDoesNotChangeAndXPDoesNotChange() {
 		for (Skill s : Skill.values()) {
-			skills.addXP(s, SkillSet.getXPForLevel(1) - 1);
-			assertEquals(0, skills.getLevel(s));
-			assertEquals(SkillSet.getXPForLevel(1) - 1, skills.getXP(s));
-		}
-	}
-
-	@Test
-	public void testAddXP_OnLevel_LevelDoesChange() {
-		for (Skill s : Skill.values()) {
-			skills.addXP(s, SkillSet.getXPForLevel(1));
+			skills.addXP(s, SkillSet.getXPForLevel(2) - 1);
 			assertEquals(1, skills.getLevel(s));
+			assertEquals(SkillSet.getXPForLevel(2) - 1, skills.getXP(s));
 		}
 	}
 
-	@Test
-	public void testAddXP_ZeroAmount_LevelAndXPDoesNotChange() {
-		for (Skill s : Skill.values()) {
-			skills.addXP(s, 0);
-			assertEquals(0, skills.getLevel(s));
-			assertEquals(0, skills.getXP(s));
-		}
-	}
+    @Test
+    public void testAddXP_OnLevel_LevelDoesChange() {
+        for (Skill s : Skill.values()) {
+            skills.addXP(s, SkillSet.getXPForLevel(1));
+            assertEquals(1, skills.getLevel(s));
+        }
+    }
+    
+    @Test
+    public void testAddXP_TwoLevelsWorth_LevelDoesChange() {
+        for (Skill s : Skill.values()) {
+            skills.addXP(s, SkillSet.getXPForLevel(2));
+            assertEquals(2, skills.getLevel(s));
+        }
+    }
+
+    @Test
+    public void testAddXP_ZeroAmount_LevelAndXPDoesNotChange() {
+        for (Skill s : Skill.values()) {
+            skills.addXP(s, 0);
+            assertEquals(0, skills.getXP(s));
+            assertEquals(1, skills.getLevel(s));
+        }
+    }
+    
+    @Test
+    public void testAddXP_PastMaxLevel_StaysAtMaxLevel() {
+        skills.addXP(Skill.STRENGTH, SkillSet.getXPForLevel(SkillSet.MAX_LEVEL));
+        skills.addXP(Skill.STRENGTH, SkillSet.getXPForLevel(SkillSet.MAX_LEVEL));
+        
+        assertEquals(SkillSet.MAX_LEVEL, skills.getLevel(Skill.STRENGTH));
+    }
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddXP_NegativeAmount_IllegalArgumentException() {
