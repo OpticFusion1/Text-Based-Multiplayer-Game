@@ -5,7 +5,6 @@ import java.io.Serializable;
 /**
  * A class to contain all the information required to save the state of the user.
  * 
- * 
  * @author Zachary Chandler
  */
 public abstract class Character implements Serializable {

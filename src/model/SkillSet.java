@@ -9,18 +9,15 @@ import java.util.EnumMap;
  */
 public class SkillSet {
 
-	/** The max level of a skill. */
-	public static final int MAX_LEVEL = 100;
-	
-	/** the amount of xp required to get to level at the index of level - 1. */
-	private static final int[] XP_FOR_LEVEL = new int[MAX_LEVEL]; {
-		int value = 0;
-		for (int i = 0; i < MAX_LEVEL; i++) {
-			value += i * 100;
-			XP_FOR_LEVEL[i] = value; 
-		}
-	}
-	
+	/** The amount of xp required to get to level at the index of level - 1. */
+	private static final int[] XP_FOR_LEVEL = new int[] {
+	        0, // XP for level 1 must be 0, or else skills won't start at level 1. 
+	        100, 500, 1300, 2500
+	};
+
+    /** The max level of a skill. */
+    public static final int MAX_LEVEL = XP_FOR_LEVEL.length;
+    
 	/** The skill values in this skill set. */
 	private EnumMap<Skill, SkillValue> skills;
 	
