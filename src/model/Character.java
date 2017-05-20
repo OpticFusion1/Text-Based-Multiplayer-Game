@@ -133,7 +133,7 @@ public abstract class Character implements Serializable {
 	 * 
 	 * The amount of actual damage inflicted may be lower than the given amount.
 	 * It is possible that the character had a lower amount of health than the
-	 * given amount, or that the character has some immunity to that damage.
+	 * given amount.
 	 * 
 	 * @param type the type of damage afflicting this player.
 	 * @param attacker the character harming this character.
@@ -163,4 +163,33 @@ public abstract class Character implements Serializable {
 	    
 		return result;
 	}
+
+    /**
+     * Heal the character from the given caster. If type or attacker is null,
+     * a NullPointerException is thrown.
+     * 
+     * The amount of actual damage healed may be lower than the given amount.
+     * It is possible that the character had a lower amount of health until max than the
+     * given amount.
+     * 
+     * @param healingType the type of healing affecting this player.
+     * @param caster the character harming this character.
+     * @param healAmount the amount of damage being healed.
+     * @return the amount of actual damage inflicted.
+     * @throws NullPointerException if caster or healingType is null.
+     * @throws IllegalArgumentException if amount is negative.
+     */
+    public int heal(DamageType healingType, Character caster, int healAmount) {
+        if (healingType == null || caster == null) {
+            throw new NullPointerException();
+        }
+        
+        if (healAmount < 0) {
+            throw new IllegalArgumentException();
+        }
+        
+        int initialHealth = skills.getPool(Skill.VITALITY);
+        skills.refill(Skill.VITALITY, healAmount);
+        return skills.getPool(Skill.VITALITY) - initialHealth;
+    }
 }

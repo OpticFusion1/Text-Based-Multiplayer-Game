@@ -10,7 +10,10 @@ import org.junit.runner.RunWith;
     CharacterTest.class,
     RoomManagerTest.class,
     RoomNodeTest.class,
-    SkillSetTest.class
+    SkillSetTest.class,
+    PlannedAttackTest.class,
+    SkillSetTest.class,
+    StraightAttackTest.class
 })
 
 public class ModelTests {

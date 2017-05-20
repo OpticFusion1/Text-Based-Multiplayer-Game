@@ -10,6 +10,8 @@ import model.DamageType;
 import model.NonPlayerCharacter;
 import model.RoomManager;
 import model.RoomNode;
+import model.Skill;
+import model.SkillSet;
 
 /**
  * A class to test the character class.
@@ -141,4 +143,65 @@ public class CharacterTest {
         
         assertEquals(0, normalCharacter.getHealth());
     }
+    
+    //TODO
+    @Test(expected = NullPointerException.class)
+    public void testHeal_NullDamageType_NullPointerException() {
+        normalCharacter.heal(null, normalCharacter, 5);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testHeal_NullHarmer_NullPointerException() {
+        normalCharacter.heal(DamageType.LIGHT, null, 5);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHeal_NegativeDamage_IllegalArgumentException() {
+        normalCharacter.heal(DamageType.LIGHT, normalCharacter, -1);
+    }
+    
+    @Test
+    public void testHeal_ZeroDamage_NoHealthRestored() {
+        normalCharacter.harm(DamageType.LIGHT, normalCharacter, normalCharacter.getHealth()/2);
+        assertEquals(0, normalCharacter.heal(DamageType.LIGHT, normalCharacter, 0));
+    }
+    
+    @Test
+    public void testHeal_FiveHealthOnHalfDeadCharacter_DamageHealedInResult() {
+        normalCharacter.harm(DamageType.LIGHT, normalCharacter, normalCharacter.getHealth()/2);
+        assertEquals(5, normalCharacter.harm(DamageType.LIGHT, normalCharacter, 5));
+    }
+
+    @Test
+    public void testHeal_FiveHealthOnHalfDeadCharacter_HealthIsExactlyFiveHigher() {
+        normalCharacter.harm(DamageType.LIGHT, normalCharacter, normalCharacter.getHealth()/2);
+        int health = normalCharacter.getHealth();
+        
+        normalCharacter.heal(DamageType.LIGHT, normalCharacter, 5);
+        
+        assertEquals(health + 5, normalCharacter.getHealth());
+    }
+
+    @Test
+    public void testHeal_OverMaxHealth_HealthStopsAtMax() {
+        normalCharacter.harm(DamageType.LIGHT, normalCharacter, normalCharacter.getHealth()/2);
+        int health = normalCharacter.getHealth();
+        
+        normalCharacter.heal(DamageType.LIGHT, normalCharacter, health + health);
+        
+        assertEquals(SkillSet.getMaxPoolSizeForLevel(normalCharacter.skills.getLevel(Skill.VITALITY)),
+                normalCharacter.getHealth());
+    }
+
+    @Test
+    public void testHeal_OnMaxHealth_HealthStopsAtMax() {
+        int health = normalCharacter.getHealth();
+        
+        normalCharacter.harm(DamageType.LIGHT, normalCharacter, health);
+        normalCharacter.heal(DamageType.LIGHT, normalCharacter, health);
+
+        assertEquals(SkillSet.getMaxPoolSizeForLevel(normalCharacter.skills.getLevel(Skill.VITALITY)),
+                normalCharacter.getHealth());
+    }
+    
 }

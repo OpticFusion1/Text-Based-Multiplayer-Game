@@ -8,8 +8,8 @@ package model;
 public interface Attack {
 
 	/**
-	 * An attack from the attacker onto the victim.
+	 * An attack from the caster onto others.
 	 */
-	abstract void attack(Character attacker, Character victim);
+	abstract void attack(Character caster, Character... others);
 	
 }

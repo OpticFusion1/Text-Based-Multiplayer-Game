@@ -83,6 +83,20 @@ public class SkillSet {
 	    return i * 100;
 	}
 	
+    /**
+     * @param s the skill to check.
+     * @return the maximum pool size for that skill.
+     * @throws NullPointerException if s is null.
+     * @throws IllegalArgumentException if s isn't consumable.
+     */
+    public int getMaxPoolFor(Skill s) {
+        if (!s.consumable) {
+            throw new IllegalArgumentException();
+        }
+        
+        return getMaxPoolSizeForLevel(skills.get(s).getLevel());
+    }
+	
 	/**
 	 * Consume part of the pool of a consumable skill. If the amount is greater than the available pool, the method
 	 * returns false and the pool does not change. Otherwise the amount given is taken from the pool and the method

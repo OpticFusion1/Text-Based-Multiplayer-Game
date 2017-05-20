@@ -262,4 +262,19 @@ public class SkillSetTest {
         skills.addXP(ARCANA, amount / 2);
         assertEquals(50, skills.getPool(ARCANA));
     }
+    
+    @Test(expected = NullPointerException.class)
+    public void testGetMaxPoolFor_NullSkill_NullPointerException() {
+        skills.getMaxPoolFor(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetMaxPoolFor_NonConsumableSkill_IllegalArgumentException() {
+        skills.getMaxPoolFor(STRENGTH);
+    }
+
+    @Test
+    public void testGetMaxPoolFor_ConsumableSkillLevelOne_CorrectValueReturned() {
+        assertEquals(100, skills.getMaxPoolFor(Skill.STAMINA));
+    }
 }
