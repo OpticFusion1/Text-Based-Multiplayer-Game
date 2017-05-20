@@ -26,6 +26,9 @@ public abstract class Character implements Serializable {
     
     /** The skills of the player. */
     public final SkillSet skills;
+    
+    /** The current outgoing attack. */
+    private OutgoingAttack currentAttack;
 
     /**
      * Instantiate a Character in the given room with the given name. if name is null, a NullPointerException is thrown.
@@ -191,5 +194,30 @@ public abstract class Character implements Serializable {
         int initialHealth = skills.getPool(Skill.VITALITY);
         skills.refill(Skill.VITALITY, healAmount);
         return skills.getPool(Skill.VITALITY) - initialHealth;
+    }
+
+    /**
+     * @param otherTime the current time.
+     * @return if this character should attack.
+     */
+    public boolean shouldAttack(long otherTime) {
+        return currentAttack == null ? false : currentAttack.shouldAttack(otherTime);
+    }
+
+    /**
+     * Perform the current attack. And removes it as the current attack.
+     * @throws NullPointerException if there is no attack to perform.
+     */
+    public void consumeOutgoingAttack() {
+        currentAttack.attack();
+        currentAttack = null;
+    }
+
+    /**
+     * if newAttack is null, the character will not have a current attack.
+     * @param newAttack the attack to set
+     */
+    public void setCurrentAttack(OutgoingAttack newAttack) {
+        this.currentAttack = newAttack;
     }
 }

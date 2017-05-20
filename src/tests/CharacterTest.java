@@ -144,7 +144,6 @@ public class CharacterTest {
         assertEquals(0, normalCharacter.getHealth());
     }
     
-    //TODO
     @Test(expected = NullPointerException.class)
     public void testHeal_NullDamageType_NullPointerException() {
         normalCharacter.heal(null, normalCharacter, 5);
@@ -204,4 +203,13 @@ public class CharacterTest {
                 normalCharacter.getHealth());
     }
     
+    @Test
+    public void testShouldAttack_NullOutgoingAttack_False() {
+        assertFalse(normalCharacter.shouldAttack(System.currentTimeMillis()));
+    }
+    
+    @Test(expected = NullPointerException.class)
+    public void testConsume_NullOutgoingAttack_NullPointerException() {
+        normalCharacter.consumeOutgoingAttack();
+    }
 }
