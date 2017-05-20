@@ -1,6 +1,7 @@
 package tests;
 
 import org.junit.runners.Suite;
+
 import org.junit.runner.RunWith;
 
 @RunWith(Suite.class)
@@ -11,7 +12,7 @@ import org.junit.runner.RunWith;
     RoomManagerTest.class,
     RoomNodeTest.class,
     SkillSetTest.class,
-    PlannedAttackTest.class,
+    OutgoingAttackTest.class,
     SkillSetTest.class,
     StraightAttackTest.class
 })
