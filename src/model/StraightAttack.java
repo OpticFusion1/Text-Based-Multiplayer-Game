@@ -1,5 +1,9 @@
 package model;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * A class to describe a "straight forward attack". That applys xp and damage in a simple manner.
  *
@@ -55,9 +59,9 @@ public class StraightAttack implements Attack {
     }
 
     /**
-     * Causes harm to every other in others if damageAmount is positive or zero. Otherwise it heals every other in 
-     * others. If it is harming, the harm will be that described by getDamageType() of the amount given by 
-     * getDamageAmount() caused by the caster.
+     * Causes harm to every other in others in the room if damageAmount is positive or zero. Otherwise it heals every 
+     * other in others in the room. If it is harming, the harm will be that described by getDamageType() of the amount 
+     * given by getDamageAmount() caused by the caster.
      * 
      * Iff the attack does not encounter any exceptions, the damageSkill will get the amount of xp healed/harmed each
      * other added together. And the damageCost consumed will be given as xp to the castPool skill.
@@ -75,22 +79,53 @@ public class StraightAttack implements Attack {
             }
         }
         
+        // attempt to consume cost
         caster.skills.consume(castPool, castCost);
         
-        int damageDealt = 0;
+        // find others able to be affected
+        List<Character> othersInRoom = new LinkedList<>(caster.getRoom().getCharacters());
+        othersInRoom.retainAll(Arrays.asList(others));
         
-        if (damageAmount < 0) {
-            for (Character other : others) {
-                damageDealt += other.heal(damageType, caster, healAmount);
-            }
-        } else {
-            for (Character other : others) {
-                damageDealt += other.harm(damageType, caster, damageAmount);
-            }            
-        }
+        // heal/harm others
+        int damageDealt = damageAmount < 0 ? 
+                healOthers(caster, othersInRoom):
+                harmOthers(caster, othersInRoom);
         
+        // add relevant xp
         caster.skills.addXP(castPool, castCost);
         caster.skills.addXP(damageSkill, damageDealt);
+    }
+
+    /**
+     * Heal the others in a list.
+     * @param caster the one who heals.
+     * @param othersInRoom the ones being healed.
+     * @return the amount of damage healed.
+     */
+    private int healOthers(Character caster, List<Character> othersInRoom) {
+        int damageDealt = 0;
+        
+        for (Character other : othersInRoom) {
+            damageDealt += other.heal(damageType, caster, healAmount);
+        }
+        
+        return damageDealt;
+    }
+
+    /**
+     * Harm the others in a list.
+     * @param caster the one who harm.
+     * @param othersInRoom the ones being harmed.
+     * @return the amount of damage dealt.
+     */
+    private int harmOthers(Character caster, List<Character> othersInRoom) {
+        int damageDealt = 0;
+        
+        for (Character other : othersInRoom) {
+            damageDealt += other.harm(damageType, caster, damageAmount);
+        }
+        
+        return damageDealt;
     }
 
     /**
@@ -127,5 +162,4 @@ public class StraightAttack implements Attack {
     public int getDamageAmount() {
         return damageAmount;
     }
-
 }

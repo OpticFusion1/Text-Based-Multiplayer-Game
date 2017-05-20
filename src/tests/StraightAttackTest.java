@@ -16,6 +16,8 @@ public class StraightAttackTest {
 
     public static final int DAMAGE = 30;
     public static final int COST = 40;
+
+    private RoomManager rooms;
     
     StraightAttack magicAttack;
     StraightAttack healingAttack;
@@ -27,7 +29,7 @@ public class StraightAttackTest {
     
     @Before
     public void setUp() throws Exception {
-        RoomManager rooms = new RoomManager();
+        this.rooms = new RoomManager();
         magicAttack = new StraightAttack(FIRE, APTITUDE, ARCANA, DAMAGE, COST);
         healingAttack = new StraightAttack(LIGHT, FAITH, BLESSING, -DAMAGE, COST);
         noAttack = new StraightAttack(PHYSICAL, STRENGTH, STAMINA, 0, COST);
@@ -138,5 +140,18 @@ public class StraightAttackTest {
         
         assertEquals(npc1.skills.getXP(STRENGTH), 0 * 2);
         assertEquals(npc1.skills.getXP(STAMINA), COST);
+    }
+    
+
+    @Test
+    public void testAttack_OtherInAnotherRoom_OtherNotAttacked() {
+        npc2.setRoom(rooms.newRoom());
+        
+        magicAttack.attack(npc1, npc2, npc3);
+        
+        assertEquals(npc1.skills.getXP(APTITUDE), 30 * 1);
+        assertEquals(npc1.skills.getXP(ARCANA), COST);
+        assertEquals(npc2.getHealth(), npc1.getHealth());
+        
     }
 }
