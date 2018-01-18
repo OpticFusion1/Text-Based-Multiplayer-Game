@@ -1,3 +1,3 @@
-# NodeTraversingSimulator
+# Text Based Multiplayer Game
 
-This project is designed to host a very simple "World" in which a user can create, traverse, edit, and destroy different "Rooms". Each Room is a node in a much larger graph of the world. I hope to one day add enough functionality that this can become a tool that can create large and interesting worlds.
+A very simple multiplayer server that allows clients to move through a series of "Rooms" and create objects in those rooms. With support for room and item descriptions and names.
